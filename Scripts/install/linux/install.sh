@@ -40,10 +40,20 @@ dracut -f
 # Override system configuration
 sudo su -c 'cp -Rn etc /etc'
 
-# Add noatime,discard for all ssd partitions in fstab
+# Add noatime for all ssd partitions in fstab (NO DISCARD!)
+
+# TRIM FIX FOR MBP PRO SSD
+systemctl enable fstrim.timer
+systemctl start fstrim.service
 
 # Reverse scrolling
 
 # Power save 
 sudo systemctl enable powertop.service
 sudo systemctl start powertop.service
+
+
+
+# Install yadm
+sudo dnf copr enable thelocehiliosan/yadm
+sudo dnf install yadm -y
