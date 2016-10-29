@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Fix brightness
+echo '150' > /sys/class/backlight/intel_backlight/brightness
+
+# Disable bluetooth
+rfkill block bluetooth
+
+echo '50' > /sys/class/leds/smc::kbd_backlight/brightness
+echo 'min_power' > /sys/class/scsi_host/host0/link_power_management_policy
+echo '1' > /sys/module/snd_hda_intel/parameters/power_save
+echo 'Y' > /sys/module/snd_hda_intel/parameters/power_save_controller
+
+# Enable auto power control for all devices
+for i in `find /sys/bus/pci/devices/*`; do echo 'auto' > $i/power/control;done;
+for i in `find /sys/bus/usb/devices/*`; do echo 'auto' > $i/power/control;done;
+
+# Enable auto suspend for all usb devices
+for i in /sys/bus/usb/devices/*/power/autosuspend; do echo 1 > $i; done
+
+# Reduce power level for WiFi
+for i in /sys/bus/pci/devices/*/power_level ; do echo 5 > $i ; done
+
+echo '10' > /sys/module/snd_hda_intel/parameters/power_save
+echo 'powersave' > /sys/module/pcie_aspm/parameters/policy
