@@ -1,0 +1,9 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/home/klabun/.config/awesome'
+let g:netrw_dirhist_2='/home/klabun/project/local'
+let g:netrw_dirhist_3='/usr/java/jdk1.8.0_77/bin'
+let g:netrw_dirhist_4='/home/klabun/docker/staffdb'
+let g:netrw_dirhist_5='/home/klabun/project/local'
+let g:netrw_dirhist_6='/home/klabun'
+let g:netrw_dirhist_7='/home/klabun/.vimperator'

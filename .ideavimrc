@@ -1,0 +1,85 @@
+#source .vimrc
+set rnu
+set surround
+
+let mapleader=" "
+
+# Navigation
+noremap <CR> i<CR>
+noremap <Leader>; :action JumpToLastChange<CR>
+noremap <Leader>j :action RecentFiles<CR>
+noremap <Leader>k :action FileStructurePopup<CR>
+noremap <Leader>h :action GotoNextError<CR>:action ShowIntentionActions<CR>
+noremap <Leader><CR> :action GotoNextError<CR>:action ShowIntentionActions<CR>
+noremap f :action AceJumpAction<CR>
+noremap <Leader>a :action GoToAction<CR>
+
+# Refresh Config
+noremap <M-F5> :source ~/.ideavimrc<CR>
+
+# Escape
+inoremap jj <Esc>
+noremap <Esc> <Esc>:action HideSideWindows<CR>
+nnoremap <Esc> <Esc>:action HideSideWindows<CR>
+vnoremap <Esc> <Esc>:action HideSideWindows<CR>
+inoremap <Esc> <Esc>:action HideSideWindows<CR>
+
+# Formatting
+#noremap = mggg=G`gzz
+noremap = :action ReformatCode<CR>
+vnoremap < <gv
+vnoremap > >gv
+
+# Selection
+#noremap <Leader>a ggVG
+
+# Search
+noremap / :action Find<CR>
+noremap n :action FindNext<CR>
+noremap N :action FindPrevious<CR>
+noremap ? :action FindWordAtCaret<CR>
+#noremap <Leader>/ :action FindInPath<CR>
+
+# Refactoring
+noremap <Leader>r :action Refactorings.QuickListPopupAction<CR>
+
+# Generate
+noremap <Leader>s :action SurroundWith<CR>
+noremap <Leader>G :action Generate<CR>
+noremap <Leader>gc :action GenerateConstructor<CR>
+noremap <Leader>ga :action GenerateGetterAndSetter<CR>
+noremap <Leader>gg :action GenerateGetter<CR>
+noremap <Leader>gs :action GenerateSetter<CR>
+noremap <Leader>o :action OverrideMethods<CR>
+
+# Show implementations 
+#noremap <Leader>i :action QuickImplementations<CR>
+
+# Show documentation
+#noremap <C-S-k> :action ExternalJavaDoc<CR>
+
+# View bytecode
+#noremap <Leader>b :action ByteCodeViewer<CR>
+
+# Window control
+noremap <C-a>w :action Unsplit<CR>
+noremap <C-a>- :action SplitHorizontally<CR>
+noremap <C-a>| :action SlitVertically<CR>
+noremap <C-a><C-a> :action NextSplitter<CR>
+
+# Space Free Mode
+noremap <M-F12> :action ToggleFullScreen<CR>
+noremap <M-S-F12> :action ToggleDistractionFreeMode<CR>
+
+# Yeld/Past to system buffer
+vnoremap <C-S-y> "*y
+nnoremap <C-S-y> V"*y
+noremap <C-S-p> "*p
+inoremap <C-S-p> <Esc>"*pa
+
+# VCS Controls
+noremap <Leader>vu :action Vcs.UpdateProject<CR>
+noremap <Leader>vv :action Vcs.QuickListPopupAction<CR>
+noremap <Leader>va :action Annotate<CR>:action Annotate<CR>
+noremap <Leader>vd :action Compare.SameVersion<CR>
+noremap <Leader>vb :action Git.Branches<CR>

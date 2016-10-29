@@ -1,0 +1,41 @@
+keycode 94 = F13
+
+!keycode 66 = Shift_L NoSymbol Shift_L
+!keycode 50 = Control_L NoSymbol Control_L
+!keycode 62 = Alt_L NoSymbol Alt_L
+!
+
+keycode 66 = Control_L
+
+keycode 64 = Super_L NoSymbol Super_L
+keycode 133 = Alt_L NoSymbol Alt_L
+
+keycode 134 = Alt_R NoSymbol Alt_R
+keycode 108 = Super_R NoSymbol Super_R
+
+!clear shift
+!clear control
+clear mod1
+clear mod4
+clear lock
+
+add control = Control_L
+
+!add control = Control_L Control_R
+!add shift = Shift_L
+add mod1 = Alt_L Alt_R
+add mod4 = Super_L Super_R
+
+!clear control
+!clear mod4
+
+!keycode 105 =
+!keycode 206 =
+
+!keycode 133 = Control_L NoSymbol Control_L
+!keycode 134 = Control_R NoSymbol Control_R
+!keycode 37 = Super_L NoSymbol Super_L
+
+!add control = Control_L
+!add control = Control_R
+!add mod4 = Super_L
