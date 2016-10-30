@@ -1,0 +1,5 @@
+#EXTM3U
+
+#EXTINF:-1,Radio 7 (поток 1)
+http://srv01.radio7.fmstreams.de/stream1/livestream.mp3
+

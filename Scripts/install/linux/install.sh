@@ -12,7 +12,7 @@ su -c 'dnf install http://download1.rpmfusion.org/free/fedora/rpmfusion-free-rel
 sudo dnf update --refresh -y
 
 # Install favorite software
-sudo dnf install zsh vim docker docker-vim docker-zsh-completion docker-compose cmus awesome git mc htop tmux tmuxinator gcc gcc-c++ cmake make tlp tlp-rdw powertop uuid -y
+sudo dnf install zsh vim docker docker-vim docker-zsh-completion docker-compose cmus awesome git mc htop tmux tmuxinator gcc gcc-c++ cmake make tlp tlp-rdw powertop uuid maven gradle -y
 npm install typings
 npm install typings --global
 
