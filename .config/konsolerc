@@ -1,0 +1,31 @@
+[Desktop Entry]
+DefaultProfile=Terminal Profile.profile
+
+[Favorite Profiles]
+Favorites=
+
+[FileLocation]
+scrollbackUseCacheLocation=true
+scrollbackUseSystemLocation=false
+
+[KFileDialog Settings]
+Recent Files[$e]=konsole.theme,file:$HOME/konsole.theme
+
+[KonsoleWindow]
+ShowWindowTitleOnTitleBar=true
+
+[MainWindow]
+Height 1200=480
+Height 1600=991
+Height 889=889
+State=AAAA/wAAAAD9AAAAAAAACa4AAAYcAAAABAAAAAQAAAAIAAAACPwAAAAA
+ToolBarsMovable=Disabled
+Width 1422=1422
+Width 1920=640
+Width 2560=1694
+Window-Maximized 1200x1920=true
+Window-Maximized 1440x1920=true
+Window-Maximized 1600x2560=true
+
+[TabBar]
+TabBarVisibility=AlwaysHideTabBar

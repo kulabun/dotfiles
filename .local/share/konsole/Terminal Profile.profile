@@ -1,5 +1,6 @@
 [Appearance]
-ColorScheme=DarkPastels
+ColorScheme=One
+LineSpacing=5
 
 [General]
 Name=Terminal Profile
@@ -11,3 +12,7 @@ MouseWheelZoomEnabled=false
 OpenLinksByDirectClickEnabled=true
 TrimTrailingSpacesInSelectedText=true
 UnderlineLinksEnabled=true
+
+[Scrolling]
+HistoryMode=1
+ScrollBarPosition=2

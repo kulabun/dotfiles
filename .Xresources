@@ -56,3 +56,41 @@ Xft.rgba: rgb
 ! ! white
 ! *.color7:       #d3d0c8
 ! *.color15:      #f2f0ec
+!
+
+! special
+*.foreground:   #9ba2b1
+*.background:   #1e2127
+*.cursorColor:  #9ba2b1
+
+! black
+*.color0:       #1e2127
+*.color8:       #252931
+
+! red
+*.color1:       #d65562
+*.color9:       #f66070
+
+! green
+*.color2:       #88b966
+*.color10:      #9cd775
+
+! yellow
+*.color3:       #deb468
+*.color11:      #fece77
+
+! blue
+*.color4:       #519deb
+*.color12:      #58abff
+
+! magenta
+*.color5:       #b85dd5
+*.color13:      #d269f5
+
+! cyan
+*.color6:       #48a8b5
+*.color14:      #52c3d3
+
+! white
+*.color7:       #9ba2b2
+*.color15:      #a2abc1

@@ -57,3 +57,5 @@ sudo systemctl start powertop.service
 # Install yadm
 sudo dnf copr enable thelocehiliosan/yadm
 sudo dnf install yadm -y
+
+sudo systemctl enable docker.service
