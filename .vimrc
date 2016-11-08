@@ -13,6 +13,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-vinegar'
 Plugin 'gosukiwi/vim-atom-dark'
 Plugin 'sheerun/vim-polyglot'
+Plugin 'mileszs/ack.vim'
 
 call vundle#end()
 
@@ -21,7 +22,8 @@ call vundle#end()
 "----------[ CtrlP ]----------"
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard'] "Ignore settings based on .gitignore
 let g:ctrlp_match_window = 'top,order:ttb,min:1,max:30,results:30'
-map <C-R> :CtrlPMRUFiles<CR>
+map <C-E> :CtrlPMRUFiles<CR>
+map <C-R> :CtrlPBufTag<CR>
 
 "----------[ EasyMotion ]----------"
 let g:EasyMotion_smartcase = 1
@@ -89,3 +91,7 @@ command WQ wq
 command Wq wq
 command Q q
 
+
+if executable('ag')
+	let g:ackprg = 'ag --vimgrep'
+endif
