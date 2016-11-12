@@ -13,8 +13,21 @@ sudo dnf update --refresh -y
 
 # Install favorite software
 sudo dnf install zsh vim docker docker-vim docker-zsh-completion docker-compose cmus awesome git mc htop tmux tmuxinator gcc gcc-c++ cmake make tlp tlp-rdw powertop uuid maven gradle -y
-npm install typings
-npm install typings --global
+
+sudo mkdir /opt/node
+wget 'https://nodejs.org/dist/v7.1.0/node-v7.1.0-linux-x64.tar.xz' -O nodejs.tar.xz
+sudo tar xJvf nodejs.tar.xz
+mv node-*/* /opt/node
+
+sudo unlink /usr/bin/npm
+sudo ln -sf /opt/node/bin/npm /usr/bin/npm
+
+sudo unlink /usr/bin/node
+sudo ln -sf /opt/node/bin/node /usr/bin/node
+
+sudo npm install typings
+sudo npm install -g typings
+sudo npm install -g typescript
 
 # Fedy installer
 bash -c 'su -c "curl http://folkswithhats.org/fedy-installer -o fedy-installer && chmod +x fedy-installer && ./fedy-installer"'
