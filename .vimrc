@@ -14,16 +14,37 @@ Plugin 'tpope/vim-vinegar'
 Plugin 'gosukiwi/vim-atom-dark'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'mileszs/ack.vim'
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
+Plugin 'honza/vim-snippets'
+Plugin 'ervandew/supertab'
 
 call vundle#end()
 
 "--------------------[ Plugins Configuration ]--------------------"
 "
 "----------[ CtrlP ]----------"
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard'] "Ignore settings based on .gitignore
 let g:ctrlp_match_window = 'top,order:ttb,min:1,max:30,results:30'
 map <C-E> :CtrlPMRUFiles<CR>
 map <C-R> :CtrlPBufTag<CR>
+
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](doc|tmp|node_modules|.git|.idea)',
+  \ 'file': '\v\.(exe|so|wma|wmv|mkv|mp3|mp4|mpeg|rpm|bz2|gz|deb|ar|cpio|pdf|djvu|jpeg|jpg|png|gif|ico|avi|xz|zip|rar)$',
+  \ }
+
+
+if executable('ag')
+  " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+  set grepprg="ag --nogroup --nocolor --path-to-agignore ~/.agignore"
+  " Use ag in CtrlP for listing files. Lightning fast, respects .gitignore
+  " and .agignore. Ignores hidden files by default.
+  let g:ctrlp_user_command = 'ag -l --nocolor --path-to-agignore ~/.agignore -f %s'
+else
+  "ctrl+p ignore files in .gitignore
+  "let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+endif
 
 "----------[ EasyMotion ]----------"
 let g:EasyMotion_smartcase = 1
@@ -62,7 +83,7 @@ set softtabstop=4
 set tabstop=4
 set encoding=utf-8
 set laststatus=2
-
+set autowriteall
 
 "--------------------[ View Configuration ]--------------------"
 colorscheme atom-dark-256
@@ -86,12 +107,20 @@ noremap <C-S-p> "*p
 inoremap <C-S-p> <Esc>"*pa
 
 "--------------------[ Commands ]--------------------"
-command W w
-command WQ wq
-command Wq wq
-command Q q
-
+function! LoadCommands() 
+	command W w
+	command WQ wq
+	command Wq wq
+	command Q q
+endfunction
 
 if executable('ag')
-	let g:ackprg = 'ag --vimgrep'
+	let g:ackprg = 'ag --vimgrep --path-to-agignore ~/.agignore'
 endif
+
+augroup reload_vimrc
+    autocmd!
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup END
+
+autocmd VimEnter * call LoadCommands()
