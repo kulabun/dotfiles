@@ -25,9 +25,10 @@ sudo ln -sf /opt/node/bin/npm /usr/bin/npm
 sudo unlink /usr/bin/node
 sudo ln -sf /opt/node/bin/node /usr/bin/node
 
-sudo npm install typings
 sudo npm install -g typings
 sudo npm install -g typescript
+sudo npm install -g gulp
+sudo npm install -g angular-cli
 
 # Fedy installer
 bash -c 'su -c "curl http://folkswithhats.org/fedy-installer -o fedy-installer && chmod +x fedy-installer && ./fedy-installer"'
@@ -72,3 +73,15 @@ sudo dnf copr enable thelocehiliosan/yadm
 sudo dnf install yadm -y
 
 sudo systemctl enable docker.service
+
+wget 'https://az764295.vo.msecnd.net/stable/02611b40b24c9df2726ad8b33f5ef5f67ac30b44/code-stable-code_1.7.1-1478180561_amd64.tar.gz' -O vscode.tar.gz
+tar xzvf vscode.tar.gz
+sudo mv VSCode* /opt/vscode/
+
+sudo ln -sf /opt/idea/bin/idea.sh idea
+sudo ln -sf /opt/node/bin/node node
+sudo ln -sf /opt/node/bin/npm npm
+sudo ln -sf /opt/node/bin/ng ng
+sudo ln -sf /opt/node/bin/gulp gulp
+sudo ln -sf /opt/vscode/bin/code code
+
