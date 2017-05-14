@@ -12,10 +12,10 @@ su -c 'dnf install http://download1.rpmfusion.org/free/fedora/rpmfusion-free-rel
 sudo dnf update --refresh -y
 
 # Install favorite software
-sudo dnf install zsh vim docker docker-vim docker-zsh-completion docker-compose cmus awesome git mc htop tmux tmuxinator gcc gcc-c++ cmake make tlp tlp-rdw powertop uuid maven gradle -y
+sudo dnf install yakuake zsh vim docker docker-vim docker-zsh-completion docker-compose cmus awesome git mc htop tmux tmuxinator gcc gcc-c++ cmake make tlp tlp-rdw powertop uuid maven gradle -y
 
 sudo mkdir /opt/node
-wget 'https://nodejs.org/dist/v7.1.0/node-v7.1.0-linux-x64.tar.xz' -O nodejs.tar.xz
+wget 'https://nodejs.org/dist/v7.9.0/node-v7.9.0-linux-x64.tar.xz' -O nodejs.tar.xz
 sudo tar xJvf nodejs.tar.xz
 mv node-*/* /opt/node
 
@@ -29,27 +29,22 @@ sudo npm install -g typings
 sudo npm install -g typescript
 sudo npm install -g gulp
 sudo npm install -g angular-cli
+sudo npm install -g nodemon
 
 # Fedy installer
-bash -c 'su -c "curl http://folkswithhats.org/fedy-installer -o fedy-installer && chmod +x fedy-installer && ./fedy-installer"'
+curl https://www.folkswithhats.org/installer | sudo bash
 
 # Install Java
-wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.rpm" -O jdk8-linux-x64.rpm
+wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm" -O jdk8-linux-x64.rpm
 rpm -i jdk8-linux-x64.rpm
-
-# Install IntelliJ IDEA
-wget "https://download.jetbrains.com/idea/ideaIU-2016.2.4.tar.gz" -O idea.tar.gz
-tar xzvf idea.tar.gz
-rm idea.tar.gz
-sudo mv idea-IU* /opt/idea
 
 # Fix keyboard layout (reverse Fn + swap <> and `~) and rebuild initramfs
 sudo su -c 'echo 2 > /sys/module/hid_apple/parameters/fnmode'
 echo 'options hid_apple fnmode=2' | sudo tee -a /etc/modprobe.d/hid_apple.conf
 echo 'options hid_apple iso_layout=0' | sudo tee -a /etc/modprobe.d/hid_apple.conf
 echo 'options usbcore autosuspend=1' | sudo tee -a /etc/modprobe.d/usbcore.conf
-cp /boot/initramfs-$(uname -r).img /boot/initramfs-$(uname -r).img.bak
-dracut -f
+sudo cp /boot/initramfs-$(uname -r).img /boot/initramfs-$(uname -r).img.bak
+sudo dracut -f
 
 # Override system configuration
 sudo su -c 'cp -Rn etc /etc'
@@ -66,22 +61,26 @@ systemctl start fstrim.service
 sudo systemctl enable powertop.service
 sudo systemctl start powertop.service
 
-
-
 # Install yadm
 sudo dnf copr enable thelocehiliosan/yadm
 sudo dnf install yadm -y
 
 sudo systemctl enable docker.service
 
-wget 'https://az764295.vo.msecnd.net/stable/02611b40b24c9df2726ad8b33f5ef5f67ac30b44/code-stable-code_1.7.1-1478180561_amd64.tar.gz' -O vscode.tar.gz
-tar xzvf vscode.tar.gz
-sudo mv VSCode* /opt/vscode/
+sudo groupadd docker && sudo gpasswd -a ${USER} docker && sudo systemctl restart docker
+newgrp docker
 
-sudo ln -sf /opt/idea/bin/idea.sh idea
-sudo ln -sf /opt/node/bin/node node
-sudo ln -sf /opt/node/bin/npm npm
-sudo ln -sf /opt/node/bin/ng ng
-sudo ln -sf /opt/node/bin/gulp gulp
-sudo ln -sf /opt/vscode/bin/code code
+# Install Spring-CLI for fast prototyping
+wget http://repo.spring.io/release/org/springframework/boot/spring-boot-cli/1.5.3.RELEASE/spring-boot-cli-1.5.3.RELEASE-bin.tar.gz
+tar xzvf spring-boot-cli-1.5.3.RELEASE-bin.tar.gz
+sudo mv spring-1.5.3.RELEASE /opt/spring
 
+# Create links to installed applications 
+DIR=`pwd`
+cd ~/.local/bin
+ln -sf /opt/spring/bin/spring spring
+ln -sf /opt/node/bin/node node
+ln -sf /opt/node/bin/npm npm
+ln -sf /opt/node/bin/ng ng
+ln -sf /opt/node/bin/gulp gulp
+cd $DIR
