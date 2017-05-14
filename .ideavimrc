@@ -34,10 +34,10 @@ vnoremap > >gv
 #noremap <Leader>a ggVG
 
 # Search
-noremap / :action Find<CR>
-noremap n :action FindNext<CR>
-noremap N :action FindPrevious<CR>
-noremap ? :action FindWordAtCaret<CR>
+#noremap / :action Find<CR>
+#noremap n :action FindNext<CR>
+#noremap N :action FindPrevious<CR>
+#noremap ? :action FindWordAtCaret<CR>
 #noremap <Leader>/ :action FindInPath<CR>
 
 # Refactoring
