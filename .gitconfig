@@ -1,0 +1,52 @@
+[user] 
+    name = Konstantin Labun
+    email = konstantin.labun@gmail.com 
+[push] 
+    default = current 
+[core] 
+    editor = vim 
+    filemode = false 
+    whitespace = warn,space-before-tab,trailing-space
+	autocrlf = input
+	pager = diff-so-fancy | less --tabs=4 -RFX
+[diff]
+    tool = vimdiff
+[difftool]
+    prompt = false
+[merge]
+    tool = vimdiff
+[mergetool]
+    prompt = false
+[alias]
+    lg = log --color --graph --pretty=format:'%C(bold green)%h%Creset -%C(yellow)%d%Creset %C(bold)%s%Creset | %C(green)%an%Creset, %C(blue)%ar%Creset'
+    cp = cherry-pick
+    st = status -sb
+[credential]
+    helper = store
+[color]
+	ui = true
+[color "diff"]
+	meta = yellow
+	commit = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "branch"]
+    current = cyan reverse
+    local = yellow
+    remote = green
+[color "status"]
+    added = yellow
+    changed = cyan
+    untracked = red
+[pager]
+    diff = diff-so-fancy | less --tabs=1,5 -RFX
+    show = diff-so-fancy | less --tabs=1,5 -RFX
+[gpg]
+    program = gpg2

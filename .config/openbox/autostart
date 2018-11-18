@@ -1,0 +1,31 @@
+# launch compton
+al-compositor --start &
+
+# restore wallpaper
+nitrogen --restore &
+
+# panel
+tint2 & 
+
+# Openbox autostart
+ob-autostart -d &
+
+# Required for xfce setting to work
+xfsettingsd &
+xfce4-power-manager &
+pnmixer &
+nm-applet &
+
+xdg-user-dirs-gtk-update &
+
+#skypeforlinux &
+#vivaldi-stable &a
+google-chrome-stable &
+#google-chrome-stable --app="https://music.amazon.com" --user-app-dir="$HOME/.config/amazon-music" &
+google-chrome-stable --app="https://music.amazon.com" &
+google-chrome-stable --app="https://gmail.com" &
+google-chrome-stable --app="https://calendar.google.com" &
+
+#termite -e tmux --class Terminal &
+alacritty -e tmux new -s "System" &
+#termite -e cmus --class Media &
