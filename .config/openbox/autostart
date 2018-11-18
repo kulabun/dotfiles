@@ -5,16 +5,13 @@ al-compositor --start &
 nitrogen --restore &
 
 # panel
-tint2 & 
+polybar --config="/data/dotfiles/config/polybar/config" openbox-bar &
 
 # Openbox autostart
 ob-autostart -d &
 
 # Required for xfce setting to work
 xfsettingsd &
-xfce4-power-manager &
-pnmixer &
-nm-applet &
 
 xdg-user-dirs-gtk-update &
 

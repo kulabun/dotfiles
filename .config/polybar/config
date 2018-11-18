@@ -1,0 +1,22 @@
+;====================================================
+;     File Includes
+;=====================================================
+
+[section/base]
+include-file = /data/dotfiles/config/polybar/modules.conf
+include-file = /data/dotfiles/config/polybar/master.conf
+
+;=====================================================
+;     Openbox Bars
+;=====================================================
+
+[bar/openbox-bar]
+inherit = bar/master
+
+; Use $ xrandr -q | grep " connected" | cut -d ' ' -f1
+monitor = eDP1
+
+modules-left = workspaces
+modules-center = clock 
+modules-right = pkg memory temperature coreuse volume network vpn battery 
+
