@@ -1,7 +1,0 @@
-set toolbars=notabs,nonavigation,nobookmarks,noaddons,nomenu
-set defsearch=google
-colorscheme indigo
-
-source! /home/klabun/.vimperatorrc.local
-
-" vim: set ft=vimperator:
