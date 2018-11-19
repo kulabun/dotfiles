@@ -15,4 +15,4 @@ wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCode
 
 fc-cache -fv
 
-
+source bootstrap.local

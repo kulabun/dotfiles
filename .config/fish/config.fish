@@ -102,4 +102,4 @@ abbr sshx "ssh -c arcfour,blowfish-cbc -XC"
 abbr func "$EDITOR ~/.config/my-functions/"
 abbr f "ranger"
 
-source $HOME/.config/fish/config.fish.local
+source $HOME/.config/fish/config.local.fish
