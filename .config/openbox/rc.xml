@@ -249,18 +249,6 @@
     <keybind key="W-C-Left">
       <action name="DesktopLeft"/>
     </keybind>
-    <keybind key="W-C-Up">
-      <action name="GoToDesktop">
-        <to>up</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="W-C-Down">
-      <action name="GoToDesktop">
-        <to>down</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
     <keybind key="A-Tab">
       <action name="NextWindow"/>
     </keybind>
@@ -272,12 +260,6 @@
     </keybind>
     <keybind key="W-C-S-Right">
       <action name="SendToDesktopRight"/>
-    </keybind>
-    <keybind key="W-C-S-Up">
-      <action name="SendToDesktopUp"/>
-    </keybind>
-    <keybind key="W-C-S-Down">
-      <action name="SendToDesktopDown"/>
     </keybind>
     <keybind key="A-space">
       <action name="ShowMenu">
@@ -331,7 +313,7 @@
     </keybind>
     <keybind key="Print">
       <action name="Execute">
-        <command>scrot 'ArchLabs_%Y-%m-%d-%S_$wx$h.png' -e 'mv $f $$(xdg-user-dir PICTURES) ; gpicview $$(xdg-user-dir PICTURES)/$f'</command>
+        <command>scrot 'Desktop_%Y-%m-%d-%S_$wx$h.png' -e 'mv $f $$(xdg-user-dir PICTURES) ; gpicview $$(xdg-user-dir PICTURES)/$f'</command>
       </action>
     </keybind>
     <keybind key="W-F12">
@@ -342,14 +324,9 @@
     <keybind key="W-b">
       <action name="ToggleDecorations"/>
     </keybind>
-    <keybind key="W-f">
-      <action name="Execute">
-        <command>thunar</command>
-      </action>
-    </keybind>
     <keybind key="W-C-Return">
       <action name="Execute">
-        <command>terminator -m</command>
+        <command>alacritty</command>
       </action>
     </keybind>
     <keybind key="W-l">
@@ -357,14 +334,9 @@
         <command>slimlock</command>
       </action>
     </keybind>
-    <keybind key="W-e">
-      <action name="Execute">
-        <command>geany</command>
-      </action>
-    </keybind>
     <keybind key="W-h">
       <action name="Execute">
-        <command>urxvt -T 'htop task manager' -e htop</command>
+        <command>termite -e htop</command>
       </action>
     </keybind>
     <keybind key="W-v">
@@ -377,14 +349,9 @@
         <command>oblogout</command>
       </action>
     </keybind>
-    <keybind key="W-Tab">
-      <action name="ShowMenu">
-        <menu>client-list-combined-menu</menu>
-      </action>
-    </keybind>
     <keybind key="W-Return">
       <action name="Execute">
-        <command>rofi -modi run,drun,window -show drun -show-icons -me-select-entry '' -sidebar-mode</command>
+        <command>rofi -modi drun -show drun -show-icons -me-select-entry '' -sidebar-mode</command>
       </action>
     </keybind>
     <keybind key="W-Up">
@@ -424,11 +391,6 @@
     </keybind>
     <keybind key="W-q">
       <action name="Close"/>
-    </keybind>
-    <keybind key="W-C-q">
-      <action name="Execute">
-        <command>xkill</command>
-      </action>
     </keybind>
   </keyboard>
   <mouse>

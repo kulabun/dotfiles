@@ -23,11 +23,11 @@ set SPACEFISH_AWS_SYMBOL " "
 set SPACEFISH_AWS_COLOR "white"
 set SPACEFISH_PROMPT_ADD_NEWLINE false
 set SPACEFISH_JOBS_AMOUNT_THRESHOLD 0
-set SPACEFISH_VI_MODE_INSERT "❯"
-set SPACEFISH_VI_MODE_NORMAL "❮"
-set SPACEFISH_VI_MODE_VISUAL "V"
-set SPACEFISH_VI_MODE_REPLACE_ONE "^" 
-set SPACEFISH_VI_MODE_COLOR "0BB087"
+#set SPACEFISH_VI_MODE_INSERT "❯"
+#set SPACEFISH_VI_MODE_NORMAL "❮"
+#set SPACEFISH_VI_MODE_VISUAL "V"
+#set SPACEFISH_VI_MODE_REPLACE_ONE "^" 
+#set SPACEFISH_VI_MODE_COLOR "0BB087"
 set SPACEFISH_PROMPT_ORDER user host dir vi_mode
 set SPACEFISH_RPROMPT_ORDER git jobs aws exec_time exit_code
 set -x AWS_PROFILE default # Override in session to use another profile
@@ -36,7 +36,7 @@ set -x AWS_PROFILE default # Override in session to use another profile
 
 
 #################### PERSONAL CONFIG ####################
-fish_vi_key_bindings
+fish_default_key_bindings
 set -g PAGER "less"
 
 
@@ -102,3 +102,4 @@ abbr sshx "ssh -c arcfour,blowfish-cbc -XC"
 abbr func "$EDITOR ~/.config/my-functions/"
 abbr f "ranger"
 
+source $HOME/.config/fish/config.fish.local
