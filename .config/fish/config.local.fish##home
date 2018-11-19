@@ -1,0 +1,2 @@
+# Fix for diff-so-fancy.. after one of system updated DiffHighlight module was moved.. 
+set -g PERL5LIB /usr/share/git/diff-highlight/ 
