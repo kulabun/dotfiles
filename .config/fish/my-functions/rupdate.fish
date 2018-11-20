@@ -1,3 +1,3 @@
 function rupdate
-	"rsync -avu --progress -h"
+	rsync -avu --progress -h
 end

@@ -1,3 +1,3 @@
 function vdiff
-	'idea diff'
+	idea diff $vargs
 end

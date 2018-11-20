@@ -1,3 +1,3 @@
 function rsynchronize
-	"rsync -avu --delete --progress -h"
+	rsync -avu --delete --progress -h
 end
