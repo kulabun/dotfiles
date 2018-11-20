@@ -1,0 +1,1 @@
+/home/ANT.AMAZON.COM/labunk/.config/fish/config.local.fish##work

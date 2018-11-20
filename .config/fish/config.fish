@@ -37,6 +37,7 @@ set -x AWS_PROFILE default # Override in session to use another profile
 
 #################### PERSONAL CONFIG ####################
 fish_default_key_bindings
+set -g fish_prompt_pwd_dir_length 1 # Shrink path
 set -g PAGER "less"
 
 
@@ -79,8 +80,8 @@ abbr halt  "sudo shutdown -h now"
 abbr reboot "sudo reboot"
 abbr awsconf "$EDITOR ~/.aws/config"
 abbr awscred "$EDITOR ~/.aws/credentials"
-abbr fishconf "$EDITOR ~/.config/fish/config.fish"
-abbr gitconf "$EDITOR ~/.gitconfig"
+abbr fishconf "$EDITOR ~/.config/fish/config.local.fish"
+abbr gitconf "$EDITOR ~/.gitconfig.local"
 abbr sshconf "$EDITOR ~/.ssh/config"
 abbr hosts "sudo $EDITOR /etc/hosts"
 abbr mem "free -m -l -t"
