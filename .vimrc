@@ -149,3 +149,7 @@ if &term =~ '256color'
     " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
     set t_ut=
 endif
+
+" Mappings
+imap jj <Esc>
+
