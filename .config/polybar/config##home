@@ -3,8 +3,8 @@
 ;=====================================================
 
 [section/base]
-include-file = /data/dotfiles/config/polybar/modules.conf
-include-file = /data/dotfiles/config/polybar/master.conf
+include-file = /home/klabun/.config/polybar/modules.conf
+include-file = /home/klabun/.config/polybar/master.conf
 
 ;=====================================================
 ;     Openbox Bars

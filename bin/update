@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 echo "Updating dotfiles"
-yadm pull
-yadm decrypt
+yadm pull origin master
+#yadm decrypt
 
 echo "Updating fishshell plugins"
 fisher
@@ -12,8 +12,7 @@ vim +BundleInstall +BundleUpdate +qall
 echo "Updating VSCode extensions"
 cat ~/.vscode/extensions.list | xargs -L 1 code --install-extension
 
-echo "System update"
-yay -Syu --noconfirm
-
 echo "Update global NPM packages"
 sudo npm update --unsafe-perm -g
+
+source $HOME/bin/update.local

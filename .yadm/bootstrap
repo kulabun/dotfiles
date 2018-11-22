@@ -19,7 +19,17 @@ wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCode
 wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCodePro/Bold/complete/Sauce%20Code%20Pro%20Bold%20Nerd%20Font%20Complete.ttf -O SourceCodePro-Bold.ttf
 wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCodePro/Medium/complete/Sauce%20Code%20Pro%20Medium%20Nerd%20Font%20Complete.ttf -O SourceCodePro-Medium.ttf
 wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete.ttf -O SourceCodePro-Regular.ttf
+wget https://github.com/google/material-design-icons/raw/master/iconfont/MaterialIcons-Regular.ttf
+wget https://github.com/Keyamoon/IcoMoon-Free/raw/master/Font/IcoMoon-Free.ttf
+
+mkdir ../otf
+cd ../otf
+wget https://github.com/FortAwesome/Font-Awesome/raw/master/use-on-desktop/Font%20Awesome%205%20Brands-Regular-400.otf
 
 fc-cache -fv
+
+# Install NetworkManager-Dmenu
+wget https://raw.githubusercontent.com/firecat53/networkmanager-dmenu/master/networkmanager_dmenu -O ~/bin/networkmanager-dmenu
+chmod +x ~/bin/networkmanager-dmenu
 
 source $HOME/.yadm/bootstrap.local

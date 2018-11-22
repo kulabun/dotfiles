@@ -3,8 +3,8 @@
 count=0
 disconnected="/"
 disconnected2="\\"
-wireless_connected=""
-ethernet_connected=""
+wireless_connected=""
+ethernet_connected=""
 
 while true; do
     if ping -c1 www.github.com &>/dev/null; then

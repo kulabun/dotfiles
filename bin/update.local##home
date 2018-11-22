@@ -1,0 +1,3 @@
+echo "System update"
+yay -Syu --noconfirm
+

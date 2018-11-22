@@ -7,6 +7,9 @@ while true; do
         VPN_STATUS="聯"
     fi;
 
+    if $(pgrep -x vpnagentd > /dev/null); then
+        VPN_STATUS="聯"
+    fi;
     
     IPINFO=$(curl "https://ip.seeip.org/geoip" 2>/dev/null)
     LOC=$(echo $IPINFO | jq ".loc" | tr -d '"')
