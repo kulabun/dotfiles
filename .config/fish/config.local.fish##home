@@ -1,1 +1,1 @@
-set -g PATH $PATH ~/go/bin
+set -x PATH $PATH ~/go/bin

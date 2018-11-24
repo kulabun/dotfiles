@@ -1,0 +1,10 @@
+;=====================================================
+;     Openbox Bars
+;=====================================================
+
+[bar/openbox-bar]
+inherit = bar/master
+
+modules-left = workspaces
+modules-center = clock 
+modules-right = pkg memory temperature coreuse volume network vpn battery 

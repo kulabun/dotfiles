@@ -5,7 +5,7 @@ al-compositor --start &
 nitrogen --restore &
 
 # panel
-polybar --config="/data/dotfiles/config/polybar/config" openbox-bar &
+polybar --config="$HOME/.config/polybar/config" openbox-bar &
 
 # Openbox autostart
 ob-autostart -d &
@@ -23,6 +23,6 @@ google-chrome-stable --app="https://music.amazon.com" &
 google-chrome-stable --app="https://gmail.com" &
 google-chrome-stable --app="https://calendar.google.com" &
 
-#termite -e tmux --class Terminal &
-alacritty -e tmux new -s "System" &
+termite -e tmux &
+#alacritty -e tmux new -s "System" &
 #termite -e cmus --class Media &
