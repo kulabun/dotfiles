@@ -16,10 +16,9 @@
     tool = vimdiff
 [mergetool]
     prompt = false
-[alias]
-    lg = log --color --graph --pretty=format:'%C(bold green)%h%Creset -%C(yellow)%d%Creset %C(bold)%s%Creset | %C(green)%an%Creset, %C(blue)%ar%Creset'
-    cp = cherry-pick
-    st = status -sb
+[commit]
+    template = ~/.gitmessage
+    gpgsign = true
 [credential]
     helper = store
 [color]
@@ -49,3 +48,102 @@
     show = diff-so-fancy | less --tabs=1,5 -RFX
 [gpg]
     program = gpg2
+[alias]
+    a = add
+    e = config --global -e
+    s = status -sb
+    c = commit -a
+    cr = !git add -u && git dc && read && git commit
+    l = log --color --graph --pretty=format:'%C(bold green)%h%Creset [%G?]-%C(yellow)%d%Creset %C(bold)%s%Creset | %C(green)%an%Creset, %C(blue)%ar%Creset'
+    # Show files changed in each commit
+    ll = log --color --graph --pretty=format:'%C(bold green)%h%Creset [%G?]-%C(yellow)%d%Creset %C(bold)%s%Creset | %C(green)%an%Creset, %C(blue)%ar%Creset' --numstat
+    # Local branches
+    b = branch
+    # Remote branches
+    br = branch -r
+    cp = cherry-pick
+    o = checkout
+    # Checkout and create new if not exits
+    ob = checkout -b
+    d = diff
+    # Review added files
+    dc = diff --cached
+    f = fetch
+    r = remote
+    w = whatchanged
+    # Find commits by message
+    fn = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; };f"
+    # Undo last commit
+    undo = reset HEAD^ --soft
+    u = undo
+
+    snapshot = !git stash push "snapshot: $(date)" && git stash apply "stash@{0}"
+    save = stash push
+    pop = stash pop
+    apply = stash apply
+    list = stash list
+
+    # Append changes to last commit
+    append = commit -a --amend --no-edit
+    amend = commit -a --amend
+    # Get the current branch name (not so useful in itself, but used in other aliases)
+    branch-name = !git rev-parse --abbrev-ref HEAD
+    # Remove files from stage 
+    unstage = reset HEAD --
+    # Reset files
+    discard = checkout --
+    # Fire up your difftool with all the changes that
+    # are on the current branch.
+    review = difftool origin/master...
+
+    # Grep over current state
+    g = grep --break --heading --line-number
+    # Greap over all files ever commited
+    gh = "!f() { git rev-list --all | xargs git grep \"$1\"; };f"
+
+    # Push the current branch to the remote "origin", and set it to track
+    # the upstream branch
+    publish = !git push -u origin $(git branch-name)
+    # Delete the remote version of the current branch
+    unpublish = !git push origin :$(git branch-name)
+    # Delete a branch and recreate it from master — useful if you have, say,
+    # a development branch and a master branch and they could conceivably go
+    # out of sync
+    recreate = "!f() { [[ -n $@ ]] && git checkout \"$@\" && git unpublish && git checkout master && git branch -D \"$@\" && git checkout -b \"$@\" && git publish; }; f"
+
+
+    # Update from origin
+    # The extra '&& :' is needed: https://stackoverflow.com/a/25915221
+    sync = !git fetch --all --prune && git submodule update --init --recursive && git rebase -p --autostash $1 && :
+    p = !git sync
+    # Update from upstream
+    sync-upstream = !git fetch --all --prune && git rebase -p --autostash upstream/`git rev-parse --abbrev-ref HEAD` && :
+
+    # Shows upstream
+    upstream = rev-parse --abbrev-ref --symbolic-full-name @{upstream}
+    set-upstream = remote add upstream
+    rm-upstream = remote rm upstream
+    set-github-upstream = "!f() { git remote add upstream \"git@github.com:$1.git\"; };f"
+    # Shows origin
+    origin = rev-parse --abbrev-ref --symbolic-full-name @{origin}
+    set-origin = remote add origin
+    rm-origin = remote rm origin
+    set-github-origin = "!f() { git remote add origin \"git@github.com:$1.git\"; };f"
+
+    # Mark a file as "assume unchanged", which means that Git will treat it
+    # as though there are no changes to it even if there are. Useful for
+    # temporary changes to tracked files
+    assume = update-index --assume-unchanged
+    # Reverse the above
+    unassume = update-index --no-assume-unchanged
+    # Show the files that are currently assume-unchanged
+    assumed = "!git ls-files -v | grep ^h | cut -c 3-"
+
+    # Checkout our version of a file and add it
+    ours = "!f() { git checkout --ours $@ && git add $@; }; f"
+    # Checkout their version of a file and add it
+    theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
+
+    # Delete any branches that have been merged into master
+    # See also: https://gist.github.com/robmiller/5133264
+    delete-merged-branches = "!f() { git checkout ${1-master} && git branch --merged ${1-master} | grep -v \"${1-master}$\" | xargs git branch -d; };f"

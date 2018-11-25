@@ -1,3 +1,3 @@
 function vdiff
-	idea diff $vargs
+    code --diff $vargs
 end

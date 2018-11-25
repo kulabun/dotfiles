@@ -1,10 +1,6 @@
-;=====================================================
-;     Openbox Bars
-;=====================================================
-
-[bar/openbox-bar]
+[bar/mybar]
 inherit = bar/master
 
-modules-left = workspaces
-modules-center = clock 
-modules-right = pkg memory temperature coreuse volume network vpn battery 
+modules-left = i3workspaces
+modules-center = clock
+modules-right  = filesystem memory temperature coreuse volume vpn wireless-network wired-network battery

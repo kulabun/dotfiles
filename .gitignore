@@ -1,5 +1,6 @@
 tags
 .idea
 .git
+.uuid
 *.iml
 *##work

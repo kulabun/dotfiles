@@ -1,0 +1,80 @@
+#!/usr/bin/env fish
+
+
+
+#################### RECONFIGURE ####################
+set -l localroot "$HOME"/local
+mkdir -p "$localroot"/bin
+ln -sf "$localroot"/bin "$HOME"/bin
+
+
+
+#################### DOTFILES ####################
+echo "Getting latest dotfiles"
+yadm pull origin master
+#yadm decrypt
+
+
+
+#################### FISHER ####################
+echo "Getting latest Fisher"
+curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
+fisher
+
+
+
+#################### DIFF-SO-FANCY ####################
+echo "Getting latest diff-so-fancy"
+rm -f "$localroot"/bin/diff-so-fancy
+wget https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -O "$localroot"/bin/diff-so-fancy
+chmod +x "$localroot"/bin/diff-so-fancy
+
+
+
+#################### NETWORKMANAGER-DMENU ####################
+echo "Getting latest NetworkManager-Dmenu"
+wget https://raw.githubusercontent.com/firecat53/networkmanager-dmenu/master/networkmanager_dmenu -O "$localroot"/bin/networkmanager-dmenu
+chmod +x "$localroot"/bin/networkmanager-dmenu
+
+
+
+#################### VIM ####################
+echo "Getting latest VIM Plugins"
+vim +BundleInstall +BundleUpdate +qall
+
+
+
+#################### VISUAL STUDIO CODE ####################
+echo "Getting latest VSCode extensions"
+cat ~/.vscode/extensions.list | xargs -L 1 code --force --install-extension 
+
+
+
+#################### NODE PACKAGE MANAGER ####################
+echo "Getting latest NPM packages"
+sudo npm update --unsafe-perm -g
+
+
+
+#################### GITHUB'S HUB  ####################
+echo "Building latest GitHub git-wrapper(hub)"
+set -l go_path "$HOME"/go
+set -l go_github_path "$go_path"/src/github.com/github 
+set -l hub_path "$go_github_path"/hub
+if not test -e $hub_path
+    mkdir -p "$go_github_path" 
+    git clone \
+      --config transfer.fsckobjects=false \
+      --config receive.fsckobjects=false \
+      --config fetch.fsckobjects=false \
+      https://github.com/github/hub.git "$hub_path"
+else
+    cd "$hub_path"
+    git pull
+    make install prefix="$localroot"
+end
+
+
+
+#################### LOCAL CONFIG  ####################
+source $HOME/bin/update.local

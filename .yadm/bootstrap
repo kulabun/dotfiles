@@ -1,35 +1,4 @@
 #!/bin/bash
 
-# Install Fisher
-curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
-
-wget https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -O $HOME/bin/diff-so-fancy
-chmod +x $HOME/bin/diff-so-fancy
-
-# Install patched versions of Hack and SourceCodePro fonts
-mkdir -p ~/.local/share/fonts/ttf
-cd ~/.local/share/fonts/ttf
-wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Bold/complete/Hack%20Bold%20Nerd%20Font%20Complete%20Mono.ttf -O Hack-Bold-Mono.ttf
-wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Bold/complete/Hack%20Bold%20Nerd%20Font%20Complete.ttf -O Hack-Bold.ttf
-wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Italic/complete/Hack%20Italic%20Nerd%20Font%20Complete.ttf -O Hack-Italic.ttf
-wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Italic/complete/Hack%20Italic%20Nerd%20Font%20Complete%20Mono.ttf -O Hack-Italic-Mono.ttf
-wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete.ttf -O Hack-Regular.ttf
-wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Regular/complete/Hack%20Regular%20Nerd%20Font%20Complete%20Mono.ttf -O Hack-Regular-Mono.ttf
-wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCodePro/Black/complete/Sauce%20Code%20Pro%20Black%20Nerd%20Font%20Complete.ttf -O SourceCodePro-Black.ttf
-wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCodePro/Bold/complete/Sauce%20Code%20Pro%20Bold%20Nerd%20Font%20Complete.ttf -O SourceCodePro-Bold.ttf
-wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCodePro/Medium/complete/Sauce%20Code%20Pro%20Medium%20Nerd%20Font%20Complete.ttf -O SourceCodePro-Medium.ttf
-wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete.ttf -O SourceCodePro-Regular.ttf
-wget https://github.com/google/material-design-icons/raw/master/iconfont/MaterialIcons-Regular.ttf
-wget https://github.com/Keyamoon/IcoMoon-Free/raw/master/Font/IcoMoon-Free.ttf
-
-mkdir ../otf
-cd ../otf
-wget https://github.com/FortAwesome/Font-Awesome/raw/master/use-on-desktop/Font%20Awesome%205%20Brands-Regular-400.otf
-
-fc-cache -fv
-
-# Install NetworkManager-Dmenu
-wget https://raw.githubusercontent.com/firecat53/networkmanager-dmenu/master/networkmanager_dmenu -O ~/bin/networkmanager-dmenu
-chmod +x ~/bin/networkmanager-dmenu
 
 source $HOME/.yadm/bootstrap.local

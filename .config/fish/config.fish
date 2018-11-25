@@ -43,6 +43,7 @@ set -x PAGER "less"
 
 
 #################### ABBRIVIATIONS  ####################
+abbr g "git"
 abbr c "cat"
 abbr T "tail -f"
 abbr t "tail -n"
@@ -59,7 +60,7 @@ abbr fn "find . -iname"
 abbr f.n "find . -maxdepth 1 -iname"
 abbr fdn "find . -type d -name"
 abbr ffn "find . -type f -name"
-abbr y "yay"
+abbr y "yadm"
 abbr q "exit"
 abbr jc "sudo journalctl -f"
 abbr myip "curl ipinfo.io/ip"
