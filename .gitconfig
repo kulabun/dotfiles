@@ -50,6 +50,7 @@
     program = gpg2
 [alias]
     a = add
+    au = add -u
     e = config --global -e
     s = status -sb
     c = commit -a
