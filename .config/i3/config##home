@@ -15,7 +15,8 @@ client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+# bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec termite -e fish
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -23,6 +24,7 @@ bindsym $mod+Shift+q kill
 # start dmenu(rofi) (a program launcher)
 bindsym $mod+Control+Return exec rofi -modi drun -show drun -show-icons -me-select-entry '' -sidebar-mode
 bindsym $mod+d exec rofi -modi drun -show drun -show-icons -me-select-entry '' -sidebar-mode
+bindsym $mod+n exec networkmanager-dmenu
 
 # change focus
 bindsym $mod+j focus left
@@ -185,7 +187,7 @@ exec google-chrome-stable
 exec chrome-stable --app="https://music.amazon.com"
 exec google-chrome-stable --app="https://gmail.com"
 #exec google-chrome-stable --app="https://calendar.google.com"
-exec termite --class "system-term"
+exec termite -e fish --class "system-term"
 #exec --no-startup-id 
 
 # Applications
