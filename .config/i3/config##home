@@ -208,6 +208,7 @@ assign [class="(?i)(?:chrome)"] → $ws1
 # focus, floating, & sticky
 for_window [title="(?i)(?:copying|deleting|moving)"] floating enable
 for_window [window_role="(?i)(?:pop-up|setup)"] floating enable
+for_window [class="(?i)(?:peek)"] floating enable
 
 # set trayer to be borderless
 for_window [class="(?i)trayer"] border pixel 0

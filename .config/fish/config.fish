@@ -41,6 +41,8 @@ set fish_prompt_pwd_dir_length 1 # Shrink path
 set -x PATH /home/klabun/bin /usr/local/bin /usr/bin /bin /usr/local/sbin /usr/lib/jvm/default/bin /usr/bin/site_perl /usr/bin/vendor_perl /usr/bin/core_perl /sbin /usr/sbin
 set -x PAGER "less"
 
+set -g FISH_CUSTOM_FUNCTIONS_PATH "$HOME/.config/fish/my-functions"
+
 
 #################### ABBRIVIATIONS  ####################
 abbr g "git"
@@ -82,14 +84,13 @@ abbr halt  "sudo shutdown -h now"
 abbr reboot "systemctl reboot"
 abbr awsconf "$EDITOR ~/.aws/config"
 abbr awscred "$EDITOR ~/.aws/credentials"
-abbr fishconf "$EDITOR ~/.config/fish/config.fish"
-abbr gitconf "$EDITOR ~/.gitconfig"
-abbr sshconf "$EDITOR ~/.ssh/config"
-abbr hosts "sudo $EDITOR /etc/hosts"
+abbr esh "$EDITOR ~/.config/fish/config.fish; and source ~/.config/fish/config.fish"
+abbr egit "$EDITOR ~/.gitconfig"
+abbr essh "$EDITOR ~/.ssh/config"
+abbr ehosts "sudo $EDITOR /etc/hosts"
 abbr mem "free -m -l -t"
 abbr npmi "sudo npm install --unsafe-perm -g"
 abbr npmu "sudo npm update --unsafe-perm -g"
-abbr pass "gopass --clip"
 abbr ports "netstat -ptulan"
 abbr paths "echo $PATH | tr ' ' '\n'"
 abbr pscpu "ps auxf | sort -nr -k 3 | less -S"
