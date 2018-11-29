@@ -12,10 +12,15 @@
     tool = vscode
 [merge]
     tool = vscode
+[difftool]
+    prompt = false
 [difftool "vscode"]
     cmd = "code --wait --diff $LOCAL $REMOTE"
+[mergetool]
+    prompt = false
 [mergetool "vscode"]
     cmd = "code --wait $MERGED"
+    prompt = false
 [commit]
     template = ~/.gitmessage
     gpgsign = true
@@ -73,7 +78,7 @@
     r = remote
     w = whatchanged
     # Find commit by message and save hash clipboard
-    fc = "!f() { git log --oneline | fzf -q \"$1\" | xclip -selection clipboard ; };f"
+    fc = "!f() { git log --oneline | fzf -q \"$1\" | cut -d\" \" -f1 | xclip -selection clipboard ; };f"
     # Undo last commit
     undo = reset HEAD^ --soft
     u = undo

@@ -76,6 +76,7 @@ set wildmenu " Hitting TAB in command mode will show possible completions above 
 set wildmode=list:longest " Complete only until point of ambiguity
 set winminheight=0 " Allow splits to be reduced to a single line
 set wrapscan " Searches wrap around end of file
+set paste
 " thanks to paulirish/dotfiles
 
 " Plugin.
