@@ -3,6 +3,10 @@
 
 
 #################### RECONFIGURE ####################
+yadm gitconfig user.name "Konstantin Labun"
+yadm gitconfig user.email konstantin.labun@gmail.com
+yadm gitconfig commit.gpgsign false
+
 set -l localroot "$HOME"/local
 mkdir -p "$localroot"/bin
 ln -sf "$localroot"/bin "$HOME"/bin

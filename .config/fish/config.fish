@@ -38,7 +38,7 @@ set -x AWS_PROFILE default # Override in session to use another profile
 #################### PERSONAL CONFIG ####################
 fish_default_key_bindings
 set fish_prompt_pwd_dir_length 1 # Shrink path
-set -x PATH /home/klabun/bin /usr/local/bin /usr/bin /bin /usr/local/sbin /usr/lib/jvm/default/bin /usr/bin/site_perl /usr/bin/vendor_perl /usr/bin/core_perl /sbin /usr/sbin
+set -x PATH "$HOME"/bin /usr/local/bin /usr/bin /bin /usr/local/sbin /usr/lib/jvm/default/bin /usr/bin/site_perl /usr/bin/vendor_perl /usr/bin/core_perl /sbin /usr/sbin
 set -x PAGER "less"
 
 set -g FISH_CUSTOM_FUNCTIONS_PATH "$HOME/.config/fish/my-functions"
