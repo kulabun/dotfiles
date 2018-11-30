@@ -1,4 +1,4 @@
 # Install
 ```bash
-curl http://setup.labun.me/dotfiles | sh
+curl -L http://dotfiles.labun.me | sh
 ```
