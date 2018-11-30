@@ -45,8 +45,10 @@ fi
 
 
 # Configure yadm and run initial configuration
-if [ "$(yadm remote get-url origin)" != "git@github.com:kulabun/dotfiles.git" ]; then
-    yadm remote add origin git@github.com:kulabun/dotfiles.git
+if [ "$(yadm remote get-url origin)" != "git@github.com:kulabun/dotfiles.git" ] &&\
+   [ "$(yadm remote get-url origin)" != "https://github.com/kulabun/dotfiles.git" ]; then
+    yadm clone https://github.com/kulabun/dotfiles.git
+    #yadm remote add origin git@github.com:kulabun/dotfiles.git
     yadm pull origin master
 fi
 
@@ -89,7 +91,7 @@ go get github.com/kulabun/gojson/gojson
 if command -v pacman; then
     if ! command -v fish; then 
         sudo pacman -S --noconfirm fish
-    end
+    fi
 else  
     # Install dependencies.. Only apt-based distr supported here
     if command -v apt; then
@@ -98,7 +100,7 @@ else
 
     echo "Building latest fist"
     fishshell_git_root="$HOME"/.fish-shell
-    if ! test -d "$fishshell_git_root"
+    if ! test -d "$fishshell_git_root"; then
         git clone https://github.com/fish-shell/fish-shell
     fi
     cd "$fishshell_git_root"
@@ -157,7 +159,7 @@ echo "Building latest GitHub git-wrapper(hub)"
 go_path="$HOME"/go
 go_github_path="$go_path"/src/github.com/github 
 hub_path="$go_github_path"/hub
-if ! test -e $hub_path
+if ! test -e $hub_path; then
     mkdir -p "$go_github_path" 
     git clone \
       --config transfer.fsckobjects=false \
@@ -168,7 +170,7 @@ else
     cd "$hub_path"
     git pull
     make install prefix="$localroot"
-end
+fi
 
 
 
