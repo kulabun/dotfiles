@@ -3,7 +3,7 @@
 
 
 #################### GIT ####################
-if ! command -v git; then
+if ! command -v git > /dev/null; then
     if command -v pacman; then
 	sudo pacman -Syu --noconfirm
         sudo pacman -S --noconfirm git
@@ -17,7 +17,7 @@ fi
 
 
 #################### YAY ####################
-if command -v pacman && ! command yay; then 
+if command -v pacman > /dev/null && ! command -v yay > /dev/null; then 
     sudo pacman -S base-devel --noconfirm
     git clone https://aur.archlinux.org/yay.git /tmp/yay
     cd /tmp/yay
@@ -28,7 +28,7 @@ fi
 
 #################### SYSTEM UPDATE ####################
 echo "Getting latest system updates"
-if command -v yay; then
+if command -v yay > /dev/null; then
     yay -Syu --noconfirm
 elif command -v apt; then
     apt update && apt-upgrade
@@ -75,8 +75,8 @@ yadm decrypt
 
 
 #################### GO ####################
-if ! command -v go; then 
-    if command -v pacman; then
+if ! command -v go > /dev/null; then 
+    if command -v pacman > /dev/null; then
         sudo pacman -S --noconfirm go
     else 
         wget https://dl.google.com/go/go"$goversion".linux-amd64.tar.gz
@@ -88,13 +88,13 @@ go get github.com/kulabun/gojson/gojson
 
 
 #################### FISH SHELL ####################
-if command -v pacman; then
-    if ! command -v fish; then 
+if command -v pacman > /dev/null; then
+    if ! command -v fish > /dev/null; then 
         sudo pacman -S --noconfirm fish
     fi
 else  
     # Install dependencies.. Only apt-based distr supported here
-    if command -v apt; then
+    if command -v apt > /dev/null; then
         sudo apt-get install -y build-essential ncurses-dev
     fi
 
@@ -117,13 +117,20 @@ fi
 #################### FISHER ####################
 echo "Getting latest Fisher"
 curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
-fish fisher
+fish -c "fisher"
 
 
 
 #################### DIFF-SO-FANCY ####################
 echo "Getting latest diff-so-fancy"
 rm -f "$localroot"/bin/diff-so-fancy
+if ! command -v wget > /dev/null; then
+    if command -v pacman > /dev/null; then
+        sudo pacman -S wget
+    elif command -v apt > /dev/null; then
+        sudo apt install wget
+    fi
+fi
 wget https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -O "$localroot"/bin/diff-so-fancy
 chmod +x "$localroot"/bin/diff-so-fancy
 
@@ -138,9 +145,9 @@ chmod +x "$localroot"/bin/networkmanager-dmenu
 
 #################### VIM ####################
 echo "Getting latest VIM Plugins"
-if command -v pacman; then
+if command -v pacman > /dev/null; then
     pacman -S --noconfirm vim
-elif command -v apt
+elif command -v apt > /dev/null
     apt intall vim
 fi
 
@@ -182,4 +189,6 @@ fi
 
 
 #################### LOCAL CONFIG  ####################
-source $HOME/bin/update.local
+if test -e $HOME/bin/update.local; then
+    source $HOME/bin/update.local
+fi

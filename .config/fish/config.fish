@@ -39,9 +39,9 @@ set -x AWS_PROFILE default # Override in session to use another profile
 fish_default_key_bindings
 set fish_prompt_pwd_dir_length 1 # Shrink path
 set -x PATH "$HOME"/bin /usr/local/bin /usr/bin /bin /usr/local/sbin /usr/lib/jvm/default/bin /usr/bin/site_perl /usr/bin/vendor_perl /usr/bin/core_perl /sbin /usr/sbin
+set -x EDITOR "vim"
 set -x PAGER "less"
 set -x GOPATH "$HOME"/go
-
 set -g FISH_CUSTOM_FUNCTIONS_PATH "$HOME/.config/fish/my-functions"
 
 
@@ -106,4 +106,6 @@ abbr sshx "ssh -c arcfour,blowfish-cbc -XC"
 abbr func "$EDITOR ~/.config/my-functions/"
 abbr f "ranger"
 
-source $HOME/.config/fish/config.local.fish
+if test -e "$HOME"/.config/fish/config.local.fish 
+    source "$HOME"/.config/fish/config.local.fish
+end
