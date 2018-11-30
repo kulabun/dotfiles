@@ -138,6 +138,13 @@ chmod +x "$localroot"/bin/networkmanager-dmenu
 
 #################### VIM ####################
 echo "Getting latest VIM Plugins"
+if command -v pacman; then
+    pacman -S --noconfirm vim
+elif command -v apt
+    apt intall vim
+fi
+
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 vim +BundleInstall +BundleUpdate +qall
 
 
