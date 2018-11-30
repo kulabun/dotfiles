@@ -1,3 +1,3 @@
 function vdiff
-    code --diff $vargs
+    code --diff $argv
 end

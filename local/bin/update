@@ -1,4 +1,54 @@
-#!/usr/bin/env fish
+#!/bin/bash
+
+
+
+#################### GIT ####################
+if ! command -v git; then
+    if command -v pacman; then
+	sudo pacman -Syu --noconfirm
+        sudo pacman -S --noconfirm git
+    elif command -v apt; then
+       	sudo add-apt-repository ppa:git-core/ppa
+        sudo apt update
+        sudo apt install git 
+    fi
+fi
+
+
+
+#################### YAY ####################
+if command -v pacman && ! command yay; then 
+    sudo pacman -S base-devel --noconfirm
+    git clone https://aur.archlinux.org/yay.git /tmp/yay
+    cd /tmp/yay
+    sudo makepkg -si --noconfirm
+fi
+
+
+
+#################### SYSTEM UPDATE ####################
+echo "Getting latest system updates"
+if command -v yay; then
+    yay -Syu --noconfirm
+elif command -v apt; then
+    apt update && apt-upgrade
+fi
+
+
+
+# Install YADM
+if ! command -v yadm > /dev/null; then
+    sudo curl -fLo /usr/local/bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm
+    sudo chmod a+x /usr/local/bin/yadm
+fi
+
+
+
+# Configure yadm and run initial configuration
+if [ "$(yadm remote get-url origin)" != "git@github.com:kulabun/dotfiles.git" ]; then
+    yadm remote add origin git@github.com:kulabun/dotfiles.git
+    yadm pull origin master
+fi
 
 
 
@@ -7,7 +57,9 @@ yadm gitconfig user.name "Konstantin Labun"
 yadm gitconfig user.email konstantin.labun@gmail.com
 yadm gitconfig commit.gpgsign false
 
-set -l localroot "$HOME"/local
+localroot="$HOME"/local
+goversion="1.11.2" # use for fallback, when script is running on systems different from arch where packages may be old
+
 mkdir -p "$localroot"/bin
 ln -sf "$localroot"/bin "$HOME"/bin
 
@@ -16,14 +68,54 @@ ln -sf "$localroot"/bin "$HOME"/bin
 #################### DOTFILES ####################
 echo "Getting latest dotfiles"
 yadm pull origin master
-#yadm decrypt
+yadm decrypt
+
+
+
+#################### GO ####################
+if ! command -v go; then 
+    if command -v pacman; then
+        sudo pacman -S --noconfirm go
+    else 
+        wget https://dl.google.com/go/go"$goversion".linux-amd64.tar.gz
+        tar -C "$localroot" -xzf go"$goversion".linux-amd64.tar.gz
+        for i in $(ls "$localroot"/go/bin | tr -d "*"); do ln -sf "$localroot"/go/bin/$i "$localroot"/bin/$i; done;
+    fi    
+fi
+go get github.com/kulabun/gojson/gojson
+
+
+#################### FISH SHELL ####################
+if command -v pacman; then
+    if ! command -v fish; then 
+        sudo pacman -S --noconfirm fish
+    end
+else  
+    # Install dependencies.. Only apt-based distr supported here
+    if command -v apt; then
+        sudo apt-get install -y build-essential ncurses-dev
+    fi
+
+    echo "Building latest fist"
+    fishshell_git_root="$HOME"/.fish-shell
+    if ! test -d "$fishshell_git_root"
+        git clone https://github.com/fish-shell/fish-shell
+    fi
+    cd "$fishshell_git_root"
+    git pull
+    rm -rf build
+    mkdir build; cd build
+    cmake ..
+    make
+    sudo make install
+fi
 
 
 
 #################### FISHER ####################
 echo "Getting latest Fisher"
 curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
-fisher
+fish fisher
 
 
 
@@ -62,10 +154,10 @@ sudo npm update --unsafe-perm -g
 
 #################### GITHUB'S HUB  ####################
 echo "Building latest GitHub git-wrapper(hub)"
-set -l go_path "$HOME"/go
-set -l go_github_path "$go_path"/src/github.com/github 
-set -l hub_path "$go_github_path"/hub
-if not test -e $hub_path
+go_path="$HOME"/go
+go_github_path="$go_path"/src/github.com/github 
+hub_path="$go_github_path"/hub
+if ! test -e $hub_path
     mkdir -p "$go_github_path" 
     git clone \
       --config transfer.fsckobjects=false \

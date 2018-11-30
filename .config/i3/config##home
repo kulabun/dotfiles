@@ -16,7 +16,7 @@ floating_modifier $mod
 
 # start a terminal
 # bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec termite -e fish
+bindsym $mod+Return exec alacritty -e fish
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -184,10 +184,10 @@ exec_always --no-startup-id xrdb -load ~/.Xresources
 exec --no-startup-id xfsettingsd
 exec --no-startup-id compton
 exec google-chrome-stable 
-exec chrome-stable --app="https://music.amazon.com"
+exec google-chrome-stable --app="https://devdocs.io"
+exec google-chrome-stable --app="https://music.amazon.com"
 exec google-chrome-stable --app="https://gmail.com"
-#exec google-chrome-stable --app="https://calendar.google.com"
-exec termite -e fish --class "system-term"
+exec alacritty -e fish --class "system-term"
 #exec --no-startup-id 
 
 # Applications
@@ -200,9 +200,9 @@ for_window [class="(?i)(?:thunar|ranger|code|jetbrains-idea|chrome|firefox)"] bo
 assign [class="(?i)(?:system-term)"] → $ws11
 assign [class="(?i)(?:code)"] → $ws2
 assign [class="(?i)(?:jetbrains-idea)"] → $ws2
-assign [instance="(?i)(?:calendar.google.com)"] → $ws8
 assign [instance="(?i)(?:gmail.com)"] → $ws9
 assign [instance="(?i)(?:music.amazon.com)"] → $ws10
+assign [instance="(?i)(?:devdocs.io)"] → $ws4
 assign [class="(?i)(?:chrome)"] → $ws1
 
 # focus, floating, & sticky
