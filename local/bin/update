@@ -2,12 +2,41 @@
 
 
 
+#################### PRECONFIGURE ####################
+GO_VERSION="1.11.2"
+VISUAL_STUDIO_CODE_VERSION="1.29.1"
+NODEJS_VERSION="v10.14.1"
+
+localroot="$HOME"/local
+
+mkdir -p "$localroot"/bin
+ln -sf "$localroot"/bin "$HOME"/bin
+
+
+
+#################### COMMON TOOLS ####################
+function install {
+    packageName=$1
+    if ! command -v $packageName > /dev/null; then
+        if command -v pacman > /dev/null; then
+            sudo pacman -S --noconfirm $packageName
+        elif command -v apt > /dev/null; then
+            sudo apt install -y $packageName
+        fi
+    fi
+}
+install curl
+install wget
+install python
+
+
+
 #################### GIT ####################
 if ! command -v git > /dev/null; then
-    if command -v pacman; then
+    if command -v pacman > /dev/null; then
 	sudo pacman -Syu --noconfirm
         sudo pacman -S --noconfirm git
-    elif command -v apt; then
+    elif command -v apt > /dev/null; then
        	sudo add-apt-repository ppa:git-core/ppa
         sudo apt update
         sudo apt install git 
@@ -18,10 +47,11 @@ fi
 
 #################### YAY ####################
 if command -v pacman > /dev/null && ! command -v yay > /dev/null; then 
+    echo "Getting latest YAY"
     sudo pacman -S base-devel --noconfirm
     git clone https://aur.archlinux.org/yay.git /tmp/yay
     cd /tmp/yay
-    sudo makepkg -si --noconfirm
+    makepkg -si --noconfirm
 fi
 
 
@@ -31,60 +61,35 @@ echo "Getting latest system updates"
 if command -v yay > /dev/null; then
     yay -Syu --noconfirm
 elif command -v apt; then
-    apt update && apt-upgrade
+    sudo apt update && sudo apt upgrade -y
 fi
 
 
 
-# Install YADM
+#################### YADM ####################
 if ! command -v yadm > /dev/null; then
+    echo "Getting latest YADM"
     sudo curl -fLo /usr/local/bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm
     sudo chmod a+x /usr/local/bin/yadm
 fi
 
-
-
-# Configure yadm and run initial configuration
 if [ "$(yadm remote get-url origin)" != "git@github.com:kulabun/dotfiles.git" ] &&\
    [ "$(yadm remote get-url origin)" != "https://github.com/kulabun/dotfiles.git" ]; then
+    echo "Getting latest dotfiles"
     yadm clone https://github.com/kulabun/dotfiles.git
     #yadm remote add origin git@github.com:kulabun/dotfiles.git
     yadm pull origin master
 fi
-
-
-
-#################### RECONFIGURE ####################
 yadm gitconfig user.name "Konstantin Labun"
 yadm gitconfig user.email konstantin.labun@gmail.com
 yadm gitconfig commit.gpgsign false
-
-localroot="$HOME"/local
-goversion="1.11.2" # use for fallback, when script is running on systems different from arch where packages may be old
-
-mkdir -p "$localroot"/bin
-ln -sf "$localroot"/bin "$HOME"/bin
 
 
 
 #################### DOTFILES ####################
 echo "Getting latest dotfiles"
 yadm pull origin master
-yadm decrypt
-
-
-
-#################### GO ####################
-if ! command -v go > /dev/null; then 
-    if command -v pacman > /dev/null; then
-        sudo pacman -S --noconfirm go
-    else 
-        wget https://dl.google.com/go/go"$goversion".linux-amd64.tar.gz
-        tar -C "$localroot" -xzf go"$goversion".linux-amd64.tar.gz
-        for i in $(ls "$localroot"/go/bin | tr -d "*"); do ln -sf "$localroot"/go/bin/$i "$localroot"/bin/$i; done;
-    fi    
-fi
-go get github.com/kulabun/gojson/gojson
+bash -c "yadm decrypt"
 
 
 #################### FISH SHELL ####################
@@ -95,13 +100,13 @@ if command -v pacman > /dev/null; then
 else  
     # Install dependencies.. Only apt-based distr supported here
     if command -v apt > /dev/null; then
-        sudo apt-get install -y build-essential ncurses-dev
+        sudo apt install -y cmake build-essential ncurses-dev
     fi
 
     echo "Building latest fist"
     fishshell_git_root="$HOME"/.fish-shell
     if ! test -d "$fishshell_git_root"; then
-        git clone https://github.com/fish-shell/fish-shell
+        git clone https://github.com/fish-shell/fish-shell "$fishshell_git_root"
     fi
     cd "$fishshell_git_root"
     git pull
@@ -117,52 +122,88 @@ fi
 #################### FISHER ####################
 echo "Getting latest Fisher"
 curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
-fish -c "fisher"
+fish -c "fisher" 2> /dev/null
+
+
+
+#################### GO ####################
+echo "Getting latest GO"
+if ! command -v go > /dev/null; then 
+    if command -v pacman > /dev/null; then
+        sudo pacman -S --noconfirm go
+    else 
+        wget -q https://dl.google.com/go/go"$GO_VERSION".linux-amd64.tar.gz
+        tar -C "$localroot" -xzf go"$GO_VERSION".linux-amd64.tar.gz
+        for i in $(ls "$localroot"/go/bin | tr -d "*"); do ln -sf "$localroot"/go/bin/$i "$localroot"/bin/$i; done;
+    fi    
+fi
+go get github.com/kulabun/gojson/gojson
 
 
 
 #################### DIFF-SO-FANCY ####################
 echo "Getting latest diff-so-fancy"
-rm -f "$localroot"/bin/diff-so-fancy
-if ! command -v wget > /dev/null; then
-    if command -v pacman > /dev/null; then
-        sudo pacman -S wget
-    elif command -v apt > /dev/null; then
-        sudo apt install wget
-    fi
-fi
-wget https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -O "$localroot"/bin/diff-so-fancy
+wget -q https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -O "$localroot"/bin/diff-so-fancy
 chmod +x "$localroot"/bin/diff-so-fancy
 
 
 
 #################### NETWORKMANAGER-DMENU ####################
 echo "Getting latest NetworkManager-Dmenu"
-wget https://raw.githubusercontent.com/firecat53/networkmanager-dmenu/master/networkmanager_dmenu -O "$localroot"/bin/networkmanager-dmenu
+wget -q https://raw.githubusercontent.com/firecat53/networkmanager-dmenu/master/networkmanager_dmenu -O "$localroot"/bin/networkmanager-dmenu
 chmod +x "$localroot"/bin/networkmanager-dmenu
 
 
 
 #################### VIM ####################
-echo "Getting latest VIM Plugins"
-if command -v pacman > /dev/null; then
-    pacman -S --noconfirm vim
-elif command -v apt > /dev/null
-    apt intall vim
+if ! command -v vim > /dev/null; then 
+    echo "Getting latest VIM"
+    if command -v pacman > /dev/null; then
+	sudo pacman -S --noconfirm vim
+    elif command -v apt > /dev/null; then
+	sudo apt intall vim
+    fi
 fi
 
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-vim +BundleInstall +BundleUpdate +qall
+echo "Getting latest VIM Plugins"
+if ! test -e "$HOME"/.vim/autoload/plug.vim; then
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+fi
+bash -c "vim +PlugUpdate +qall"
 
 
 
 #################### VISUAL STUDIO CODE ####################
+VISUAL_STUDIO_CODE_PATH="/opt/vscode-$VISUAL_STUDIO_CODE_VERSION"
+if ! test -e "$VISUAL_STUDIO_CODE_PATH"; then
+    echo "Getting latest VSCode"
+    curl --silent --output /tmp/vscode.tar.gz -L "https://update.code.visualstudio.com/$VISUAL_STUDIO_CODE_VERSION/linux-x64/stable"
+    cd /tmp
+    tar xzvf vscode.tar.gz
+    mv VSCode-linux-x64 "$VISUAL_STUDIO_CODE_PATH"
+    sudo ln -sf "$VISUAL_STUDIO_CODE_PATH" /opt/vscode
+    sudo ln -sf /opt/vscode/bin/code "$localroot"/bin/code 
+fi
+
+ 
 echo "Getting latest VSCode extensions"
 cat ~/.vscode/extensions.list | xargs -L 1 code --force --install-extension 
 
 
 
 #################### NODE PACKAGE MANAGER ####################
+NODEJS_PATH="/opt/node-$NODEJS_VERSION"
+if ! test -e "$NODEJS_PATH"; then
+    wget "https://nodejs.org/dist/$NODEJS_VERSION/node-$NODEJS_VERSION-linux-x64.tar.xz" -O /tmp/node.tar.xz
+    cd /tmp
+    tar xvf node.tar.xz
+    mv "node-$NODEJS_VERSION-linux-x64" $NODEJS_PATH
+    sudo ln -sf "$VISUAL_STUDIO_CODE_PATH" /opt/node
+    sudo ln -sf /opt/node/bin/node "$localroot"/bin/node 
+    sudo ln -sf /opt/node/bin/npm "$localroot"/bin/npm
+fi
+ 
 echo "Getting latest NPM packages"
 sudo npm update --unsafe-perm -g
 
@@ -173,6 +214,12 @@ echo "Building latest GitHub git-wrapper(hub)"
 go_path="$HOME"/go
 go_github_path="$go_path"/src/github.com/github 
 hub_path="$go_github_path"/hub
+if ! command -v ruby > /dev/null;then
+    if ! command -v pacman > /dev/null; then
+        yay -S --noconfirm ruby ruby-bundler
+    fi
+fi
+
 if ! test -e $hub_path; then
     mkdir -p "$go_github_path" 
     git clone \
