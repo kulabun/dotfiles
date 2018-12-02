@@ -1,6 +1,6 @@
 #!/bin/bash
 # When you run command like cat file.sh | bash
-# it run shell in non-interactive mode, so
+# input channel is overriden with /dev/null, so
 # 1) VIM fails with "Vim: Warning: Input is not from a terminal"
 # 2) yadm decrypt fails because it don't even ask you about password
 DOTFILES_INSTALL_SCRIPT=/tmp/dotfiles.sh 
