@@ -16,21 +16,30 @@ ln -sf "$localroot"/bin "$HOME"/bin
 
 #################### COMMON TOOLS ####################
 function install {
-    packageName=$1
-    if ! command -v $packageName > /dev/null; then
+	if test "$#" -eq 0; then
+		echo "Argument required"
+	fi
+    packageName="$1"
+	commandName="$1"
+	if test "$#" -eq 2; then
+		commandName="$2"
+	fi
+
+	command=$2
+    if ! command -v "$commandName" > /dev/null; then
 		echo "Getting latest $packageName"
         if command -v pacman > /dev/null; then
-            sudo pacman -S --noconfirm $packageName
+            sudo pacman -S --noconfirm "$packageName"
         elif command -v apt > /dev/null; then
-            sudo apt install -y $packageName
+            sudo apt install -y "$packageName"
         fi
     fi
 }
-install curl
-install wget
-install python
-install ruby
-install ruby-bundler
+install "curl"
+install "wget"
+install "python"
+install "ruby"
+install "ruby-bundler" "bundle"
 
 
 #################### GIT ####################
