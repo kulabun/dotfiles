@@ -14,6 +14,16 @@ ln -sf "$localroot"/bin "$HOME"/bin
 
 
 
+#################### SYSTEM UPDATE ####################
+echo "Getting latest system updates"
+if command -v yay > /dev/null; then
+    pacman -Syu --noconfirm
+elif command -v apt; then
+    sudo apt update && sudo apt upgrade -y
+fi
+
+
+
 #################### COMMON TOOLS ####################
 function install {
 	if test "$#" -eq 0; then
@@ -42,6 +52,7 @@ install "ruby"
 install "ruby-bundler" "bundle"
 
 
+
 #################### GIT ####################
 if ! command -v git > /dev/null; then
 	echo "Getting latest GIT"
@@ -64,16 +75,7 @@ if command -v pacman > /dev/null && ! command -v yay > /dev/null; then
     git clone https://aur.archlinux.org/yay.git /tmp/yay
     cd /tmp/yay
     makepkg -si --noconfirm
-fi
-
-
-
-#################### SYSTEM UPDATE ####################
-echo "Getting latest system updates"
-if command -v yay > /dev/null; then
-    yay -Syu --noconfirm
-elif command -v apt; then
-    sudo apt update && sudo apt upgrade -y
+	yay -Syu --noconfirm
 fi
 
 
