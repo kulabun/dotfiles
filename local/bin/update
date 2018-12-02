@@ -18,6 +18,7 @@ ln -sf "$localroot"/bin "$HOME"/bin
 function install {
     packageName=$1
     if ! command -v $packageName > /dev/null; then
+		echo "Getting latest $packageName"
         if command -v pacman > /dev/null; then
             sudo pacman -S --noconfirm $packageName
         elif command -v apt > /dev/null; then
@@ -28,11 +29,13 @@ function install {
 install curl
 install wget
 install python
-
+install ruby
+install ruby-bundler
 
 
 #################### GIT ####################
 if ! command -v git > /dev/null; then
+	echo "Getting latest GIT"
     if command -v pacman > /dev/null; then
 	sudo pacman -Syu --noconfirm
         sudo pacman -S --noconfirm git
@@ -163,15 +166,23 @@ if ! command -v vim > /dev/null; then
     elif command -v apt > /dev/null; then
 	sudo apt intall vim
     fi
-fi
+fi 
+
+function createFolder {
+	if ! test -d "$1";then
+		mkdir -p "$1" 
+	fi
+}
+
+createFolder "$HOME"/.vim/swaps
+createFolder "$HOME"/.vim/backups
 
 echo "Getting latest VIM Plugins"
 if ! test -e "$HOME"/.vim/autoload/plug.vim; then
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
-bash -c "vim +PlugUpdate +qall"
-
+vim +'PlugUpdate --sync' +'PlugClean! --sync' '+qall!'
 
 
 #################### VISUAL STUDIO CODE ####################
@@ -214,12 +225,6 @@ echo "Building latest GitHub git-wrapper(hub)"
 go_path="$HOME"/go
 go_github_path="$go_path"/src/github.com/github 
 hub_path="$go_github_path"/hub
-if ! command -v ruby > /dev/null;then
-    if ! command -v pacman > /dev/null; then
-        yay -S --noconfirm ruby ruby-bundler
-    fi
-fi
-
 if ! test -e $hub_path; then
     mkdir -p "$go_github_path" 
     git clone \
@@ -227,11 +232,10 @@ if ! test -e $hub_path; then
       --config receive.fsckobjects=false \
       --config fetch.fsckobjects=false \
       https://github.com/github/hub.git "$hub_path"
-else
-    cd "$hub_path"
-    git pull
-    make install prefix="$localroot"
 fi
+cd "$hub_path"
+git pull
+make install prefix="$localroot"
 
 
 
