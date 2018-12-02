@@ -51,6 +51,10 @@ install "python"
 install "ruby"
 install "ruby-bundler" "bundle"
 
+if command -v apt > /dev/null; then
+	sudo apt-get install -y ruby-dev
+fi
+
 
 
 #################### GIT ####################
@@ -247,6 +251,7 @@ fi
 cd "$hub_path"
 git pull
 make install prefix="$localroot"
+
 
 
 
