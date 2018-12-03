@@ -50,6 +50,7 @@ install "wget"
 install "python"
 install "ruby"
 install "ruby-bundler" "bundle"
+install "xclip"
 
 if command -v apt > /dev/null; then
 	sudo apt-get install -y ruby-dev
@@ -113,6 +114,7 @@ bash -c "yadm decrypt"
 #################### FISH SHELL ####################
 if command -v pacman > /dev/null; then
     if ! command -v fish > /dev/null; then 
+		echo "Getting latest fish"
         sudo pacman -S --noconfirm fish
     fi
 else  
@@ -121,7 +123,7 @@ else
         sudo apt install -y cmake build-essential ncurses-dev
     fi
 
-    echo "Building latest fist"
+    echo "Building latest fish"
     fishshell_git_root="$HOME"/.fish-shell
     if ! test -d "$fishshell_git_root"; then
         git clone https://github.com/fish-shell/fish-shell "$fishshell_git_root"
@@ -200,6 +202,25 @@ fi
 vim +'PlugUpdate --sync' +'PlugClean! --sync' '+qall!' -R -
 
 
+
+#################### FZF ####################
+if command -v pacman; then
+	echo "Getting latest FZF"
+	sudo pacman -S --noconfirm fzf
+else
+	echo "Getting latest FZF"
+	FZF_PATH="$HOME"/.fzf
+	if ! test -d "$FZF_PATH"; then
+		git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	fi
+	cd "$FZF_PATH"
+	git pull
+	./install
+	cp ./bin/fzf "$localroot"/bin/fzf
+fi
+
+
+
 #################### VISUAL STUDIO CODE ####################
 VISUAL_STUDIO_CODE_PATH="/opt/vscode-$VISUAL_STUDIO_CODE_VERSION"
 if ! test -e "$VISUAL_STUDIO_CODE_PATH"; then
@@ -207,7 +228,7 @@ if ! test -e "$VISUAL_STUDIO_CODE_PATH"; then
     curl --silent --output /tmp/vscode.tar.gz -L "https://update.code.visualstudio.com/$VISUAL_STUDIO_CODE_VERSION/linux-x64/stable"
     cd /tmp
     tar xzvf vscode.tar.gz
-    mv VSCode-linux-x64 "$VISUAL_STUDIO_CODE_PATH"
+    sudo mv VSCode-linux-x64 "$VISUAL_STUDIO_CODE_PATH"
     sudo ln -sf "$VISUAL_STUDIO_CODE_PATH" /opt/vscode
     sudo ln -sf /opt/vscode/bin/code "$localroot"/bin/code 
 fi
@@ -221,11 +242,12 @@ cat ~/.vscode/extensions.list | xargs -L 1 code --force --install-extension
 #################### NODE PACKAGE MANAGER ####################
 NODEJS_PATH="/opt/node-$NODEJS_VERSION"
 if ! test -e "$NODEJS_PATH"; then
+	echo "Getting latest NODE"
     wget "https://nodejs.org/dist/$NODEJS_VERSION/node-$NODEJS_VERSION-linux-x64.tar.xz" -O /tmp/node.tar.xz
     cd /tmp
     tar xvf node.tar.xz
-    mv "node-$NODEJS_VERSION-linux-x64" $NODEJS_PATH
-    sudo ln -sf "$VISUAL_STUDIO_CODE_PATH" /opt/node
+    sudo mv "node-$NODEJS_VERSION-linux-x64" $NODEJS_PATH
+    sudo ln -sf "$NODEJS_PATH" /opt/node
     sudo ln -sf /opt/node/bin/node "$localroot"/bin/node 
     sudo ln -sf /opt/node/bin/npm "$localroot"/bin/npm
 fi

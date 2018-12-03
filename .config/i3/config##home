@@ -16,7 +16,7 @@ floating_modifier $mod
 
 # start a terminal
 # bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec alacritty -e fish
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -187,7 +187,7 @@ exec google-chrome-stable
 exec google-chrome-stable --app="https://devdocs.io"
 exec google-chrome-stable --app="https://music.amazon.com"
 exec google-chrome-stable --app="https://gmail.com"
-exec alacritty -e fish --class "system-term"
+exec alacritty --class "system-term"
 #exec --no-startup-id 
 
 # Applications
