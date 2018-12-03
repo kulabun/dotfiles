@@ -112,29 +112,15 @@ bash -c "yadm decrypt"
 
 
 #################### FISH SHELL ####################
-if command -v pacman > /dev/null; then
-    if ! command -v fish > /dev/null; then 
-		echo "Getting latest fish"
+if ! command -v fish > /dev/null; then 
+	echo "Getting latest fish"
+	if command -v pacman > /dev/null; then
         sudo pacman -S --noconfirm fish
-    fi
-else  
-    # Install dependencies.. Only apt-based distr supported here
-    if command -v apt > /dev/null; then
-        sudo apt install -y cmake build-essential ncurses-dev
-    fi
-
-    echo "Building latest fish"
-    fishshell_git_root="$HOME"/.fish-shell
-    if ! test -d "$fishshell_git_root"; then
-        git clone https://github.com/fish-shell/fish-shell "$fishshell_git_root"
-    fi
-    cd "$fishshell_git_root"
-    git pull
-    rm -rf build
-    mkdir build; cd build
-    cmake ..
-    make
-    sudo make install
+	elif command -v apt /dev/null; then 
+		sudo apt-add-repository ppa:fish-shell/release-2
+		sudo apt update
+		sudo apt install fish
+	fi
 fi
 
 
@@ -152,9 +138,9 @@ if ! command -v go > /dev/null; then
     if command -v pacman > /dev/null; then
         sudo pacman -S --noconfirm go
     else 
-        wget -q https://dl.google.com/go/go"$GO_VERSION".linux-amd64.tar.gz
-        tar -C "$localroot" -xzf go"$GO_VERSION".linux-amd64.tar.gz
-        for i in $(ls "$localroot"/go/bin | tr -d "*"); do ln -sf "$localroot"/go/bin/$i "$localroot"/bin/$i; done;
+		sudo add-apt-repository ppa:longsleep/golang-backports
+		sudo apt-get update
+		sudo apt-get install golang-go
     fi    
 fi
 go get github.com/kulabun/gojson/gojson
