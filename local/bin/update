@@ -276,6 +276,11 @@ make install prefix="$localroot"
 
 
 
+#################### UTILS  ####################
+curl -L --silent --output "$localroot"/bin/json2yaml "https://gist.githubusercontent.com/kulabun/5b2e9f640e8f0bfa2271836439dc6efb/raw/030b01748c33fff31c78636aafb00725e7974db6/json2yaml.py"
+ln -sf "$localroot"/bin/json2yaml "$localroot"/bin/yaml2json
+
+
 
 #################### LOCAL CONFIG  ####################
 if test -e $HOME/bin/update.local; then
