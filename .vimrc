@@ -151,11 +151,6 @@ let g:lightline = {
       \ }
 
 
-cnoreabbrev W w
-cnoreabbrev Q q
-cnoreabbrev Wq wq
-cnoreabbrev WQ wq
-cnoreabbrev wQ wq
 
 " Easy Motion
 let mapleader = ";"
@@ -173,6 +168,18 @@ let g:syntastic_check_on_wq = 0
 
 " Mappings
 imap jj <Esc>
+nnoremap <leader><space> :noh<cr>
+nnoremap <Tab> >>_
+nnoremap <S-Tab> <<_
+inoremap <S-Tab> <C-D>
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+
+cnoreabbrev W w
+cnoreabbrev Q q
+cnoreabbrev Wq wq
+cnoreabbrev WQ wq
+cnoreabbrev wQ wq
 
 " --------------------------------------
 " FIX FOR TRUE COLOR FOR DIFFIRENT TERMS

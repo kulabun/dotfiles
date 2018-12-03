@@ -1,3 +1,0 @@
-echo "Getting latest system updates"
-yay -Syu --noconfirm
-
