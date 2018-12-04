@@ -79,6 +79,7 @@
     w = whatchanged
     # Find commit by message and save hash clipboard
     fc = "!f() { git log --oneline | fzf -q \"$1\" | cut -d\" \" -f1 | xclip -selection clipboard ; };f"
+	fc2 = ""
     # Undo last commit
     undo = reset HEAD^ --soft
     u = undo

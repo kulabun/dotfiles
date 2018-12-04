@@ -1,60 +1,243 @@
-#!/usr/bin/env fish
+#!/bin/bash
 
 
 
-#################### RECONFIGURE ####################
+#################### PRECONFIGURE ####################
+GO_VERSION="1.11.2"
+VISUAL_STUDIO_CODE_VERSION="1.29.1"
+NODEJS_VERSION="v10.14.1"
+
+localroot="$HOME"/local
+
+mkdir -p "$localroot"/bin
+ln -sf "$localroot"/bin "$HOME"/bin
+
+
+
+#################### SYSTEM UPDATE ####################
+echo "Getting latest system updates"
+if command -v yay > /dev/null; then
+    pacman -Syu --noconfirm
+elif command -v apt; then
+    sudo apt update && sudo apt upgrade -y
+fi
+
+
+
+#################### COMMON TOOLS ####################
+function install {
+	if test "$#" -eq 0; then
+		echo "Argument required"
+	fi
+    packageName="$1"
+	commandName="$1"
+	if test "$#" -eq 2; then
+		commandName="$2"
+	fi
+
+	command=$2
+    if ! command -v "$commandName" > /dev/null; then
+		echo "Getting latest $packageName"
+        if command -v pacman > /dev/null; then
+            sudo pacman -S --noconfirm "$packageName"
+        elif command -v apt > /dev/null; then
+            sudo apt install -y "$packageName"
+        fi
+    fi
+}
+install "curl"
+install "wget"
+install "python"
+install "ruby"
+install "ruby-bundler" "bundle"
+install "xclip"
+
+if command -v apt > /dev/null; then
+	sudo apt-get install -y ruby-dev
+fi
+
+
+
+#################### GIT ####################
+if ! command -v git > /dev/null; then
+	echo "Getting latest GIT"
+    if command -v pacman > /dev/null; then
+	sudo pacman -Syu --noconfirm
+        sudo pacman -S --noconfirm git
+    elif command -v apt > /dev/null; then
+       	sudo add-apt-repository ppa:git-core/ppa
+        sudo apt update
+        sudo apt install git 
+    fi
+fi
+
+
+
+#################### YAY ####################
+if command -v pacman > /dev/null && ! command -v yay > /dev/null; then 
+    echo "Getting latest YAY"
+    sudo pacman -S base-devel --noconfirm
+    git clone https://aur.archlinux.org/yay.git /tmp/yay
+    cd /tmp/yay
+    makepkg -si --noconfirm
+	yay -Syu --noconfirm
+fi
+
+
+
+#################### YADM ####################
+if ! command -v yadm > /dev/null; then
+    echo "Getting latest YADM"
+    sudo curl -fLo /usr/local/bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm
+    sudo chmod a+x /usr/local/bin/yadm
+fi
+
+if [ "$(yadm remote get-url origin)" != "git@github.com:kulabun/dotfiles.git" ] &&\
+   [ "$(yadm remote get-url origin)" != "https://github.com/kulabun/dotfiles.git" ]; then
+    echo "Getting latest dotfiles"
+    yadm clone https://github.com/kulabun/dotfiles.git
+    #yadm remote add origin git@github.com:kulabun/dotfiles.git
+    yadm pull origin master
+fi
 yadm gitconfig user.name "Konstantin Labun"
 yadm gitconfig user.email konstantin.labun@gmail.com
 yadm gitconfig commit.gpgsign false
-
-set -l localroot "$HOME"/local
-mkdir -p "$localroot"/bin
-ln -sf "$localroot"/bin "$HOME"/bin
 
 
 
 #################### DOTFILES ####################
 echo "Getting latest dotfiles"
 yadm pull origin master
-#yadm decrypt
+bash -c "yadm decrypt"
+
+
+#################### FISH SHELL ####################
+if ! command -v fish > /dev/null; then 
+	echo "Getting latest fish"
+	if command -v pacman > /dev/null; then
+        sudo pacman -S --noconfirm fish
+	elif command -v apt /dev/null; then 
+		sudo apt-add-repository ppa:fish-shell/release-2
+		sudo apt update
+		sudo apt install fish
+	fi
+fi
 
 
 
 #################### FISHER ####################
 echo "Getting latest Fisher"
 curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
-fisher
+fish -c "fisher" 2> /dev/null
+
+
+
+#################### GO ####################
+echo "Getting latest GO"
+if ! command -v go > /dev/null; then 
+    if command -v pacman > /dev/null; then
+        sudo pacman -S --noconfirm go
+    else 
+		sudo add-apt-repository ppa:longsleep/golang-backports
+		sudo apt-get update
+		sudo apt-get install golang-go
+    fi    
+fi
+go get github.com/kulabun/gojson/gojson
 
 
 
 #################### DIFF-SO-FANCY ####################
 echo "Getting latest diff-so-fancy"
-rm -f "$localroot"/bin/diff-so-fancy
-wget https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -O "$localroot"/bin/diff-so-fancy
+wget -q https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -O "$localroot"/bin/diff-so-fancy
 chmod +x "$localroot"/bin/diff-so-fancy
 
 
 
 #################### NETWORKMANAGER-DMENU ####################
 echo "Getting latest NetworkManager-Dmenu"
-wget https://raw.githubusercontent.com/firecat53/networkmanager-dmenu/master/networkmanager_dmenu -O "$localroot"/bin/networkmanager-dmenu
+wget -q https://raw.githubusercontent.com/firecat53/networkmanager-dmenu/master/networkmanager_dmenu -O "$localroot"/bin/networkmanager-dmenu
 chmod +x "$localroot"/bin/networkmanager-dmenu
 
 
 
 #################### VIM ####################
+if ! command -v vim > /dev/null; then 
+    echo "Getting latest VIM"
+    if command -v pacman > /dev/null; then
+	sudo pacman -S --noconfirm vim
+    elif command -v apt > /dev/null; then
+	sudo apt intall vim
+    fi
+fi 
+
+function createFolder {
+	if ! test -d "$1";then
+		mkdir -p "$1" 
+	fi
+}
+
+createFolder "$HOME"/.vim/swaps
+createFolder "$HOME"/.vim/backups
+
 echo "Getting latest VIM Plugins"
-vim +BundleInstall +BundleUpdate +qall
+if ! test -e "$HOME"/.vim/autoload/plug.vim; then
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+fi
+vim +'PlugUpdate --sync' +'PlugClean! --sync' '+qall!' -R -
+
+
+
+#################### FZF ####################
+if command -v pacman; then
+	echo "Getting latest FZF"
+	sudo pacman -S --noconfirm fzf
+else
+	echo "Getting latest FZF"
+	FZF_PATH="$HOME"/.fzf
+	if ! test -d "$FZF_PATH"; then
+		git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	fi
+	cd "$FZF_PATH"
+	git pull
+	./install
+	cp ./bin/fzf "$localroot"/bin/fzf
+fi
 
 
 
 #################### VISUAL STUDIO CODE ####################
+VISUAL_STUDIO_CODE_PATH="/opt/vscode-$VISUAL_STUDIO_CODE_VERSION"
+if ! test -e "$VISUAL_STUDIO_CODE_PATH"; then
+    echo "Getting latest VSCode"
+    curl --silent --output /tmp/vscode.tar.gz -L "https://update.code.visualstudio.com/$VISUAL_STUDIO_CODE_VERSION/linux-x64/stable"
+    cd /tmp
+    tar xzvf vscode.tar.gz
+    sudo mv VSCode-linux-x64 "$VISUAL_STUDIO_CODE_PATH"
+    sudo ln -sf "$VISUAL_STUDIO_CODE_PATH" /opt/vscode
+    sudo ln -sf /opt/vscode/bin/code "$localroot"/bin/code 
+fi
+
+ 
 echo "Getting latest VSCode extensions"
 cat ~/.vscode/extensions.list | xargs -L 1 code --force --install-extension 
 
 
 
 #################### NODE PACKAGE MANAGER ####################
+NODEJS_PATH="/opt/node-$NODEJS_VERSION"
+if ! test -e "$NODEJS_PATH"; then
+	echo "Getting latest NODE"
+    wget "https://nodejs.org/dist/$NODEJS_VERSION/node-$NODEJS_VERSION-linux-x64.tar.xz" -O /tmp/node.tar.xz
+    cd /tmp
+    tar xvf node.tar.xz
+    sudo mv "node-$NODEJS_VERSION-linux-x64" $NODEJS_PATH
+    sudo ln -sf "$NODEJS_PATH" /opt/node
+    sudo ln -sf /opt/node/bin/node "$localroot"/bin/node 
+    sudo ln -sf /opt/node/bin/npm "$localroot"/bin/npm
+fi
+ 
 echo "Getting latest NPM packages"
 sudo npm update --unsafe-perm -g
 
@@ -62,23 +245,30 @@ sudo npm update --unsafe-perm -g
 
 #################### GITHUB'S HUB  ####################
 echo "Building latest GitHub git-wrapper(hub)"
-set -l go_path "$HOME"/go
-set -l go_github_path "$go_path"/src/github.com/github 
-set -l hub_path "$go_github_path"/hub
-if not test -e $hub_path
+go_path="$HOME"/go
+go_github_path="$go_path"/src/github.com/github 
+hub_path="$go_github_path"/hub
+if ! test -e $hub_path; then
     mkdir -p "$go_github_path" 
     git clone \
       --config transfer.fsckobjects=false \
       --config receive.fsckobjects=false \
       --config fetch.fsckobjects=false \
       https://github.com/github/hub.git "$hub_path"
-else
-    cd "$hub_path"
-    git pull
-    make install prefix="$localroot"
-end
+fi
+cd "$hub_path"
+git pull
+make install prefix="$localroot"
+
+
+
+#################### UTILS  ####################
+curl -L --silent --output "$localroot"/bin/json2yaml "https://gist.githubusercontent.com/kulabun/5b2e9f640e8f0bfa2271836439dc6efb/raw/030b01748c33fff31c78636aafb00725e7974db6/json2yaml.py"
+ln -sf "$localroot"/bin/json2yaml "$localroot"/bin/yaml2json
 
 
 
 #################### LOCAL CONFIG  ####################
-source $HOME/bin/update.local
+if test -e $HOME/bin/update.local; then
+    source $HOME/bin/update.local
+fi
