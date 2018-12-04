@@ -102,13 +102,13 @@ system_update || echo "System Update FAILED"
 install "curl"
 install "wget"
 install "python"
-install "ruby" && ubuntu_install "ruby_dev"
+install "ruby" && ubuntu_install "ruby-dev"
 install "ruby-bundler"
-install "vim"
 install "cmake"
 install "xclip"
 
 
+arch_install "vim" && ubuntu_install "vim" "ppa:jonathonf/vim"
 arch_install "git" && ubuntu_install "git" "ppa:git-core/ppa" 
 arch_install "fish" && ubuntu_install "fish" "ppa:fish-shell/release-2"
 arch_install "go" && ubuntu_install "golang-go" "ppa:longsleep/golang-backports"
@@ -184,7 +184,7 @@ createFolder "$HOME"/.vim/swaps
 createFolder "$HOME"/.vim/backups
 echo "Getting latest VIM Plugins"
 [ -e "$HOME"/.vim/autoload/plug.vim ] || curl -fLo ~/.vim/autoload/plug.vim --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-vim +'PlugUpdate --sync' +'PlugClean! --sync' '+qall!' -R -
+vim +'PlugUpdate --sync' +'PlugClean! --sync' '+qall!' 
 
 
 
