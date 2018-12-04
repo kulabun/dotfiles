@@ -5,7 +5,7 @@
 #################### PRECONFIGURE ####################
 GO_VERSION="1.11.2"
 VISUAL_STUDIO_CODE_VERSION="1.29.1"
-NODEJS_VERSION="v10.14.1"
+NODE_MAJOR_VERSION="10"
 
 localroot="$HOME"/local
 
@@ -14,67 +14,113 @@ ln -sf "$localroot"/bin "$HOME"/bin
 
 
 
-#################### SYSTEM UPDATE ####################
-echo "Getting latest system updates"
-if command -v yay > /dev/null; then
-    pacman -Syu --noconfirm
-elif command -v apt; then
-    sudo apt update && sudo apt upgrade -y
-fi
+#################### HELPER FUNCTIONS ####################
+function cmd_exists {
+	command -v "$1" > /dev/null && return 0
+	return 1
+}
 
-
-
-#################### COMMON TOOLS ####################
-function install {
-	if test "$#" -eq 0; then
-		echo "Argument required"
+function add_ubuntu_repository {
+	repo_name=$1
+	if ! ls /etc/apt/sources.list.d/ | grep $repo_name > /dev/null; then
+		add-apt-repository "$repo_name"
+		apt update
 	fi
+}
+
+function install_with_pacman {
+	[ "$#" -eq "0" ] && echo "Argument required" && return 1
+
     packageName="$1"
-	commandName="$1"
-	if test "$#" -eq 2; then
-		commandName="$2"
-	fi
-
-	command=$2
-    if ! command -v "$commandName" > /dev/null; then
+    if ! pacman -Qi $packageName > /dev/null; then
 		echo "Getting latest $packageName"
-        if command -v pacman > /dev/null; then
-            sudo pacman -S --noconfirm "$packageName"
-        elif command -v apt > /dev/null; then
-            sudo apt install -y "$packageName"
-        fi
+        sudo pacman -S --noconfirm "$packageName"
     fi
 }
+
+function install_with_yay {
+	[ "$#" -eq "0" ] && echo "Argument required" && return 1
+
+    packageName="$1"
+    if ! yay -Qi $packageName > /dev/null; then
+		echo "Getting latest $packageName"
+        yay -S --noconfirm "$packageName"
+    fi
+}
+
+function install_with_apt {
+	[ "$#" -eq "0" ] && echo "Argument required" && return 1
+	[ "$#" -eq "2" ] && add_ubuntu_repository "$2"
+
+    packageName="$1"
+	if ! dpkg -l $packageName >/dev/null; then
+		echo "Getting latest $packageName"
+        sudo apt install -y "$packageName"
+    fi
+}
+
+function arch_install {
+	cmd_exists "yay" && install_with_yay "$1" && return 0
+	cmd_exists "pacman" && install_with_pacman "$1" && return 0
+}
+
+function ubuntu_install {
+	cmd_exists "apt" && install_with_apt "$1"
+}
+
+function is_arch {
+	cmd_exists "pacman"
+}
+
+function is_ubuntu {
+	cmd_exists "apt"
+}
+
+function install {
+	arch_install "$1"
+	ubuntu_install "$1"
+}
+
+function createFolder {
+	[ -d "$1" ] || mkdir -p "$1" 
+}
+
+
+
+#################### SYSTEM UPDATE ####################
+echo "Getting latest system updates"
+function system_update {
+	cmd_exists yay && yay -Syu --noconfirma && return 0
+	cmd_exists pacman && sudo pacman -Syu --noconfirm && return 0
+	is_ubuntu && sudo apt update && sudo apt upgrade -y && return 0
+	return 1
+}
+system_update || echo "System Update FAILED"
+
+
+#################### PRE INSTALL PACKAGES ####################
 install "curl"
 install "wget"
 install "python"
-install "ruby"
-install "ruby-bundler" "bundle"
+install "ruby" && ubuntu_install "ruby_dev"
+install "ruby-bundler"
+install "vim"
+install "cmake"
 install "xclip"
 
-if command -v apt > /dev/null; then
-	sudo apt-get install -y ruby-dev
-fi
 
+arch_install "git" && ubuntu_install "git" "ppa:git-core/ppa" 
+arch_install "fish" && ubuntu_install "fish" "ppa:fish-shell/release-2"
+arch_install "go" && ubuntu_install "golang-go" "ppa:longsleep/golang-backports"
 
-
-#################### GIT ####################
-if ! command -v git > /dev/null; then
-	echo "Getting latest GIT"
-    if command -v pacman > /dev/null; then
-	sudo pacman -Syu --noconfirm
-        sudo pacman -S --noconfirm git
-    elif command -v apt > /dev/null; then
-       	sudo add-apt-repository ppa:git-core/ppa
-        sudo apt update
-        sudo apt install git 
-    fi
-fi
+ubuntu_install "apt-transport-https"
+ubuntu_install "ca-certificates"
+ubuntu_install "software-properties-common"
 
 
 
 #################### YAY ####################
-if command -v pacman > /dev/null && ! command -v yay > /dev/null; then 
+if is_arch && ! cmd_exists yay; then 
     echo "Getting latest YAY"
     sudo pacman -S base-devel --noconfirm
     git clone https://aur.archlinux.org/yay.git /tmp/yay
@@ -86,19 +132,18 @@ fi
 
 
 #################### YADM ####################
-if ! command -v yadm > /dev/null; then
-    echo "Getting latest YADM"
-    sudo curl -fLo /usr/local/bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm
-    sudo chmod a+x /usr/local/bin/yadm
+if ! cmd_exists yadm && echo "Getting latest YADM"; then 
+	sudo curl -fLo /usr/local/bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm 
+	sudo chmod a+x /usr/local/bin/yadm
 fi
 
-if [ "$(yadm remote get-url origin)" != "git@github.com:kulabun/dotfiles.git" ] &&\
-   [ "$(yadm remote get-url origin)" != "https://github.com/kulabun/dotfiles.git" ]; then
-    echo "Getting latest dotfiles"
-    yadm clone https://github.com/kulabun/dotfiles.git
-    #yadm remote add origin git@github.com:kulabun/dotfiles.git
-    yadm pull origin master
+origin=$(yadm remote get-url origin) 
+if [ "$origin" != "git@github.com:kulabun/dotfiles.git" ] && [ "$origin" != "https://github.com/kulabun/dotfiles.git" ]; then
+	echo "Getting latest dotfiles" 
+	yadm clone https://github.com/kulabun/dotfiles.git 
+	yadm pull origin master
 fi
+
 yadm gitconfig user.name "Konstantin Labun"
 yadm gitconfig user.email konstantin.labun@gmail.com
 yadm gitconfig commit.gpgsign false
@@ -108,20 +153,7 @@ yadm gitconfig commit.gpgsign false
 #################### DOTFILES ####################
 echo "Getting latest dotfiles"
 yadm pull origin master
-bash -c "yadm decrypt"
-
-
-#################### FISH SHELL ####################
-if ! command -v fish > /dev/null; then 
-	echo "Getting latest fish"
-	if command -v pacman > /dev/null; then
-        sudo pacman -S --noconfirm fish
-	elif command -v apt /dev/null; then 
-		sudo apt-add-repository ppa:fish-shell/release-2
-		sudo apt update
-		sudo apt install fish
-	fi
-fi
+#bash -c "yadm decrypt"
 
 
 
@@ -129,21 +161,6 @@ fi
 echo "Getting latest Fisher"
 curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
 fish -c "fisher" 2> /dev/null
-
-
-
-#################### GO ####################
-echo "Getting latest GO"
-if ! command -v go > /dev/null; then 
-    if command -v pacman > /dev/null; then
-        sudo pacman -S --noconfirm go
-    else 
-		sudo add-apt-repository ppa:longsleep/golang-backports
-		sudo apt-get update
-		sudo apt-get install golang-go
-    fi    
-fi
-go get github.com/kulabun/gojson/gojson
 
 
 
@@ -155,6 +172,7 @@ chmod +x "$localroot"/bin/diff-so-fancy
 
 
 #################### NETWORKMANAGER-DMENU ####################
+ubuntu_install "libnm-util-dev"
 echo "Getting latest NetworkManager-Dmenu"
 wget -q https://raw.githubusercontent.com/firecat53/networkmanager-dmenu/master/networkmanager_dmenu -O "$localroot"/bin/networkmanager-dmenu
 chmod +x "$localroot"/bin/networkmanager-dmenu
@@ -162,61 +180,62 @@ chmod +x "$localroot"/bin/networkmanager-dmenu
 
 
 #################### VIM ####################
-if ! command -v vim > /dev/null; then 
-    echo "Getting latest VIM"
-    if command -v pacman > /dev/null; then
-	sudo pacman -S --noconfirm vim
-    elif command -v apt > /dev/null; then
-	sudo apt intall vim
-    fi
-fi 
-
-function createFolder {
-	if ! test -d "$1";then
-		mkdir -p "$1" 
-	fi
-}
-
 createFolder "$HOME"/.vim/swaps
 createFolder "$HOME"/.vim/backups
-
 echo "Getting latest VIM Plugins"
-if ! test -e "$HOME"/.vim/autoload/plug.vim; then
-    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-fi
+[ -e "$HOME"/.vim/autoload/plug.vim ] || curl -fLo ~/.vim/autoload/plug.vim --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 vim +'PlugUpdate --sync' +'PlugClean! --sync' '+qall!' -R -
 
 
 
 #################### FZF ####################
-if command -v pacman; then
-	echo "Getting latest FZF"
-	sudo pacman -S --noconfirm fzf
-else
+arch_install "fzf"
+if ! is_arch; then 
 	echo "Getting latest FZF"
 	FZF_PATH="$HOME"/.fzf
-	if ! test -d "$FZF_PATH"; then
-		git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-	fi
-	cd "$FZF_PATH"
-	git pull
-	./install
+	[ -d "$FZF_PATH" ] || git clone --depth 1 "https://github.com/junegunn/fzf.git" "$FZF_PATH"
+	cd "$FZF_PATH" && git pull && ./install
 	cp ./bin/fzf "$localroot"/bin/fzf
 fi
 
 
 
+#################### ALACRITTY ####################
+arch_install alacritty
+if is_ubuntu; then
+	echo "Building latest alacritty"
+	alacritty_git_root="$HOME"/.alacritty
+	if ! cmd_exists alacritty; then
+		sudo apt-get install -y libfreetype6-dev libfontconfig1-dev
+		curl https://sh.rustup.rs -sSf | bash
+		source ~/.cargo/env
+		rustup override set stable
+		rustup update stable
+		git clone https://github.com/jwilm/alacritty.git $HOME/.alacritty
+	fi
+	cd "$alacritty_git_root"
+	git pull
+	cargo build --release
+	cp target/release/alacritty "$localroot"/bin/
+	cp alacritty.desktop $HOME/.local/share/applications/
+
+	mkdir -p "$localroot"/share/man/man1
+	gzip -c alacritty.man > "$localroot"/share/man/man1/alacritty.1.gz
+
+	cp alacritty-completions.fish "$HOME"/.config/fish/completions/alacritty.fish
+	# sudo tic -e alacritty,alacritty-direct alacritty.info
+fi
+
+
+
 #################### VISUAL STUDIO CODE ####################
-VISUAL_STUDIO_CODE_PATH="/opt/vscode-$VISUAL_STUDIO_CODE_VERSION"
-if ! test -e "$VISUAL_STUDIO_CODE_PATH"; then
-    echo "Getting latest VSCode"
-    curl --silent --output /tmp/vscode.tar.gz -L "https://update.code.visualstudio.com/$VISUAL_STUDIO_CODE_VERSION/linux-x64/stable"
-    cd /tmp
-    tar xzvf vscode.tar.gz
-    sudo mv VSCode-linux-x64 "$VISUAL_STUDIO_CODE_PATH"
-    sudo ln -sf "$VISUAL_STUDIO_CODE_PATH" /opt/vscode
-    sudo ln -sf /opt/vscode/bin/code "$localroot"/bin/code 
+arch_install "visual-studio-code-bin"
+if is_ubuntu && ! cmd_exists "code"; then 
+	curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+	sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+	sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+	sudo apt update
+	ubuntu_install "code"
 fi
 
  
@@ -226,17 +245,8 @@ cat ~/.vscode/extensions.list | xargs -L 1 code --force --install-extension
 
 
 #################### NODE PACKAGE MANAGER ####################
-NODEJS_PATH="/opt/node-$NODEJS_VERSION"
-if ! test -e "$NODEJS_PATH"; then
-	echo "Getting latest NODE"
-    wget "https://nodejs.org/dist/$NODEJS_VERSION/node-$NODEJS_VERSION-linux-x64.tar.xz" -O /tmp/node.tar.xz
-    cd /tmp
-    tar xvf node.tar.xz
-    sudo mv "node-$NODEJS_VERSION-linux-x64" $NODEJS_PATH
-    sudo ln -sf "$NODEJS_PATH" /opt/node
-    sudo ln -sf /opt/node/bin/node "$localroot"/bin/node 
-    sudo ln -sf /opt/node/bin/npm "$localroot"/bin/npm
-fi
+arch_install "nodejs"
+is_ubuntu && sudo snap install node --classic --channel=$NODE_MAJOR_VERSION
  
 echo "Getting latest NPM packages"
 sudo npm update --unsafe-perm -g
@@ -250,15 +260,22 @@ go_github_path="$go_path"/src/github.com/github
 hub_path="$go_github_path"/hub
 if ! test -e $hub_path; then
     mkdir -p "$go_github_path" 
-    git clone \
-      --config transfer.fsckobjects=false \
-      --config receive.fsckobjects=false \
-      --config fetch.fsckobjects=false \
-      https://github.com/github/hub.git "$hub_path"
+    git clone --config transfer.fsckobjects=false --config receive.fsckobjects=false --config fetch.fsckobjects=false https://github.com/github/hub.git "$hub_path"
 fi
 cd "$hub_path"
 git pull
 make install prefix="$localroot"
+
+
+
+#################### CHROME  ####################
+arch_install "google-chrome"
+if is_ubuntu && ! cmd_exists "google-chrome"; then 
+	wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+	sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+	sudo apt update
+	ubuntu_install "google-chrome-stable"
+fi
 
 
 
@@ -268,7 +285,93 @@ ln -sf "$localroot"/bin/json2yaml "$localroot"/bin/yaml2json
 
 
 
-#################### LOCAL CONFIG  ####################
-if test -e $HOME/bin/update.local; then
-    source $HOME/bin/update.local
+#################### GO PACKAGES ####################
+go get -u github.com/kulabun/gojson/gojson 
+go get -u github.com/gopasspw/gopass
+
+
+
+#################### VPN ####################
+install "openvpn"
+if is_arch && ! test -e "/etc/openvpn/ovpn_tcp"; then
+	cd /etc/openvpn
+	wget https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip
+	unzip ovpn.zip
+	rm ovpn.zip
 fi
+
+
+
+#################### DOCKER ####################
+arch_install "docker-bin"
+arch_install "docker-compose-bin"
+if is_ubuntu; then
+	if ! cmd_exists "docker"; then
+		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+		sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+		sudo apt update
+		ubuntu_install docker-ce
+	fi
+	cmd_exists "docker-compose" || sudo curl -L "https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+fi
+ps aux | grep "docker" | grep -v "grep" || sudo systemctl enable docker.service
+groups | grep "docker" || sudo usermod -aG docker $USER
+
+# CTOP is a docker monitor
+if ! cmd_exists "ctop"; then
+	sudo wget https://github.com/bcicen/ctop/releases/download/v0.7.1/ctop-0.7.1-linux-amd64 -O /usr/local/bin/ctop
+	sudo chmod +x /usr/local/bin/ctop
+fi
+
+
+#################### AWS CLI ####################
+arch_install "aws-cli"
+is_ubuntu && pip install awscli --upgrade --user
+
+
+
+#################### POST INSTALL PACKAGES ####################
+install "jq" # json processor
+install "ranger" # moderm cli filemanager
+install "traceroute" # trace network requests
+install "uuid"
+install "i3-wm"
+install "strace" # to get debugging info is something goes wrong
+install "gucharmap" # to find font symbols
+install "youtube-dl"
+install "gpicview" # picture viewer
+install "nitrogen" # wallpaper manager
+install "dialog" # GUI promt for cli commands
+install "zenity" # GUI promt for cli commands
+
+
+arch_install "the_silver_searcher" && ubuntu_install "silversearcher-ag"
+
+# FONTS
+install "ttf-dejavu"
+install "ttf-liberation"
+install "ttf-ubuntu-font-family"
+
+
+arch_install "gradle"
+arch_install "maven"
+arch_install "jdk"
+arch_install "jdk8"
+arch_install "httpie"
+
+# SYSTEM
+arch_install "systemd-boot-pacman-hook"
+arch_install "linux-headers"
+arch_install "wpa_supplicant"
+arch_install "mesa"
+arch_install "libva"
+arch_install "xorg-server"
+arch_install "xorg-init"
+arch_install "xorg-xbacklight"
+#arch_install "tldr"
+#arch_install "spring-boot-cli"
+
+
+
+#################### LOCAL CONFIG  ####################
+[ -e $HOME/bin/update.local ] || source $HOME/bin/update.local

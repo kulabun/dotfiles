@@ -23,11 +23,11 @@ set SPACEFISH_AWS_SYMBOL " "
 set SPACEFISH_AWS_COLOR "white"
 set SPACEFISH_PROMPT_ADD_NEWLINE false
 set SPACEFISH_JOBS_AMOUNT_THRESHOLD 0
-#set SPACEFISH_VI_MODE_INSERT "❯"
-#set SPACEFISH_VI_MODE_NORMAL "❮"
-#set SPACEFISH_VI_MODE_VISUAL "V"
-#set SPACEFISH_VI_MODE_REPLACE_ONE "^" 
-#set SPACEFISH_VI_MODE_COLOR "0BB087"
+set SPACEFISH_VI_MODE_INSERT "❯"
+set SPACEFISH_VI_MODE_NORMAL "❮"
+set SPACEFISH_VI_MODE_VISUAL "V"
+set SPACEFISH_VI_MODE_REPLACE_ONE "^" 
+set SPACEFISH_VI_MODE_COLOR "0BB087"
 set SPACEFISH_PROMPT_ORDER user host dir vi_mode
 set SPACEFISH_RPROMPT_ORDER git jobs aws exec_time exit_code
 set -x AWS_PROFILE default # Override in session to use another profile
@@ -37,7 +37,8 @@ set -x AWS_PROFILE default # Override in session to use another profile
 
 #################### PERSONAL CONFIG ####################
 set fish_greeting ''
-fish_default_key_bindings
+#fish_default_key_bindings
+fish_vi_key_bindings
 set fish_prompt_pwd_dir_length 1 # Shrink path
 set -x PATH "$HOME"/bin /usr/local/bin /usr/bin /bin /usr/local/sbin /usr/lib/jvm/default/bin /usr/bin/site_perl /usr/bin/vendor_perl /usr/bin/core_perl /sbin /usr/sbin
 set -x EDITOR "vim"
