@@ -8,4 +8,4 @@ include-file = $HOME/.config/polybar/master.conf
 include-file = $HOME/.config/polybar/config.local
 
 ; Use $ xrandr -q | grep " connected" | cut -d ' ' -f1
-monitor = eDP1
+monitor =

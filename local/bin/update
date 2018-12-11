@@ -172,6 +172,11 @@ chmod +x "$localroot"/bin/diff-so-fancy
 
 
 #################### NETWORKMANAGER-DMENU ####################
+if !cmd_exists "nmcli"; then 
+	install "networkmanager"
+	systemctl enable NetworkManager.service
+fi
+
 ubuntu_install "libnm-util-dev"
 echo "Getting latest NetworkManager-Dmenu"
 wget -q https://raw.githubusercontent.com/firecat53/networkmanager-dmenu/master/networkmanager_dmenu -O "$localroot"/bin/networkmanager-dmenu
@@ -329,7 +334,6 @@ arch_install "aws-cli"
 is_ubuntu && pip install awscli --upgrade --user
 
 
-
 #################### POST INSTALL PACKAGES ####################
 install "jq" # json processor
 install "ranger" # moderm cli filemanager
@@ -343,7 +347,7 @@ install "gpicview" # picture viewer
 install "nitrogen" # wallpaper manager
 install "dialog" # GUI promt for cli commands
 install "zenity" # GUI promt for cli commands
-
+install "rofi"
 
 arch_install "the_silver_searcher" && ubuntu_install "silversearcher-ag"
 
@@ -351,7 +355,6 @@ arch_install "the_silver_searcher" && ubuntu_install "silversearcher-ag"
 install "ttf-dejavu"
 install "ttf-liberation"
 install "ttf-ubuntu-font-family"
-
 
 arch_install "gradle"
 arch_install "maven"
@@ -367,7 +370,23 @@ arch_install "mesa"
 arch_install "libva"
 arch_install "xorg-server"
 arch_install "xorg-init"
-arch_install "xorg-xbacklight"
+arch_install "xorg-xrandr"
+arch_install "community/light"
+arch_install "xorg-xprop"
+arch_install "xorg-xwininfo"
+arch_install "xorg-xlsfonts"
+arch_install "networkmanager"
+arch_install "xfce4"
+arch_install "python-gobject"
+arch_install "pulseaudio"
+arch_install "polybar"
+arch_install "sddm"
+arch_install "ark"
+arch_install "thunar-volman"
+arch_install "thunar-archive-plugin"
+arch_install "alsa-utils"
+arch_install "pamixer"
+
 #arch_install "tldr"
 #arch_install "spring-boot-cli"
 

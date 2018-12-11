@@ -24,7 +24,7 @@ bindsym $mod+Shift+q kill
 # start dmenu(rofi) (a program launcher)
 bindsym $mod+Control+Return exec rofi -modi drun -show drun -show-icons -me-select-entry '' -sidebar-mode
 bindsym $mod+d exec rofi -modi drun -show drun -show-icons -me-select-entry '' -sidebar-mode
-bindsym $mod+n exec networkmanager-dmenu
+bindsym $mod+n exec $HOME/bin/networkmanager-dmenu
 
 # change focus
 bindsym $mod+j focus left
@@ -137,11 +137,11 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 2
 bindsym XF86AudioMute exec --no-startup-id pamixer -t
 
 # screen lock
-bindsym $mod+Control+l exec --no-startup-id slimlock
+bindsym $mod+Control+l exec --no-startup-id i3lock -i ~/Wallpapers/224527.png  -e
 
 # backlight
-bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10
-bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10
+bindsym XF86MonBrightnessUp exec --no-startup-id light -A 10
+bindsym XF86MonBrightnessDown exec --no-startup-id light -U 10
 
 
 # resize window (you can also use the mouse for that)
@@ -197,13 +197,14 @@ for_window [class="(?i)(?:thunar|ranger|code|jetbrains-idea|chrome|firefox)"] bo
 
 # Assign Applications to specific workspace
 # get class with xprop
-assign [class="(?i)(?:system-term)"] → $ws11
-assign [class="(?i)(?:code)"] → $ws2
-assign [class="(?i)(?:jetbrains-idea)"] → $ws2
-assign [instance="(?i)(?:gmail.com)"] → $ws9
-assign [instance="(?i)(?:music.amazon.com)"] → $ws10
-assign [instance="(?i)(?:devdocs.io)"] → $ws4
-assign [class="(?i)(?:chrome)"] → $ws1
+assign [class="(?i)(?:system-term)"] $ws11
+assign [class="Alacritty" instance="system-term"] $ws11
+assign [class="(?i)(?:code)"] $ws2
+assign [class="(?i)(?:jetbrains-idea)"] $ws2
+assign [instance="(?i)(?:gmail.com)"] $ws9
+assign [instance="(?i)(?:music.amazon.com)"] $ws10
+assign [instance="(?i)(?:devdocs.io)"] $ws4
+assign [class="(?i)(?:chrome)"] $ws1
 
 # focus, floating, & sticky
 for_window [title="(?i)(?:copying|deleting|moving)"] floating enable
