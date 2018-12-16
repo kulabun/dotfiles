@@ -143,6 +143,10 @@ if [ "$origin" != "git@github.com:kulabun/dotfiles.git" ] && [ "$origin" != "htt
 	yadm clone https://github.com/kulabun/dotfiles.git 
 	yadm pull origin master
 fi
+if [ "$origin" != "git@github.com:kulabun/dotfiles.git" ]; then
+	yadm remote remove origin 
+	yadm remote add origin "git@github.com:kulabun/dotfiles.git"
+fi
 
 yadm gitconfig user.name "Konstantin Labun"
 yadm gitconfig user.email konstantin.labun@gmail.com
