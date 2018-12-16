@@ -187,6 +187,7 @@ exec google-chrome-stable
 exec google-chrome-stable --app="https://devdocs.io"
 exec google-chrome-stable --app="https://music.amazon.com"
 exec google-chrome-stable --app="https://gmail.com"
+exec google-chrome-stable --app="https://todoist.com"
 exec alacritty --class "system-term"
 #exec --no-startup-id 
 
@@ -197,14 +198,14 @@ for_window [class="(?i)(?:thunar|ranger|code|jetbrains-idea|chrome|firefox)"] bo
 
 # Assign Applications to specific workspace
 # get class with xprop
-assign [class="(?i)(?:system-term)"] $ws11
 assign [class="Alacritty" instance="system-term"] $ws11
-assign [class="(?i)(?:code)"] $ws2
-assign [class="(?i)(?:jetbrains-idea)"] $ws2
-assign [instance="(?i)(?:gmail.com)"] $ws9
-assign [instance="(?i)(?:music.amazon.com)"] $ws10
-assign [instance="(?i)(?:devdocs.io)"] $ws4
-assign [class="(?i)(?:chrome)"] $ws1
+assign [class="code"] $ws2
+assign [class="jetbrains-idea"] $ws2
+assign [instance="gmail.com"] $ws9
+assign [instance="music.amazon.com"] $ws10
+assign [instance="devdocs.io"] $ws4
+assign [instance="todoist.com"] $ws8
+assign [class="Google-chrome"] $ws1
 
 # focus, floating, & sticky
 for_window [title="(?i)(?:copying|deleting|moving)"] floating enable
@@ -215,4 +216,4 @@ for_window [class="(?i)(?:peek)"] floating enable
 for_window [class="(?i)trayer"] border pixel 0
 
 # Fix for chrome applications (have role = popup)
-for_window [class="(?i)(?:chrome)"] floating disable
+for_window [class="Google-chrome"] floating disable

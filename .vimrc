@@ -13,10 +13,8 @@ silent! if plug#begin()
 " Plugin 'garbas/vim-snipmate'
 " Plugin 'L9'
 " Plugin 'MarcWeber/vim-addon-mw-utils'
-" Plugin 'mattn/emmet-vim'
 " Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Plugin 'tomtom/tlib_vim'
-" Plugin 'tpope/vim-fugitive'
 
 " Make sure you use single quotes
 
@@ -25,10 +23,33 @@ Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'itchyny/lightline.vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+
+" Vim sugar for the UNIX shell commands that need it the most
+Plug 'tpope/vim-eunuch'
+
+" Files Panel
 Plug 'scrooloose/nerdtree'
+
+" Fast in-file navigation
 Plug 'easymotion/vim-easymotion'
-Plug 'sheerun/vim-polyglot'
+
 Plug 'scrooloose/syntastic'
+
+" Highlight for different file types
+Plug 'sheerun/vim-polyglot'
+
+" MultiCursor
+Plug 'terryma/vim-multiple-cursors'
+
+" HTML and CSS helper
+Plug 'mattn/emmet-vim'
+
+" Git support
+Plug 'tpope/vim-fugitive'
+
+" FZF support. Search over Files, Git, etc
+Plug '/usr/bin/fzf'
+Plug 'junegunn/fzf.vim'
 
 " Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
 " Plug 'fatih/vim-go', { 'tag': '*' }
@@ -167,6 +188,10 @@ let g:syntastic_check_on_wq = 0
 
 
 " Mappings
+map <C-p> :Files<CR>
+map <C-h> :History<CR>
+map <C-o> :NERDTreeToggle<CR>
+
 imap jj <Esc>
 nnoremap <leader><space> :noh<cr>
 nnoremap <Tab> >>_
@@ -180,6 +205,23 @@ cnoreabbrev Q q
 cnoreabbrev Wq wq
 cnoreabbrev WQ wq
 cnoreabbrev wQ wq
+
+" Commands to remember
+" :Snippets
+" :Maps
+" :Commands
+" :GFiles?
+
+
+" Default MultiCursor mappings.. just as reminder
+" let g:multi_cursor_start_word_key      = '<C-n>'
+" let g:multi_cursor_select_all_word_key = '<A-n>'
+" let g:multi_cursor_start_key           = 'g<C-n>'
+" let g:multi_cursor_select_all_key      = 'g<A-n>'
+" let g:multi_cursor_next_key            = '<C-n>'
+" let g:multi_cursor_prev_key            = '<C-p>'
+" let g:multi_cursor_skip_key            = '<C-x>'
+" let g:multi_cursor_quit_key            = '<Esc>'
 
 " --------------------------------------
 " FIX FOR TRUE COLOR FOR DIFFIRENT TERMS

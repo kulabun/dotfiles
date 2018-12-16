@@ -23,6 +23,7 @@
     "go.useCodeSnippetsOnFunctionSuggest": true,
     "go.autocompleteUnimportedPackages": true,
     "go.docsTool": "gogetdoc",
+    "go.useLanguageServer": true,
     "gitlens.advanced.messages": {
         "suppressShowKeyBindingsNotice": true
     },
@@ -124,5 +125,6 @@
     },
     "files.hotExit": "off",
     "ruby.intellisense": "rubyLocate",
-    "markdown-pdf.displayHeaderFooter": false
+    "markdown-pdf.displayHeaderFooter": false,
+    "window.titleBarStyle": "custom"
 }

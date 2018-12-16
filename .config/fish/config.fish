@@ -30,7 +30,7 @@ set SPACEFISH_VI_MODE_REPLACE_ONE "^"
 set SPACEFISH_VI_MODE_COLOR "0BB087"
 set SPACEFISH_PROMPT_ORDER user host dir vi_mode
 set SPACEFISH_RPROMPT_ORDER git jobs aws exec_time exit_code
-set -x AWS_PROFILE default # Override in session to use another profile
+#set -x AWS_PROFILE default # Override in session to use another profile
 
 #################### PLUGINS ####################
 

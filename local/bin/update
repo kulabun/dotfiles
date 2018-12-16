@@ -242,7 +242,10 @@ if is_ubuntu && ! cmd_exists "code"; then
 	sudo apt update
 	ubuntu_install "code"
 fi
-
+# Electron-based application use gvfs-trash. This is deprecated package, so let just emulate it..
+if !cmd_exists "gvfs-trash"; then
+	echo -e "#!/bin/bash\ntrash $@" | sudo tee /usr/bin/gvfs-trash > /dev/null
+fi
  
 echo "Getting latest VSCode extensions"
 cat ~/.vscode/extensions.list | xargs -L 1 code --force --install-extension 
@@ -300,9 +303,9 @@ go get -u github.com/gopasspw/gopass
 install "openvpn"
 if is_arch && ! test -e "/etc/openvpn/ovpn_tcp"; then
 	cd /etc/openvpn
-	wget https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip
-	unzip ovpn.zip
-	rm ovpn.zip
+	sudo wget https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip
+	sudo unzip ovpn.zip
+	sudo rm ovpn.zip
 fi
 
 
@@ -386,6 +389,14 @@ arch_install "thunar-volman"
 arch_install "thunar-archive-plugin"
 arch_install "alsa-utils"
 arch_install "pamixer"
+arch_install "openssh"
+arch_install "unzip"
+arch_install "xdg-user-dir"
+arch_install "scrot"
+arch_install "trash-cli" # let allow apps to delete files to trash
+arch_install "gvfs"
+arch_install "gvfs-mtp"
+arch_install "rsync"
 
 #arch_install "tldr"
 #arch_install "spring-boot-cli"
