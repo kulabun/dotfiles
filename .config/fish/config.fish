@@ -40,7 +40,7 @@ set fish_greeting ''
 #fish_default_key_bindings
 fish_vi_key_bindings
 set fish_prompt_pwd_dir_length 1 # Shrink path
-set -x PATH "$HOME"/bin /usr/local/bin /usr/bin /bin /usr/local/sbin /usr/lib/jvm/default/bin /usr/bin/site_perl /usr/bin/vendor_perl /usr/bin/core_perl /sbin /usr/sbin
+set -x PATH "$HOME"/bin "$HOME"/go/bin /usr/local/bin /usr/bin /bin /usr/local/sbin /usr/lib/jvm/default/bin /usr/bin/site_perl /usr/bin/vendor_perl /usr/bin/core_perl /sbin /usr/sbin
 set -x EDITOR "vim"
 set -x PAGER "less"
 set -x GOPATH "$HOME"/go
@@ -53,8 +53,8 @@ abbr c "cat"
 abbr T "tail -f"
 abbr t "tail -n"
 abbr h "head -n"
-abbr e $EDITOR
-abbr p $PAGER
+abbr e "$EDITOR"
+abbr p "$PAGER"
 abbr ka "kill -9"
 abbr ka "killall -9"
 abbr md "mkdir -p"
