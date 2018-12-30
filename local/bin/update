@@ -90,7 +90,7 @@ function createFolder {
 #################### SYSTEM UPDATE ####################
 echo "Getting latest system updates"
 function system_update {
-	cmd_exists yay && yay -Syu --noconfirma && return 0
+	cmd_exists yay && yay -Syu --noconfirm && return 0
 	cmd_exists pacman && sudo pacman -Syu --noconfirm && return 0
 	is_ubuntu && sudo apt update && sudo apt upgrade -y && return 0
 	return 1
@@ -370,6 +370,7 @@ arch_install "jdk8"
 arch_install "httpie"
 
 # SYSTEM
+arch_install "dunst"
 arch_install "systemd-boot-pacman-hook"
 arch_install "linux-headers"
 arch_install "wpa_supplicant"
