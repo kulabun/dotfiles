@@ -201,10 +201,22 @@ vim +'PlugUpdate --sync' +'PlugClean! --sync' '+qall!'
 arch_install "fzf"
 if ! is_arch; then 
 	echo "Getting latest FZF"
-	FZF_PATH="$HOME"/.fzf
-	[ -d "$FZF_PATH" ] || git clone --depth 1 "https://github.com/junegunn/fzf.git" "$FZF_PATH"
-	cd "$FZF_PATH" && git pull && ./install
+	fzf_git_root="$HOME"/.fzf
+	[ -d "$fzf_git_root" ] || git clone --depth 1 "https://github.com/junegunn/fzf.git" "$FZF_PATH"
+	cd "$fzf_git_root" && git pull && ./install
 	cp ./bin/fzf "$localroot"/bin/fzf
+fi
+
+
+
+#################### FZY ####################
+arch_install "fzy" # fzf replacement
+if ! is_arch; then 
+	echo "Getting latest FZY"
+	fzy_git_root="$HOME"/.fzy
+	[ -d "$fzy_git_root" ] || git clone --depth 1 "https://github.com/jhawthorn/fzy" "$fzy_root_path"
+	cd "$fzy_git_root" && git pull
+	make && cp ./bin/fzy "$localroot"/bin/fzf
 fi
 
 
@@ -262,6 +274,7 @@ is_ubuntu && sudo snap install node --classic --channel=$NODE_MAJOR_VERSION
  
 echo "Getting latest NPM packages"
 sudo npm update --unsafe-perm -g
+cmd_exists "remarker" || sudo npm install -g remarker
 
 
 
@@ -341,6 +354,35 @@ arch_install "aws-cli"
 is_ubuntu && pip install awscli --upgrade --user
 
 
+
+#################### RIPGREP ####################
+arch_install "ripgrep" # silversearcher/ag replacement
+if is_ubuntu; then
+	echo "Building latest ripgrep"
+	ripgrep_git_root="$HOME"/.ripgrep
+	[ -d "$ripgrep_git_root" ] || git clone "https://github.com/BurntSushi/ripgrep" "$ripgrep_git_root"
+	cd $ripgrep_git_root
+	git pull
+	cargo build --release
+	cp target/release/rg "$localroot"/bin/
+fi
+
+
+
+#################### FD ####################
+arch_install "fd" # find replacement
+if is_ubuntu; then
+	echo "Building latest fd"
+	fd_git_root="$HOME"/.fd
+	[ -d "$fd_git_root" ] || git clone "https://github.com/sharkdp/fd" "$fd_git_root"
+	cd "$fd_git_root"
+	git pull
+	cargo build --release
+	cp target/release/fd "$localroot"/bin/
+fi
+
+
+
 #################### POST INSTALL PACKAGES ####################
 install "jq" # json processor
 install "ranger" # moderm cli filemanager
@@ -356,7 +398,7 @@ install "dialog" # GUI promt for cli commands
 install "zenity" # GUI promt for cli commands
 install "rofi"
 
-arch_install "the_silver_searcher" && ubuntu_install "silversearcher-ag"
+#arch_install "the_silver_searcher" && ubuntu_install "silversearcher-ag"
 
 # FONTS
 install "ttf-dejavu"
@@ -396,12 +438,14 @@ arch_install "alsa-utils"
 arch_install "pamixer"
 arch_install "openssh"
 arch_install "unzip"
-arch_install "xdg-user-dir"
+arch_install "xdg-user-dirs"
 arch_install "scrot"
 arch_install "trash-cli" # let allow apps to delete files to trash
 arch_install "gvfs"
 arch_install "gvfs-mtp"
 arch_install "rsync"
+
+
 
 #arch_install "tldr"
 #arch_install "spring-boot-cli"
@@ -409,4 +453,4 @@ arch_install "rsync"
 
 
 #################### LOCAL CONFIG  ####################
-[ -e $HOME/bin/update.local ] || source $HOME/bin/update.local
+[ -e $HOME/bin/update.local ] && source $HOME/bin/update.local
