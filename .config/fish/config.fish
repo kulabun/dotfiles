@@ -45,6 +45,9 @@ set -x EDITOR "vim"
 set -x PAGER "less"
 set -x GOPATH "$HOME"/go
 set -g FISH_CUSTOM_FUNCTIONS_PATH "$HOME/.config/fish/my-functions"
+set -x CTAGS_ROOT "/data/dev/ctags"
+set -x SOURCES_ROOT "/data/dev/sources-root"
+
 
 
 #################### ABBRIVIATIONS  ####################
@@ -74,7 +77,7 @@ abbr hh "history -50"
 abbr hi "history 1"
 abbr hi "history 1 | grep -i"
 abbr cb "xclip -selection clipboard"
-abbr ! "sudo \$history[1]"
+abbr fuck "sudo \$history[1]"
 abbr da "du -sch"
 abbr lad "ls -d .*(/)"
 abbr l "ls"

@@ -194,6 +194,13 @@ createFolder "$HOME"/.vim/backups
 echo "Getting latest VIM Plugins"
 [ -e "$HOME"/.vim/autoload/plug.vim ] || curl -fLo ~/.vim/autoload/plug.vim --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 vim +'PlugUpdate --sync' +'PlugClean! --sync' '+qall!' 
+vim +'CocInstall coc-gocode coc-yyaml coc-json coc-html coc-css coc-pyls coc-tsserver coc-prettier coc-solargraph'
+
+
+
+#################### NEOVIM ####################
+arch_install "neovim"
+arch_install "aur/universal-ctags-git"
 
 
 
@@ -431,7 +438,7 @@ arch_install "python-gobject"
 arch_install "pulseaudio"
 arch_install "polybar"
 arch_install "sddm"
-arch_install "ark"
+arch_install "file-roller"
 arch_install "thunar-volman"
 arch_install "thunar-archive-plugin"
 arch_install "alsa-utils"

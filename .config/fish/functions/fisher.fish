@@ -1,4 +1,4 @@
-set -g fisher_version 3.2.2
+set -g fisher_version 3.2.4
 
 function fisher -a cmd -d "fish package manager"
     set -q XDG_CACHE_HOME; or set XDG_CACHE_HOME ~/.cache
@@ -43,7 +43,8 @@ function fisher -a cmd -d "fish package manager"
         case copy-user-key-bindings
             _fisher_copy_user_key_bindings
         case ls
-            _fisher_ls | _fisher_fmt
+            set -e argv[1]
+            _fisher_ls | _fisher_fmt | _fisher_filter | command awk "/$argv[1]/"
         case self-update
             _fisher_self_update (status -f)
         case self-uninstall
@@ -53,7 +54,7 @@ function fisher -a cmd -d "fish package manager"
         case -h {,--}help
             _fisher_help
         case ""
-            _fisher_commit -- $argv
+            _fisher_commit --
         case add rm
             if not isatty
                 while read -l arg
@@ -76,14 +77,14 @@ function fisher -a cmd -d "fish package manager"
 end
 
 function _fisher_self_complete
-    complete -c fisher --erase
+    complete -ec fisher
     complete -xc fisher -n __fish_use_subcommand -a add -d "Add packages"
     complete -xc fisher -n __fish_use_subcommand -a rm -d "Remove packages"
-    complete -xc fisher -n __fish_use_subcommand -a ls -d "List added packages"
+    complete -xc fisher -n __fish_use_subcommand -a ls -d "List installed packages"
     complete -xc fisher -n __fish_use_subcommand -a help -d "Show usage help"
     complete -xc fisher -n __fish_use_subcommand -a version -d "$fisher_version"
     complete -xc fisher -n __fish_use_subcommand -a self-update -d "Update to the latest version"
-    for pkg in (_fisher_ls | _fisher_fmt)
+    for pkg in (_fisher_ls | _fisher_fmt | _fisher_filter)
         complete -xc fisher -n "__fish_seen_subcommand_from rm" -a $pkg
     end
 end
@@ -103,10 +104,29 @@ function _fisher_copy_user_key_bindings
 end
 
 function _fisher_ls
-    set -l pkgs $fisher_config/*/*/*
-    for pkg in $pkgs
+    for pkg in $fisher_config/*/*/*
         command readlink $pkg; or echo $pkg
     end
+end
+
+function _fisher_fmt
+    command sed "s|^[[:space:]]*||;s|^$fisher_config/||;s|^$HOME|~|;s|^\.\/|$PWD/|;s|^github\.com/||;s|^https*://||;s|/*\$||"
+end
+
+function _fisher_file -a file
+    set -e argv[1]
+    _fisher_fmt < $file | _fisher_read $argv
+end
+
+function _fisher_filter
+    set -l file (_fisher_file $fisher_path/fishfile)
+    command awk -v FILE="$file" '
+        BEGIN {
+            n = split(FILE, file, " ")
+            for (i = 1; i <= n; i++) found[file[i]] = i
+        }
+        found[$0]
+    '
 end
 
 function _fisher_version -a file
@@ -118,7 +138,7 @@ function _fisher_help
     echo "       fisher add <PACKAGES>    Add packages"
     echo "       fisher rm  <PACKAGES>    Remove packages"
     echo "       fisher                   Update all packages"
-    echo "       fisher ls                List added packages"
+    echo "       fisher ls  [REGEX]       List installed packages matching REGEX"
     echo "       fisher help              Show this help"
     echo "       fisher version           Show the current version"
     echo "       fisher self-update       Update to the latest version"
@@ -128,8 +148,11 @@ function _fisher_help
     echo "       fisher add jethrokuan/z rafaelrinaldi/pure"
     echo "       fisher add gitlab.com/foo/bar@v2"
     echo "       fisher add ~/path/to/local/pkg"
-    echo "       fisher rm rafaelrinaldi/pure"
     echo "       fisher add < bundle"
+    echo "       fisher rm rafaelrinaldi/pure"
+    echo "       fisher rm rafaelrinaldi/pure"
+    echo "       fisher ls | fisher rm"
+    echo "       fisher ls fish-\*"
 end
 
 function _fisher_self_update -a file
@@ -165,10 +188,9 @@ function _fisher_self_uninstall
         command rm -Rf $file 2>/dev/null
     end | command sed "s|$HOME|~|" >&2
 
-    set -e fisher_cache
-    set -e fisher_config
-    set -e fisher_path
-    set -e fisher_version
+    for name in (set -n | command awk '/^fisher_/')
+        set -e "$name"
+    end
 
     complete -c fisher --erase
     functions -e (functions -a | command awk '/^_fisher/') fisher
@@ -193,7 +215,7 @@ function _fisher_commit -a cmd
     command rm -Rf $fisher_config
     command mkdir -p $fisher_config
 
-    set -l next_pkgs (_fisher_fmt < $fishfile | _fisher_read $cmd (printf "%s\n" $argv | _fisher_fmt))
+    set -l next_pkgs (_fisher_file $fishfile $cmd (printf "%s\n" $argv | _fisher_fmt))
     set -l new_pkgs (_fisher_fetch $next_pkgs)
     set -l old_pkgs
     for pkg in $rm_pkgs
@@ -236,13 +258,9 @@ function _fisher_commit -a cmd
     ' >&2
 end
 
-function _fisher_fmt
-    command sed "s|^[[:space:]]*||;s|^$fisher_config/||;s|^$HOME|~|;s|^\.\/|$PWD/|;s|^github\.com/||;s|^https*://||;s|/*\$||"
-end
-
 function _fisher_read -a cmd
     set -e argv[1]
-    command awk -v FS=\# -v CMD="$cmd" -v ARGS="$argv" '
+    command awk -v FS="[[:space:]]*#" -v CMD="$cmd" -v ARGS="$argv" '
         BEGIN {
             split(ARGS, args, " ")
             for (i in args) {
@@ -260,7 +278,7 @@ function _fisher_read -a cmd
             if (CMD == "rm") {
                 for (pkg in pkgs) {
                     if (!(pkg in file)) {
-                        print "cannot remove \"" pkg "\" -- package not found" > "/dev/stderr"
+                        print "cannot remove \""pkg"\" -- package not listed in fishfile" > "/dev/stderr"
                     }
                 }
             }
@@ -314,20 +332,22 @@ function _fisher_fetch
                 continue
         end
 
-        command awk -v NAME=$i -v FS=/ 'BEGIN {
-            if (split(NAME, tmp, /@+|:/) > 2) {
-                if (tmp[4]) sub("@"tmp[4], "", NAME)
-                print NAME "\t" tmp[2]"/"tmp[1]"/"tmp[3] "\t" (tmp[4] ? tmp[4] : "master")
-            } else {
-                pkg = split(NAME, _, "/") <= 2 ? "github.com/"tmp[1] : tmp[1]
-                tag = tmp[2] ? tmp[2] : "master"
-                print (\
-                    pkg ~ /^github/ ? "https://codeload."pkg"/tar.gz/"tag : \
-                    pkg ~ /^gitlab/ ? "https://"pkg"/-/archive/"tag"/"tmp[split(pkg, tmp, "/")]"-"tag".tar.gz" : \
-                    pkg ~ /^bitbucket/ ? "https://"pkg"/get/"tag".tar.gz" : pkg \
-                ) "\t" pkg
+        command awk -v NAME=$i -v FS=/ '
+            BEGIN {
+                if (split(NAME, tmp, /@+|:/) > 2) {
+                    if (tmp[4]) sub("@"tmp[4], "", NAME)
+                    print NAME "\t" tmp[2]"/"tmp[1]"/"tmp[3] "\t" (tmp[4] ? tmp[4] : "master")
+                } else {
+                    pkg = split(NAME, _, "/") <= 2 ? "github.com/"tmp[1] : tmp[1]
+                    tag = tmp[2] ? tmp[2] : "master"
+                    print (\
+                        pkg ~ /^github/ ? "https://codeload."pkg"/tar.gz/"tag : \
+                        pkg ~ /^gitlab/ ? "https://"pkg"/-/archive/"tag"/"tmp[split(pkg, tmp, "/")]"-"tag".tar.gz" : \
+                        pkg ~ /^bitbucket/ ? "https://"pkg"/get/"tag".tar.gz" : pkg \
+                    ) "\t" pkg
+                }
             }
-        }' | read -l url pkg branch
+        ' | read -l url pkg branch
 
         if test ! -d "$fisher_config/$pkg"
             fish -c "
@@ -455,22 +475,21 @@ function _fisher_rm -a pkg
 end
 
 function _fisher_jobs
-    builtin jobs $argv | command awk '/[0-9]+\t/ { print $1 }'
+    jobs $argv | command awk '/^[0-9]+\t/ { print $1 }'
 end
 
 function _fisher_wait
     while for job in $argv
-            contains -- $job (_fisher_jobs)
-            and break
+            contains -- $job (_fisher_jobs); and break
         end
     end
 end
 
 function _fisher_now -a elapsed
     switch (command uname)
-        case Darwin FreeBSD
+        case Darwin \*BSD
             command perl -MTime::HiRes -e 'printf("%.0f\n", (Time::HiRes::time() * 1000) - $ARGV[0])' $elapsed
         case \*
-            command date "+%s%3N" | command awk -v ELAPSED="$elapsed" '{ sub(/%?3N$/, "000") } $0 -= ELAPSED'
+            math (command date "+%s%3N") - "0$elapsed"
     end
 end
