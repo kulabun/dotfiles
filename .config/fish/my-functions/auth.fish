@@ -1,0 +1,1 @@
+/home/ANT.AMAZON.COM/labunk/.config/fish/my-functions/auth.fish##work

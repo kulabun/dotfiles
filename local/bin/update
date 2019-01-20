@@ -176,7 +176,7 @@ chmod +x "$localroot"/bin/diff-so-fancy
 
 
 #################### NETWORKMANAGER-DMENU ####################
-if !cmd_exists "nmcli"; then 
+if ! cmd_exists "nmcli"; then 
 	install "networkmanager"
 	systemctl enable NetworkManager.service
 fi
@@ -313,6 +313,7 @@ fi
 
 #################### UTILS  ####################
 curl -L --silent --output "$localroot"/bin/json2yaml "https://gist.githubusercontent.com/kulabun/5b2e9f640e8f0bfa2271836439dc6efb/raw/030b01748c33fff31c78636aafb00725e7974db6/json2yaml.py"
+chmod +x "$localroot"/bin/json2yaml 
 ln -sf "$localroot"/bin/json2yaml "$localroot"/bin/yaml2json
 
 
@@ -354,6 +355,15 @@ if ! cmd_exists "ctop"; then
 	sudo wget https://github.com/bcicen/ctop/releases/download/v0.7.1/ctop-0.7.1-linux-amd64 -O /usr/local/bin/ctop
 	sudo chmod +x /usr/local/bin/ctop
 fi
+
+
+
+#################### PYTHON PIP ####################
+if ! cmd_exists "pip" && is_ubuntu; then
+	curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+	python /tmp/get-pip.py --user
+fi
+
 
 
 #################### AWS CLI ####################
