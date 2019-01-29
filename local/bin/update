@@ -221,10 +221,16 @@ arch_install "fzy" # fzf replacement
 if ! is_arch; then 
 	echo "Getting latest FZY"
 	fzy_git_root="$HOME"/.fzy
-	[ -d "$fzy_git_root" ] || git clone --depth 1 "https://github.com/jhawthorn/fzy" "$fzy_root_path"
+	[ -d "$fzy_git_root" ] || git clone --depth 1 "https://github.com/jhawthorn/fzy" "$fzy_git_root"
 	cd "$fzy_git_root" && git pull
 	make && cp ./bin/fzy "$localroot"/bin/fzf
 fi
+
+
+
+#################### RUSTUP + CARGO ####################
+[ -d "$HOME"/.cargo/env ] || curl https://sh.rustup.rs -sSf | bash
+source ~/.cargo/env
 
 
 
@@ -235,8 +241,6 @@ if is_ubuntu; then
 	alacritty_git_root="$HOME"/.alacritty
 	if ! cmd_exists alacritty; then
 		sudo apt-get install -y libfreetype6-dev libfontconfig1-dev
-		curl https://sh.rustup.rs -sSf | bash
-		source ~/.cargo/env
 		rustup override set stable
 		rustup update stable
 		git clone https://github.com/jwilm/alacritty.git $HOME/.alacritty
