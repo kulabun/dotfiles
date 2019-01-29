@@ -3,4 +3,5 @@ tags
 .git
 .uuid
 *.iml
+*.tmp
 *##work
