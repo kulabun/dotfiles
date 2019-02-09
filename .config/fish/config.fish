@@ -47,6 +47,7 @@ set -x GOPATH "$HOME"/go
 set -g FISH_CUSTOM_FUNCTIONS_PATH "$HOME/.config/fish/my-functions"
 set -x CTAGS_ROOT "/data/dev/ctags"
 set -x SOURCES_ROOT "/data/dev/sources-root"
+set -x TERM "xterm"
 
 
 
@@ -104,6 +105,7 @@ abbr pscpu "ps auxf | sort -nr -k 3 | less -S"
 abbr psmem "ps auxf | sort -nr -k 4 | less -S"
 abbr server "python3 -m http.server"
 abbr urlencode "python -c \"import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);\""
+abbr urldecode "python -c \"import sys, urllib as ul; print ul.unquote(sys.argv[1]);\""
 abbr ts "tmux new-session -s"
 abbr ta "tmux attach -t"
 abbr tl "tmux list-sessions"

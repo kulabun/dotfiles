@@ -16,8 +16,7 @@ ln -sf "$localroot"/bin "$HOME"/bin
 
 #################### HELPER FUNCTIONS ####################
 function cmd_exists {
-	command -v "$1" > /dev/null && return 0
-	return 1
+  command -v "$1" > /dev/null
 }
 
 function add_ubuntu_repository {
