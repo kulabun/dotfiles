@@ -362,52 +362,54 @@ endtry
 " ###########################################################
 " # Plugin Config: NeoBuild
 " ###########################################################
-try
-  let g:neomake_error_sign   = {'text': '✖', 'texthl': 'NeomakeErrorSign'}
-  let g:neomake_warning_sign = {'text': '∆', 'texthl': 'NeomakeWarningSign'}
-  let g:neomake_message_sign = {'text': '➤', 'texthl': 'NeomakeMessageSign'}
-  let g:neomake_info_sign    = {'text': 'ℹ', 'texthl': 'NeomakeInfoSign'}
+if (has("nvim"))
+  try
+    let g:neomake_error_sign   = {'text': '✖', 'texthl': 'NeomakeErrorSign'}
+    let g:neomake_warning_sign = {'text': '∆', 'texthl': 'NeomakeWarningSign'}
+    let g:neomake_message_sign = {'text': '➤', 'texthl': 'NeomakeMessageSign'}
+    let g:neomake_info_sign    = {'text': 'ℹ', 'texthl': 'NeomakeInfoSign'}
 
-  " neomake configuration for Go.
-  let g:neomake_go_enabled_makers = [ 'go', 'gometalinter', 'endsentence' ]
-  let g:neomake_go_endsentence_maker = { }
-  let g:neomake_go_gometalinter_maker = {
-    \ 'args': [
-    \   '--tests',
-    \   '--enable-gc',
-    \   '--concurrency=3',
-    \   '--fast',
-    \   '-D', 'aligncheck',
-    \   '-D', 'dupl',
-    \   '-D', 'gocyclo',
-    \   '-D', 'gotype',
-    \   '-E', 'errcheck',
-    \   '-E', 'misspell',
-    \   '-E', 'staticcheck',
-    \   '-E', 'safesql',
-    \   '-E', 'unused',
-    \   '-E', 'unconvert',
-    \   '-E', 'interfacer',
-    \   '%:p:h',
-    \ ],
-    \ 'append_file': 0,
-    \ 'errorformat':
-    \   '%E%f:%l:%c:%trror: %m,' .
-    \   '%W%f:%l:%c:%tarning: %m,' .
-    \   '%E%f:%l::%trror: %m,' .
-    \   '%W%f:%l::%tarning: %m'
-    \ }
+    " neomake configuration for Go.
+    let g:neomake_go_enabled_makers = [ 'go', 'gometalinter', 'endsentence' ]
+    let g:neomake_go_endsentence_maker = { }
+    let g:neomake_go_gometalinter_maker = {
+      \ 'args': [
+      \   '--tests',
+      \   '--enable-gc',
+      \   '--concurrency=3',
+      \   '--fast',
+      \   '-D', 'aligncheck',
+      \   '-D', 'dupl',
+      \   '-D', 'gocyclo',
+      \   '-D', 'gotype',
+      \   '-E', 'errcheck',
+      \   '-E', 'misspell',
+      \   '-E', 'staticcheck',
+      \   '-E', 'safesql',
+      \   '-E', 'unused',
+      \   '-E', 'unconvert',
+      \   '-E', 'interfacer',
+      \   '%:p:h',
+      \ ],
+      \ 'append_file': 0,
+      \ 'errorformat':
+      \   '%E%f:%l:%c:%trror: %m,' .
+      \   '%W%f:%l:%c:%tarning: %m,' .
+      \   '%E%f:%l::%trror: %m,' .
+      \   '%W%f:%l::%tarning: %m'
+      \ }
 
-  let g:neomake_java_maker = 'javac'
+    let g:neomake_java_maker = 'javac'
 
-  au FileType sh autocmd BufWritePost * Neomake
-  au FileType go autocmd BufWritePost * Neomake
-  au FileType java autocmd BufWritePost * Neomake
-  au FileType rb autocmd BufWritePost * Neomake
-  au FileType py autocmd BufWritePost * Neomake
+    au FileType sh autocmd BufWritePost * Neomake
+    au FileType go autocmd BufWritePost * Neomake
+    au FileType java autocmd BufWritePost * Neomake
+    au FileType rb autocmd BufWritePost * Neomake
+    au FileType py autocmd BufWritePost * Neomake
 
-catch
-endtry
+  catch
+  endtry
+endif
 
 
 

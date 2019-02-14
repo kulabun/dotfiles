@@ -58,6 +58,7 @@ nnoremap <leader>gms :action GenerateSetter<cr>
 nnoremap <leader>gma :action GenerateGetterAndSetter<cr>
 nnoremap <leader>gma :action ImplementMethods<cr>
 nnoremap <leader>s :action SurroundWith<cr>
+nnoremap <leader>p :action ParameterInfo<cr>
 
 nnoremap <leader>= :action ReformatCode<cr>
 nnoremap <leader>q :action CloseContent<cr>
