@@ -16,13 +16,13 @@ floating_modifier $mod
 
 # start a terminal
 # bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec alacritty
+bindsym $mod+Control+Return exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # start dmenu(rofi) (a program launcher)
-bindsym $mod+Control+Return exec rofi -modi drun -show drun -show-icons -me-select-entry '' -sidebar-mode
+bindsym $mod+Return exec rofi -modi drun -show drun -show-icons -me-select-entry '' -sidebar-mode
 bindsym $mod+d exec rofi -modi drun -show drun -show-icons -me-select-entry '' -sidebar-mode
 bindsym $mod+n exec $HOME/bin/networkmanager-dmenu
 
