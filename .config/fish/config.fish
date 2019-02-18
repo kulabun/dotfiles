@@ -52,6 +52,7 @@ set -x TERM "xterm"
 
 
 #################### ABBRIVIATIONS  ####################
+abbr vi "vim"
 abbr g "git"
 abbr c "cat"
 abbr T "tail -f"

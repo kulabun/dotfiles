@@ -150,7 +150,7 @@ fi
 yadm gitconfig user.name "Konstantin Labun"
 yadm gitconfig user.email konstantin.labun@gmail.com
 yadm gitconfig commit.gpgsign false
-
+update-profile-symlinks
 
 
 #################### DOTFILES ####################
