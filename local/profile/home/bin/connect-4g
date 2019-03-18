@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#Google Fi
+APN="apn=h2g2"
+
+modem_id=$(mmcli -L | sed "s/.*\/Modem\/\([0-9]\+\).*/\1/")
+if test $modem_id; then
+    echo "using modem id=$modem_id, apn=$APN"
+    mmcli --modem $modem_id --simple-connect="$APN"
+else
+    echo "No Modem Connected"
+fi

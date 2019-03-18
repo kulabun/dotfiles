@@ -403,6 +403,15 @@ fi
 
 
 
+#################### ModemManager(4G LTE) ####################
+arch_install "modemmanager"
+if is_arch; then
+  systemctl enable ModemManager.service
+  systemctl start ModemManager.service
+fi
+
+
+
 #################### POST INSTALL PACKAGES ####################
 install "jq" # json processor
 install "ranger" # moderm cli filemanager
@@ -464,6 +473,7 @@ arch_install "trash-cli" # let allow apps to delete files to trash
 arch_install "gvfs"
 arch_install "gvfs-mtp"
 arch_install "rsync"
+
 
 
 
