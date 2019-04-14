@@ -25,7 +25,6 @@ silent! if plug#begin()
 
   "Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
   "Plug 'terryma/vim-multiple-cursors'
-  Plug 'Yggdroot/indentLine'
   Plug 'craigemery/vim-autotag'
   Plug 'easymotion/vim-easymotion'
   Plug 'editorconfig/editorconfig-vim'
