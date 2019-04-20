@@ -126,5 +126,7 @@
     "files.hotExit": "off",
     "ruby.intellisense": "rubyLocate",
     "markdown-pdf.displayHeaderFooter": false,
-    "window.titleBarStyle": "custom"
+    "window.titleBarStyle": "custom",
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue"
 }

@@ -81,7 +81,7 @@ function install {
 }
 
 function createFolder {
-	[ -d "$1" ] || mkdir -p "$1" 
+	[ -d "$1" ] || mkdir -p "$1"
 }
 
 
@@ -108,7 +108,7 @@ install "xclip"
 
 
 arch_install "vim" && ubuntu_install "vim" "ppa:jonathonf/vim"
-arch_install "git" && ubuntu_install "git" "ppa:git-core/ppa" 
+arch_install "git" && ubuntu_install "git" "ppa:git-core/ppa"
 arch_install "fish" && ubuntu_install "fish" "ppa:fish-shell/release-2"
 arch_install "go" && ubuntu_install "golang-go" "ppa:longsleep/golang-backports"
 
@@ -119,7 +119,7 @@ ubuntu_install "software-properties-common"
 
 
 #################### YAY ####################
-if is_arch && ! cmd_exists yay; then 
+if is_arch && ! cmd_exists yay; then
     echo "Getting latest YAY"
     sudo pacman -S base-devel --noconfirm
     git clone https://aur.archlinux.org/yay.git /tmp/yay
@@ -131,19 +131,19 @@ fi
 
 
 #################### YADM ####################
-if ! cmd_exists yadm && echo "Getting latest YADM"; then 
-	sudo curl -fLo /usr/local/bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm 
+if ! cmd_exists yadm && echo "Getting latest YADM"; then
+	sudo curl -fLo /usr/local/bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm
 	sudo chmod a+x /usr/local/bin/yadm
 fi
 
-origin=$(yadm remote get-url origin) 
+origin=$(yadm remote get-url origin)
 if [ "$origin" != "git@github.com:kulabun/dotfiles.git" ] && [ "$origin" != "https://github.com/kulabun/dotfiles.git" ]; then
-	echo "Getting latest dotfiles" 
-	yadm clone https://github.com/kulabun/dotfiles.git 
+	echo "Getting latest dotfiles"
+	yadm clone https://github.com/kulabun/dotfiles.git
 	yadm pull origin master
 fi
 if [ "$origin" != "git@github.com:kulabun/dotfiles.git" ]; then
-	yadm remote remove origin 
+	yadm remote remove origin
 	yadm remote add origin "git@github.com:kulabun/dotfiles.git"
 fi
 
@@ -175,7 +175,7 @@ chmod +x "$localroot"/bin/diff-so-fancy
 
 
 #################### NETWORKMANAGER-DMENU ####################
-if ! cmd_exists "nmcli"; then 
+if ! cmd_exists "nmcli"; then
 	install "networkmanager"
 	systemctl enable NetworkManager.service
 fi
@@ -192,7 +192,7 @@ createFolder "$HOME"/.vim/swaps
 createFolder "$HOME"/.vim/backups
 echo "Getting latest VIM Plugins"
 [ -e "$HOME"/.vim/autoload/plug.vim ] || curl -fLo ~/.vim/autoload/plug.vim --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-vim +'PlugUpdate --sync' +'PlugClean! --sync' '+qall!' 
+vim +'PlugUpdate --sync' +'PlugClean! --sync' '+qall!'
 vim +'CocInstall coc-gocode coc-yyaml coc-json coc-html coc-css coc-pyls coc-tsserver coc-prettier coc-solargraph'
 
 
@@ -205,7 +205,7 @@ arch_install "aur/universal-ctags-git"
 
 #################### FZF ####################
 arch_install "fzf"
-if ! is_arch; then 
+if ! is_arch; then
 	echo "Getting latest FZF"
 	fzf_git_root="$HOME"/.fzf
 	[ -d "$fzf_git_root" ] || git clone --depth 1 "https://github.com/junegunn/fzf.git" "$FZF_PATH"
@@ -217,7 +217,7 @@ fi
 
 #################### FZY ####################
 arch_install "fzy" # fzf replacement
-if ! is_arch; then 
+if ! is_arch; then
 	echo "Getting latest FZY"
 	fzy_git_root="$HOME"/.fzy
 	[ -d "$fzy_git_root" ] || git clone --depth 1 "https://github.com/jhawthorn/fzy" "$fzy_git_root"
@@ -261,7 +261,7 @@ fi
 
 #################### VISUAL STUDIO CODE ####################
 arch_install "visual-studio-code-bin"
-if is_ubuntu && ! cmd_exists "code"; then 
+if is_ubuntu && ! cmd_exists "code"; then
 	curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
 	sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
 	sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
@@ -272,16 +272,16 @@ fi
 if !cmd_exists "gvfs-trash"; then
 	echo -e "#!/bin/bash\ntrash $@" | sudo tee /usr/bin/gvfs-trash > /dev/null
 fi
- 
+
 echo "Getting latest VSCode extensions"
-cat ~/.vscode/extensions.list | xargs -L 1 code --force --install-extension 
+cat ~/.vscode/extensions.list | xargs -L 1 code --force --install-extension
 
 
 
 #################### NODE PACKAGE MANAGER ####################
 arch_install "nodejs"
 is_ubuntu && sudo snap install node --classic --channel=$NODE_MAJOR_VERSION
- 
+
 echo "Getting latest NPM packages"
 sudo npm update --unsafe-perm -g
 cmd_exists "remarker" || sudo npm install -g remarker
@@ -291,10 +291,10 @@ cmd_exists "remarker" || sudo npm install -g remarker
 #################### GITHUB'S HUB  ####################
 echo "Building latest GitHub git-wrapper(hub)"
 go_path="$HOME"/go
-go_github_path="$go_path"/src/github.com/github 
+go_github_path="$go_path"/src/github.com/github
 hub_path="$go_github_path"/hub
 if ! test -e $hub_path; then
-    mkdir -p "$go_github_path" 
+    mkdir -p "$go_github_path"
     git clone --config transfer.fsckobjects=false --config receive.fsckobjects=false --config fetch.fsckobjects=false https://github.com/github/hub.git "$hub_path"
 fi
 cd "$hub_path"
@@ -305,7 +305,7 @@ make install prefix="$localroot"
 
 #################### CHROME  ####################
 arch_install "google-chrome"
-if is_ubuntu && ! cmd_exists "google-chrome"; then 
+if is_ubuntu && ! cmd_exists "google-chrome"; then
 	wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 	sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
 	sudo apt update
@@ -316,13 +316,13 @@ fi
 
 #################### UTILS  ####################
 curl -L --silent --output "$localroot"/bin/json2yaml "https://gist.githubusercontent.com/kulabun/5b2e9f640e8f0bfa2271836439dc6efb/raw/030b01748c33fff31c78636aafb00725e7974db6/json2yaml.py"
-chmod +x "$localroot"/bin/json2yaml 
+chmod +x "$localroot"/bin/json2yaml
 ln -sf "$localroot"/bin/json2yaml "$localroot"/bin/yaml2json
 
 
 
 #################### GO PACKAGES ####################
-go get -u github.com/kulabun/gojson/gojson 
+go get -u github.com/kulabun/gojson/gojson
 go get -u github.com/gopasspw/gopass
 
 
@@ -412,7 +412,7 @@ fi
 
 
 
-#################### POST INSTALL PACKAGES ####################
+#################### TAIL INSTALL PACKAGES ####################
 install "jq" # json processor
 install "ranger" # moderm cli filemanager
 install "traceroute" # trace network requests
@@ -475,10 +475,19 @@ arch_install "gvfs-mtp"
 arch_install "rsync"
 
 
-
-
+#arch_install "tor-browser"
 #arch_install "tldr"
 #arch_install "spring-boot-cli"
+
+
+
+#################### INSTALL NPM PACKAGES ####################
+
+
+
+#################### POST INSTALL CONFIGURATION ####################
+# disable wifi powersave mode
+echo -e "[connection]\nwifi.powersave = 2" | sudo tee /etc/NetworkManager/conf.d/wifi-powersave.conf > /dev/null
 
 
 
