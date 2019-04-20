@@ -11,6 +11,8 @@ localroot="$HOME"/local
 
 mkdir -p "$localroot"/bin
 ln -sf "$localroot"/bin "$HOME"/bin
+PATH="$PATH:$HOME/bin"
+update-profile-symlinks
 
 
 
