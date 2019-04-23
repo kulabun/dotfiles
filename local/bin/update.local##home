@@ -1,2 +1,2 @@
 #!/bin/bash
-wifi-fix
+yay -S rtl8822bu-dkms-git --noconfirm
