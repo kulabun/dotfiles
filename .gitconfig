@@ -62,6 +62,7 @@
     c = commit
     cr = !git add -u && git dc && read && git commit
     l = log --color --graph --pretty=format:'%C(bold green)%h%Creset [%G?]-%C(yellow)%d%Creset %C(bold)%s%Creset | %C(green)%an%Creset, %C(blue)%ar%Creset'
+    lh = log --color --graph --pretty=format:'%C(bold green)%H%Creset [%G?]-%C(yellow)%d%Creset %C(bold)%s%Creset | %C(green)%an%Creset, %C(blue)%ar%Creset'
     # Show files changed in each commit
     ll = log --color --graph --pretty=format:'%C(bold green)%h%Creset [%G?]-%C(yellow)%d%Creset %C(bold)%s%Creset | %C(green)%an%Creset, %C(blue)%ar%Creset' --numstat
     # Local branches

@@ -324,8 +324,7 @@ ln -sf "$localroot"/bin/json2yaml "$localroot"/bin/yaml2json
 #################### GO PACKAGES ####################
 go get -u github.com/kulabun/gojson/gojson 
 go get -u github.com/gopasspw/gopass
-
-
+go get -u github.com/josephburnett/jd # json diff
 
 #################### VPN ####################
 install "openvpn"
