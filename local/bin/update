@@ -224,7 +224,7 @@ if ! is_arch; then
 	fzy_git_root="$HOME"/.fzy
 	[ -d "$fzy_git_root" ] || git clone --depth 1 "https://github.com/jhawthorn/fzy" "$fzy_git_root"
 	cd "$fzy_git_root" && git pull
-	make && cp ./bin/fzy "$localroot"/bin/fzf
+	make && cp ./fzy "$localroot"/bin/fzf
 fi
 
 
