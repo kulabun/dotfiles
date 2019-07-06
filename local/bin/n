@@ -9,4 +9,5 @@ else
   note_file=$(ls "$NOTES_DIR/" | fzf | sed 's!.*/!!')
 fi
 
-[ "$note_file" != "" ] && $EDITOR "$NOTES_DIR/$note_file"
+[ "$note_file" == "" ] && note_file="$@"
+$EDITOR "$NOTES_DIR/$note_file"
