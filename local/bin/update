@@ -368,7 +368,7 @@ if ! cmd_exists "pip" && is_ubuntu; then
 	python /tmp/get-pip.py --user
 fi
 pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U --user
-pip install jrnl --user
+#pip install jrnl --user
 
 
 
