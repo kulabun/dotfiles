@@ -224,7 +224,7 @@ if ! is_arch; then
 	fzy_git_root="$HOME"/.fzy
 	[ -d "$fzy_git_root" ] || git clone --depth 1 "https://github.com/jhawthorn/fzy" "$fzy_git_root"
 	cd "$fzy_git_root" && git pull
-	make && cp ./bin/fzy "$localroot"/bin/fzf
+	make && cp ./fzy "$localroot"/bin/fzf
 fi
 
 
@@ -326,8 +326,7 @@ ln -sf "$localroot"/bin/json2yaml "$localroot"/bin/yaml2json
 #################### GO PACKAGES ####################
 go get -u github.com/kulabun/gojson/gojson
 go get -u github.com/gopasspw/gopass
-
-
+go get -u github.com/josephburnett/jd # json diff
 
 #################### VPN ####################
 install "openvpn"
@@ -368,6 +367,8 @@ if ! cmd_exists "pip" && is_ubuntu; then
 	curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
 	python /tmp/get-pip.py --user
 fi
+pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U --user
+#pip install jrnl --user
 
 
 
