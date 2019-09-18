@@ -368,6 +368,7 @@ if ! cmd_exists "pip" && is_ubuntu; then
 	python /tmp/get-pip.py --user
 fi
 pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U --user
+pip install awslogs --user
 #pip install jrnl --user
 
 
@@ -403,6 +404,16 @@ if is_ubuntu; then
 	cargo build --release
 	cp target/release/fd "$localroot"/bin/
 fi
+
+
+
+#################### AWSINFO ####################
+echo "Building latest awsinfo"
+awsinfo_git_root="$HOME"/.awsinfo
+[ -d "$awsinfo_git_root" ] || git clone "https://github.com/kulabun/awsinfo" "$awsinfo_git_root"
+cd "$awsinfo_git_root"
+git pull
+ln -sf "$awsinfo_git_root/scripts/awsinfo.bash" "$localroot"/bin/awsinfo
 
 
 

@@ -6,3 +6,7 @@ tags
 *.tmp
 *##work
 /build
+/out
+*.class
+.gradle
+changes
