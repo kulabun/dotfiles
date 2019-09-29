@@ -1,0 +1,4 @@
+#!/bin/bash
+LOCAL_DIR="$HOME/.leetcode"
+[ -e "$LOCAL_DIR" ] || mkdir "$LOCAL_DIR"
+docker run -it --rm -v "$LOCAL_DIR:/root" skygragon/leetcode-cli $@
