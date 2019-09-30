@@ -489,6 +489,9 @@ arch_install "trash-cli" # let allow apps to delete files to trash
 arch_install "gvfs"
 arch_install "gvfs-mtp"
 arch_install "rsync"
+arch_install "words" # Word files, required to make `look` command work(used by emacs autocompletion)
+arch_install "aspell-en" # English dictionary for spell validation
+arch_install "bat" # cat with syntax highlight
 
 
 #arch_install "tor-browser"

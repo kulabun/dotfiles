@@ -1,0 +1,3 @@
+#!/bin/bash
+yay -Sc --noconfirm
+sudo rm -rf /var/cache/pacman/*

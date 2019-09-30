@@ -1,18 +1,22 @@
 [include]
     path = .gitconfig.local
-[push] 
-    default = current 
-[core] 
-    editor = vim 
-    filemode = false 
+[push]
+    default = current
+[core]
+    editor = vim
+    filemode = false
     whitespace = warn,space-before-tab,trailing-space
     autocrlf = input
     pager = diff-so-fancy | less --tabs=4 -RFX
     excludesfile = ~/.gitignore
 [diff]
     tool = vscode
+    # Detect copies as well as renames
+    renames = copies
 [merge]
     tool = vscode
+    # Include summaries of merged commits in newly created merge commit messages
+    log = true
 [difftool]
     prompt = false
 [difftool "vscode"]
@@ -79,8 +83,14 @@
     f = fetch
     r = remote
     w = whatchanged
-    # Find commit by message and save hash clipboard
-    fc = "!f() { git log --oneline | fzf -q \"$1\" | cut -d\" \" -f1 | xclip -selection clipboard ; };f"
+    # Find branches containing commit
+    fb = "!f() { git branch -a --contains $1; }; f"
+    # Find tags containing commit
+    ft = "!f() { git describe --always --contains $1; }; f"
+    # Find commit by source
+    fcs = "!f() { git log --oneline --pretty=format:'%C(bold green)%h%Creset [%G?]-%C(yellow)%d%Creset %C(bold)%s%Creset | %C(green)%an%Creset, %C(blue)%ar%Creset' -S$1 | fzf | cut -d\" \" -f1; };f"
+    # Find commit by message
+    fcm = "!f() { git log --oneline --pretty=format:'%C(bold green)%h%Creset [%G?]-%C(yellow)%d%Creset %C(bold)%s%Creset | %C(green)%an%Creset, %C(blue)%ar%Creset' | fzf -q \"$1\" | cut -d\" \" -f1; };f"
     # Undo last commit
     undo = reset HEAD^ --soft
     u = undo
@@ -96,7 +106,7 @@
     amend = commit -a --amend
     # Get the current branch name (not so useful in itself, but used in other aliases)
     branch-name = !git rev-parse --abbrev-ref HEAD
-    # Remove files from stage 
+    # Remove files from stage
     unstage = reset HEAD --
     # Reset files
     discard = checkout --
@@ -122,7 +132,8 @@
 
     # Update from origin
     # The extra '&& :' is needed: https://stackoverflow.com/a/25915221
-    sync = !git fetch --all --prune && git submodule update --init --recursive && git rebase -p --autostash $1 && :
+    sync = !git fetch --all --prune && git rebase -p --autostash $1 && :
+    sync-recursive = !git fetch --all --prune && git submodule update --init --recursive && git rebase -p --autostash $1 && :
     p = !git sync
     # Update from upstream
     sync-upstream = !git fetch --all --prune && git rebase -p --autostash upstream/`git rev-parse --abbrev-ref HEAD` && :
@@ -155,4 +166,6 @@
     # Delete any branches that have been merged into master
     # See also: https://gist.github.com/robmiller/5133264
     delete-merged-branches = "!f() { git checkout ${1-master} && git branch --merged ${1-master} | grep -v \"${1-master}$\" | xargs git branch -d; };f"
-    ignore = "gi() { curl -L -s https://www.gitignore.io/api/$@ ;}; gi"
+    ignore = "!gi() { curl -L -s https://www.gitignore.io/api/$@ ;}; gi"
+    # List contributors with number of commits
+	  contributors = shortlog --summary --numbered
