@@ -185,7 +185,7 @@ exec --no-startup-id xfsettingsd
 exec --no-startup-id compton
 exec google-chrome-stable
 exec google-chrome-stable --app="https://devdocs.io"
-exec google-chrome-stable --app="https://music.amazon.com"
+exec google-chrome-stable --app="https://calendar.google.com"
 exec google-chrome-stable --app="https://gmail.com"
 exec google-chrome-stable --app="https://todoist.com"
 exec alacritty --class "system-term"
@@ -202,8 +202,8 @@ assign [class="Alacritty" instance="system-term"] $ws11
 assign [class="code"] $ws2
 assign [class="jetbrains-idea"] $ws2
 assign [instance="gmail.com"] $ws9
-assign [instance="music.amazon.com"] $ws10
-assign [instance="devdocs.io"] $ws4
+assign [instance="calendar.google.com"] $ws10
+assign [instance="devdocs.io"] $ws3
 assign [instance="todoist.com"] $ws8
 assign [class="Google-chrome"] $ws1
 
