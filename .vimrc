@@ -48,6 +48,7 @@ silent! if plug#begin()
   Plug 'tyrannicaltoucan/vim-quantum'
   Plug 'vim-ruby/vim-ruby'
   Plug 'w0rp/ale'
+  Plug 'jceb/vim-orgmode'
 "  Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 "  Plug 'SirVer/ultisnips'
 "  Plug 'honza/vim-snippets'
@@ -447,11 +448,12 @@ endfunction
 " ###########################################################
 " # Key Mappings
 " ###########################################################
-let mapleader = "h"
-noremap ; l
-noremap l k
-noremap k j
-noremap j h
+let mapleader = " "
+let maplocalleader = ";"
+" noremap ; l
+" noremap l k
+" noremap k j
+" noremap j h
 nnoremap <C-Left> <C-W><C-H>
 nnoremap <C-Down> <C-W><C-J>
 nnoremap <C-Up> <C-W><C-K>
@@ -474,7 +476,7 @@ nnoremap <silent> <Leader><Esc> :noh<CR>
 nnoremap <silent> <F1> :call ToggleList("Quickfix List", 'c')<CR>
 nnoremap <silent> <F2> :call ToggleList("Location List", 'l')<CR>
 nnoremap <silent> <F3> :silent UndotreeToggle<CR>
-imap hf <Esc>
+imap jj <Esc>
 vnoremap <silent> <Leader>= :EasyAlign<CR>
 vnoremap <silent> / :Commentary<CR>
 
@@ -484,6 +486,11 @@ cnoreabbrev Q q
 cnoreabbrev Wq wq
 cnoreabbrev WQ wq
 cnoreabbrev wQ wq
+cnoreabbrev qw wq
+cnoreabbrev qW wq
+cnoreabbrev qW wq
+cnoreabbrev QW wq
+cnoreabbrev Qw wq
 
 " Easy Motion
 map <Leader> <Plug>(easymotion-prefix)

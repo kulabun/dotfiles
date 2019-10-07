@@ -115,6 +115,7 @@ abbr sshx "ssh -c arcfour,blowfish-cbc -XC"
 abbr func "$EDITOR ~/.config/fish/my-functions/"
 abbr r "ranger"
 abbr ag "rg"
+#abbr awsauth "set -e AWS_ACCESS_KEY_ID; set -e AWS_SECRET_ACCESS_KEY; set -e AWS_SESSION_TOKEN; export (read -P \"Enter you MFA code: \" token; aws-mfa-credentials \$token)"
 
 if test -e "$HOME"/.config/fish/config.local.fish
     source "$HOME"/.config/fish/config.local.fish

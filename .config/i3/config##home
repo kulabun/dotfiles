@@ -23,6 +23,7 @@ bindsym $mod+Shift+q kill
 
 # start dmenu(rofi) (a program launcher)
 bindsym $mod+Control+Return exec rofi -modi drun -show drun -show-icons -me-select-entry '' -sidebar-mode
+bindsym $mod+Control+p exec $HOME/bin/pass-dmenu
 bindsym $mod+d exec rofi -modi drun -show drun -show-icons -me-select-entry '' -sidebar-mode
 bindsym $mod+n exec $HOME/bin/networkmanager-dmenu
 
