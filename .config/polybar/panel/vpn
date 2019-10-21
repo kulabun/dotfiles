@@ -1,24 +1,25 @@
 #!/usr/bin/env bash
 
-while true; do
-    VPN_STATUS="輦"
+NO_VPN_STATUS="輦"
+VPN_STATUS="聯"
 
-    if $(pgrep -x openvpn > /dev/null); then
-        VPN_STATUS="聯"
-    fi;
+openvpn=$((pgrep -x openvpn > /dev/null && echo on) || echo off);
+vpnagentd=$((pgrep -x vpnagentd > /dev/null && echo on) || echo off);
 
-    if $(pgrep -x vpnagentd > /dev/null); then
-        VPN_STATUS="聯"
-    fi;
-    
-    IPINFO=$(curl "https://ip.seeip.org/geoip" 2>/dev/null)
-    LOC=$(echo $IPINFO | jq ".loc" | tr -d '"')
-    COUNTRY=$(echo $IPINFO | jq ".country_code" | tr -d '"')
-    CITY=$(echo $IPINFO | jq ".city" | tr -d '"')
-    IP=$(echo $IPINFO | jq ".ip" | tr -d '"')
+if [ "$openvpn" == "off" ] && [ "$vpnagentd" == "off" ]; then
+    echo "$NO_VPN_STATUS"
+    exit 0;
+fi
 
-    echo "$VPN_STATUS $IP ($COUNTRY,$CITY)"
-    sleep 10
-done;
+IPINFO=$(curl "https://ip.seeip.org/geoip" 2>/dev/null)
+LOC=$(echo $IPINFO | jq ".loc" | tr -d '"')
+COUNTRY=$(echo $IPINFO | jq ".country_code" | tr -d '"')
+CITY=$(echo $IPINFO | jq ".city" | tr -d '"')
+IP=$(echo $IPINFO | jq ".ip" | tr -d '"')
 
-#return 0;
+if [ "$COUNTRY" != "null" ]; then
+    VPN_STATUS="$VPN_STATUS $COUNTRY"
+    [ "$CITY" != "null" ] && VPN_STATUS="$VPN_STATUS,$CITY"
+fi
+
+echo "$VPN_STATUS"

@@ -23,7 +23,7 @@ Xft.dpi: 168
 *.color14: #96b5b4
 *.color15: #F6F6F6
 
-! Rofi
+! Rofi (For Ubuntu(old version))
 rofi.font: Ubuntu Mono 12
 rofi.padding: 20
 rofi.line-padding: 2

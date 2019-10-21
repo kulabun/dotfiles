@@ -3,7 +3,6 @@
 
 
 #################### PRECONFIGURE ####################
-GO_VERSION="1.11.2"
 VISUAL_STUDIO_CODE_VERSION="1.29.1"
 NODE_MAJOR_VERSION="10"
 
@@ -22,68 +21,68 @@ function cmd_exists {
 }
 
 function add_ubuntu_repository {
-	repo_name=$1
-	if ! ls /etc/apt/sources.list.d/ | grep $repo_name > /dev/null; then
-		add-apt-repository "$repo_name"
-		apt update
-	fi
+  repo_name=$1
+  if ! ls /etc/apt/sources.list.d/ | grep $repo_name > /dev/null; then
+    add-apt-repository "$repo_name"
+    apt update
+  fi
 }
 
 function install_with_pacman {
-	[ "$#" -eq "0" ] && echo "Argument required" && return 1
+  [ "$#" -eq "0" ] && echo "Argument required" && return 1
 
-    packageName="$1"
-    if ! pacman -Qi $packageName > /dev/null; then
-		echo "Getting latest $packageName"
-        sudo pacman -S --noconfirm "$packageName"
-    fi
+  packageName="$1"
+  if ! pacman -Qi $packageName > /dev/null; then
+    echo "Getting latest $packageName"
+    sudo pacman -S --noconfirm "$packageName"
+  fi
 }
 
 function install_with_yay {
-	[ "$#" -eq "0" ] && echo "Argument required" && return 1
+  [ "$#" -eq "0" ] && echo "Argument required" && return 1
 
-    packageName="$1"
-    if ! yay -Qi $packageName > /dev/null; then
-		echo "Getting latest $packageName"
-        yay -S --noconfirm "$packageName"
-    fi
+  packageName="$1"
+  if ! yay -Qi $packageName > /dev/null; then
+    echo "Getting latest $packageName"
+    yay -S --noconfirm "$packageName"
+  fi
 }
 
 function install_with_apt {
-	[ "$#" -eq "0" ] && echo "Argument required" && return 1
-	[ "$#" -eq "2" ] && add_ubuntu_repository "$2"
+  [ "$#" -eq "0" ] && echo "Argument required" && return 1
+  [ "$#" -eq "2" ] && add_ubuntu_repository "$2"
 
-    packageName="$1"
-	if ! dpkg -l $packageName >/dev/null; then
-		echo "Getting latest $packageName"
-        sudo apt install -y "$packageName"
-    fi
+  packageName="$1"
+  if ! dpkg -l $packageName >/dev/null; then
+    echo "Getting latest $packageName"
+    sudo apt install -y "$packageName"
+  fi
 }
 
 function arch_install {
-	cmd_exists "yay" && install_with_yay "$1" && return 0
-	cmd_exists "pacman" && install_with_pacman "$1" && return 0
+  cmd_exists "yay" && install_with_yay "$1" && return 0
+  cmd_exists "pacman" && install_with_pacman "$1" && return 0
 }
 
 function ubuntu_install {
-	cmd_exists "apt" && install_with_apt "$1"
+  cmd_exists "apt" && install_with_apt "$1"
 }
 
 function is_arch {
-	cmd_exists "pacman"
+  cmd_exists "pacman"
 }
 
 function is_ubuntu {
-	cmd_exists "apt"
+  cmd_exists "apt"
 }
 
 function install {
-	arch_install "$1"
-	ubuntu_install "$1"
+  arch_install "$1"
+  ubuntu_install "$1"
 }
 
 function createFolder {
-	[ -d "$1" ] || mkdir -p "$1"
+  [ -d "$1" ] || mkdir -p "$1"
 }
 
 
@@ -91,12 +90,13 @@ function createFolder {
 #################### SYSTEM UPDATE ####################
 echo "Getting latest system updates"
 function system_update {
-	cmd_exists yay && yay -Syu --noconfirm && return 0
-	cmd_exists pacman && sudo pacman -Syu --noconfirm && return 0
-	is_ubuntu && sudo apt update && sudo apt upgrade -y && return 0
-	return 1
+  cmd_exists yay && yay -Syu --noconfirm && return 0
+  cmd_exists pacman && sudo pacman -Syu --noconfirm && return 0
+  is_ubuntu && sudo apt update && sudo apt upgrade -y && return 0
+  return 1
 }
 system_update || echo "System Update FAILED"
+
 
 
 #################### PRE INSTALL PACKAGES ####################
@@ -107,6 +107,8 @@ install "ruby" && ubuntu_install "ruby-dev"
 install "ruby-bundler"
 install "cmake"
 install "xclip"
+install "python3"
+install "clang"
 
 
 arch_install "vim" && ubuntu_install "vim" "ppa:jonathonf/vim"
@@ -122,31 +124,31 @@ ubuntu_install "software-properties-common"
 
 #################### YAY ####################
 if is_arch && ! cmd_exists yay; then
-    echo "Getting latest YAY"
-    sudo pacman -S base-devel --noconfirm
-    git clone https://aur.archlinux.org/yay.git /tmp/yay
-    cd /tmp/yay
-    makepkg -si --noconfirm
-	yay -Syu --noconfirm
+  echo "Getting latest YAY"
+  sudo pacman -S base-devel --noconfirm
+  git clone https://aur.archlinux.org/yay.git /tmp/yay
+  cd /tmp/yay
+  makepkg -si --noconfirm
+  yay -Syu --noconfirm
 fi
 
 
 
 #################### YADM ####################
 if ! cmd_exists yadm && echo "Getting latest YADM"; then
-	sudo curl -fLo /usr/local/bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm
-	sudo chmod a+x /usr/local/bin/yadm
+  sudo curl -fLo /usr/local/bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm
+  sudo chmod a+x /usr/local/bin/yadm
 fi
 
 origin=$(yadm remote get-url origin)
 if [ "$origin" != "git@github.com:kulabun/dotfiles.git" ] && [ "$origin" != "https://github.com/kulabun/dotfiles.git" ]; then
-	echo "Getting latest dotfiles"
-	yadm clone https://github.com/kulabun/dotfiles.git
-	yadm pull origin master
+  echo "Getting latest dotfiles"
+  yadm clone https://github.com/kulabun/dotfiles.git
+  yadm pull origin master
 fi
 if [ "$origin" != "git@github.com:kulabun/dotfiles.git" ]; then
-	yadm remote remove origin
-	yadm remote add origin "git@github.com:kulabun/dotfiles.git"
+  yadm remote remove origin
+  yadm remote add origin "git@github.com:kulabun/dotfiles.git"
 fi
 
 yadm gitconfig user.name "Konstantin Labun"
@@ -178,8 +180,8 @@ chmod +x "$localroot"/bin/diff-so-fancy
 
 #################### NETWORKMANAGER-DMENU ####################
 if ! cmd_exists "nmcli"; then
-	install "networkmanager"
-	systemctl enable NetworkManager.service
+  install "networkmanager"
+  systemctl enable NetworkManager.service
 fi
 
 ubuntu_install "libnm-util-dev"
@@ -208,23 +210,11 @@ arch_install "aur/universal-ctags-git"
 #################### FZF ####################
 arch_install "fzf"
 if ! is_arch; then
-	echo "Getting latest FZF"
-	fzf_git_root="$HOME"/.fzf
-	[ -d "$fzf_git_root" ] || git clone --depth 1 "https://github.com/junegunn/fzf.git" "$FZF_PATH"
-	cd "$fzf_git_root" && git pull && ./install
-	cp ./bin/fzf "$localroot"/bin/fzf
-fi
-
-
-
-#################### FZY ####################
-arch_install "fzy" # fzf replacement
-if ! is_arch; then
-	echo "Getting latest FZY"
-	fzy_git_root="$HOME"/.fzy
-	[ -d "$fzy_git_root" ] || git clone --depth 1 "https://github.com/jhawthorn/fzy" "$fzy_git_root"
-	cd "$fzy_git_root" && git pull
-	make && cp ./fzy "$localroot"/bin/fzf
+  echo "Getting latest FZF"
+  fzf_git_root="$HOME"/.fzf
+  [ -d "$fzf_git_root" ] || git clone --depth 1 "https://github.com/junegunn/fzf.git" "$FZF_PATH"
+  cd "$fzf_git_root" && git pull && ./install
+  cp ./bin/fzf "$localroot"/bin/fzf
 fi
 
 
@@ -232,47 +222,53 @@ fi
 #################### RUSTUP + CARGO ####################
 [ -d "$HOME"/.cargo/env ] || curl https://sh.rustup.rs -sSf | bash
 source ~/.cargo/env
+rustup update
+cargo install starship # crossshel prompt
+cargo install exa # ls with better hightlight
+cargo install bat # cat with syntax hightlight
+cargo install fd-find
+cargo install ripgrep
+#cargo install --git https://github.com/jwilm/alacritty
 
 
 
 #################### ALACRITTY ####################
-arch_install alacritty
+arch_install alacritty-git
 if is_ubuntu; then
-	echo "Building latest alacritty"
-	alacritty_git_root="$HOME"/.alacritty
-	if ! cmd_exists alacritty; then
-		sudo apt-get install -y libfreetype6-dev libfontconfig1-dev
-		rustup override set stable
-		rustup update stable
-		git clone https://github.com/jwilm/alacritty.git $HOME/.alacritty
-	fi
-	cd "$alacritty_git_root"
-	git pull
-	cargo build --release
-	cp target/release/alacritty "$localroot"/bin/
-	cp alacritty.desktop $HOME/.local/share/applications/
-
-	mkdir -p "$localroot"/share/man/man1
-	gzip -c alacritty.man > "$localroot"/share/man/man1/alacritty.1.gz
-
-	cp alacritty-completions.fish "$HOME"/.config/fish/completions/alacritty.fish
-	# sudo tic -e alacritty,alacritty-direct alacritty.info
+  echo "Building latest alacritty"
+  alacritty_git_root="$HOME"/.alacritty
+  if ! cmd_exists alacritty; then
+    sudo apt-get install -y pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev
+    git clone https://github.com/jwilm/alacritty.git $HOME/.alacritty
+    cargo build --release
+  fi
+  cd "$alacritty_git_root"
+  git pull
+  cargo install cargo-deb
+  cargo deb --install --manifest-path alacritty/Cargo.toml
+  # update-alternatives --config x-terminal-emulator
 fi
+
+mkdir -p "$localroot"/share/man/man1
+gzip -c extra/alacritty.man > "$localroot"/share/man/man1/alacritty.1.gz
+
+cp extra/completions/alacritty.fish "$HOME"/.config/fish/completions/alacritty.fish
+# sudo tic -e alacritty,alacritty-direct alacritty.info
 
 
 
 #################### VISUAL STUDIO CODE ####################
 arch_install "visual-studio-code-bin"
 if is_ubuntu && ! cmd_exists "code"; then
-	curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-	sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
-	sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-	sudo apt update
-	ubuntu_install "code"
+  curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+  sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+  sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+  sudo apt update
+  ubuntu_install "code"
 fi
 # Electron-based application use gvfs-trash. This is deprecated package, so let just emulate it..
 if ! cmd_exists "gvfs-trash"; then
-	echo -e "#!/bin/bash\ntrash $@" | sudo tee /usr/bin/gvfs-trash > /dev/null
+  echo -e "#!/bin/bash\ntrash $@" | sudo tee /usr/bin/gvfs-trash > /dev/null
 fi
 
 echo "Getting latest VSCode extensions"
@@ -286,7 +282,6 @@ is_ubuntu && sudo snap install node --classic --channel=$NODE_MAJOR_VERSION
 
 echo "Getting latest NPM packages"
 sudo npm update --unsafe-perm -g
-cmd_exists "remarker" || sudo npm install -g remarker
 
 
 
@@ -296,8 +291,8 @@ go_path="$HOME"/go
 go_github_path="$go_path"/src/github.com/github
 hub_path="$go_github_path"/hub
 if ! test -e $hub_path; then
-    mkdir -p "$go_github_path"
-    git clone --config transfer.fsckobjects=false --config receive.fsckobjects=false --config fetch.fsckobjects=false https://github.com/github/hub.git "$hub_path"
+  mkdir -p "$go_github_path"
+  git clone --config transfer.fsckobjects=false --config receive.fsckobjects=false --config fetch.fsckobjects=false https://github.com/github/hub.git "$hub_path"
 fi
 cd "$hub_path"
 git pull
@@ -308,10 +303,10 @@ make install prefix="$localroot"
 #################### CHROME  ####################
 arch_install "google-chrome"
 if is_ubuntu && ! cmd_exists "google-chrome"; then
-	wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-	sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-	sudo apt update
-	ubuntu_install "google-chrome-stable"
+  wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+  sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+  sudo apt update
+  ubuntu_install "google-chrome-stable"
 fi
 
 
@@ -328,16 +323,17 @@ go get -u github.com/kulabun/gojson/gojson
 go get -u github.com/kulabun/gopass
 go get -u github.com/kulabun/jd # json diff
 go get -u github.com/kulabun/license # github licenses
+go get -u github.com/rclone/rclone
 
 
 
 #################### VPN ####################
 install "openvpn"
 if is_arch && ! test -e "/etc/openvpn/ovpn_tcp"; then
-	cd /etc/openvpn
-	sudo wget https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip
-	sudo unzip ovpn.zip
-	sudo rm ovpn.zip
+  cd /etc/openvpn
+  sudo wget https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip
+  sudo unzip ovpn.zip
+  sudo rm ovpn.zip
 fi
 
 
@@ -346,21 +342,21 @@ fi
 arch_install "docker-bin"
 arch_install "docker-compose-bin"
 if is_ubuntu; then
-	if ! cmd_exists "docker"; then
-		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-		sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-		sudo apt update
-		ubuntu_install docker-ce
-	fi
-	cmd_exists "docker-compose" || sudo curl -L "https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  if ! cmd_exists "docker"; then
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    sudo apt update
+    ubuntu_install docker-ce
+  fi
+  cmd_exists "docker-compose" || sudo curl -L "https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 fi
 ps aux | grep "docker" | grep -v "grep" || sudo systemctl enable docker.service
 groups | grep "docker" || sudo usermod -aG docker $USER
 
 # CTOP is a docker monitor
 if ! cmd_exists "ctop"; then
-	sudo wget https://github.com/bcicen/ctop/releases/download/v0.7.1/ctop-0.7.1-linux-amd64 -O /usr/local/bin/ctop
-	sudo chmod +x /usr/local/bin/ctop
+  sudo wget https://github.com/bcicen/ctop/releases/download/v0.7.1/ctop-0.7.1-linux-amd64 -O /usr/local/bin/ctop
+  sudo chmod +x /usr/local/bin/ctop
 fi
 
 
@@ -368,11 +364,12 @@ fi
 #################### PYTHON PIP ####################
 arch_install python-pip
 if ! cmd_exists "pip" && is_ubuntu; then
-	curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
-	python /tmp/get-pip.py --user
+  curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+  python /tmp/get-pip.py --user
 fi
 pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U --user
-pip install awslogs --user
+pip install --user awslogs
+pip install --user yq
 #pip install jrnl --user
 
 
@@ -380,34 +377,6 @@ pip install awslogs --user
 #################### AWS CLI ####################
 arch_install "aws-cli"
 is_ubuntu && pip install awscli --upgrade --user
-
-
-
-#################### RIPGREP ####################
-arch_install "ripgrep" # silversearcher/ag replacement
-if is_ubuntu; then
-	echo "Building latest ripgrep"
-	ripgrep_git_root="$HOME"/.ripgrep
-	[ -d "$ripgrep_git_root" ] || git clone "https://github.com/BurntSushi/ripgrep" "$ripgrep_git_root"
-	cd $ripgrep_git_root
-	git pull
-	cargo build --release
-	cp target/release/rg "$localroot"/bin/
-fi
-
-
-
-#################### FD ####################
-arch_install "fd" # find replacement
-if is_ubuntu; then
-	echo "Building latest fd"
-	fd_git_root="$HOME"/.fd
-	[ -d "$fd_git_root" ] || git clone "https://github.com/sharkdp/fd" "$fd_git_root"
-	cd "$fd_git_root"
-	git pull
-	cargo build --release
-	cp target/release/fd "$localroot"/bin/
-fi
 
 
 
@@ -444,6 +413,8 @@ install "nitrogen" # wallpaper manager
 install "dialog" # GUI promt for cli commands
 install "zenity" # GUI promt for cli commands
 install "rofi"
+arch_install "rofi-calc"
+arch_install "xdotool"
 
 #arch_install "the_silver_searcher" && ubuntu_install "silversearcher-ag"
 
@@ -494,7 +465,6 @@ arch_install "gvfs-mtp"
 arch_install "rsync"
 arch_install "words" # Word files, required to make `look` command work(used by emacs autocompletion)
 arch_install "aspell-en" # English dictionary for spell validation
-arch_install "bat" # cat with syntax highlight
 
 
 #arch_install "tor-browser"
@@ -503,8 +473,12 @@ arch_install "bat" # cat with syntax highlight
 
 
 
-#################### INSTALL NPM PACKAGES ####################
-
+#################### INSTALL ZSH ####################
+install zsh
+export ZPLUG_HOME="$HOME/.zplug"
+[ -e $ZPLUG_HOME ] || git clone https://github.com/zplug/zplug $ZPLUG_HOME
+cd $ZPLUG_HOME
+git pull
 
 
 #################### POST INSTALL CONFIGURATION ####################

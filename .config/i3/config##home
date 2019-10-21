@@ -22,10 +22,12 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+Shift+q kill
 
 # start dmenu(rofi) (a program launcher)
-bindsym $mod+Control+Return exec rofi -modi drun -show drun -show-icons -me-select-entry '' -sidebar-mode
+bindsym $mod+Control+Return exec "rofi -modi drun,run -show drun"
 bindsym $mod+Control+p exec $HOME/bin/pass-dmenu
-bindsym $mod+d exec rofi -modi drun -show drun -show-icons -me-select-entry '' -sidebar-mode
-bindsym $mod+n exec $HOME/bin/networkmanager-dmenu
+bindsym $mod+Control+n exec $HOME/bin/networkmanager-dmenu
+bindsym $mod+Control+v exec $HOME/bin/vpn-dmenu
+bindsym $mod+Control+c exec --no-startup-id "rofi -show calc -modi calc -no-show-match -no-sort"
+bindsym $mod+Control+m exec $HOME/bin/monitor-dmenu
 
 # change focus
 bindsym $mod+j focus left
@@ -137,8 +139,8 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 2
 bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 2
 bindsym XF86AudioMute exec --no-startup-id pamixer -t
 
-# screen lock
-bindsym $mod+Control+l exec --no-startup-id i3lock -i ~/Wallpapers/224527.png  -e
+# screen lock / shutdown / reboot
+bindsym $mod+Control+l exec "$HOME/bin/boot-dmenu"
 
 # backlight
 bindsym XF86MonBrightnessUp exec --no-startup-id light -A 10
