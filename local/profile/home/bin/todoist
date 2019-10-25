@@ -1,0 +1,2 @@
+#!/bin/sh
+nohup google-chrome-stable --app="https://todoist.com"  --user-data-dir="$HOME/.config/todoist"

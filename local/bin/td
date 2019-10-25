@@ -1,0 +1,33 @@
+#!/bin/bash
+
+select_items_command="todoist --namespace --project-namespace list | fzf | cut -d ' ' -f 1 | tr '\n' ' '"
+
+local SELECTED_PROJECT="$(todoist --project-namespace projects | fzf | head -n1 | cut -d ' ' -f 1)"
+local SELECTED_LABELS="$(todoist labels | fzf | cut -d ' ' -f 1 | tr '\n' ',' | sed -e 's/,$//')"
+
+function fzf-todoist-date () {
+    OPTION="-d # day"
+    local SELECTED_DATE="$(seq 0 30 | xargs -I# date $OPTION '+%d/%m/%Y %a' | fzf | cut -d ' ' -f 1)"
+}
+
+function todoist-exec-with-select-task () {
+    if [ -n "$2" ]; then
+        BUFFER="todoist $1 $(echo "$2" | tr '\n' ' ')"
+    fi
+}
+
+function fzf-todoist-close() {
+    local SELECTED_ITEMS="$(eval ${select_items_command})"
+    todoist-exec-with-select-task close $SELECTED_ITEMS
+}
+
+function fzf-todoist-delete() {
+    local SELECTED_ITEMS="$(eval ${select_items_command})"
+    todoist-exec-with-select-task delete $SELECTED_ITEMS
+}
+
+function fzf-todoist-open() {
+    local SELECTED_ITEMS="$(eval ${select_items_command})"
+    todoist-exec-with-select-task "show --browse" $SELECTED_ITEMS
+}
+

@@ -1,0 +1,80 @@
+#!/bin/bash
+
+countries='{
+  "Albania":"AL",
+  "Argentina":"AR",
+  "Austria":"AT",
+  "Australia":"AU",
+  "Bosnia and Herzegovina":"BA",
+  "Belgium":"BE",
+  "Bulgaria":"BG",
+  "Brazil":"BR",
+  "Canada":"CA",
+  "Switzerland":"CH",
+  "Chile":"CL",
+  "Costa Rica":"CR",
+  "Cyprus":"CY",
+  "Czech Republic":"CZ",
+  "Germany":"DE",
+  "Denmark":"DK",
+  "Estonia":"EE",
+  "Spain":"ES",
+  "Finland":"FI",
+  "France":"FR",
+  "Georgia":"GE",
+  "Greece":"GR",
+  "Hong Kong":"HK",
+  "Croatia":"HR",
+  "Hungary":"HU",
+  "Indonesia":"ID",
+  "Ireland":"IE",
+  "Israel":"IL",
+  "India":"IN",
+  "Iceland":"IS",
+  "Italy":"IT",
+  "Japan":"JP",
+  "Korea, Republic of":"KR",
+  "Luxembourg":"LU",
+  "Latvia":"LV",
+  "Moldova, Republic of":"MD",
+  "Macedonia, the Former Yugoslav Republic of":"MK",
+  "Mexico":"MX",
+  "Malaysia":"MY",
+  "Netherlands":"NL",
+  "Norway":"NO",
+  "New Zealand":"NZ",
+  "Poland":"PL",
+  "Portugal":"PT",
+  "Romania":"RO",
+  "Serbia":"RS",
+  "Sweden":"SE",
+  "Singapore":"SG",
+  "Slovenia":"SI",
+  "Slovakia":"SK",
+  "Thailand":"TH",
+  "Turkey":"TR",
+  "Taiwan, Province of China":"TW",
+  "Ukraine":"UA",
+  "United States":"US",
+  "Viet Nam":"VN",
+  "South Africa":"ZA",
+  "@ Disconnect":"@@"
+}'
+
+
+countryName=$(echo $countries | jq -r 'keys[]' | rofi -dmenu -i)
+countryCode=$(echo $countries | jq -r ".\"$countryName\"" | tr '[:upper:]' '[:lower:]')
+
+[ "$countryCode" == "null" ] && exit 0;
+
+if [ "$countryCode" == "@@" ]; then
+  sudo killall -9 openvpn
+  exit 0
+fi
+
+pgrep -x "openvpn" 2>/dev/null 1>&2 && sudo killall -9 openvpn
+
+vpn_config="/etc/openvpn/ovpn_tcp/"$(ls /etc/openvpn/ovpn_tcp/ | egrep "^$countryCode" | shuf | head -1)
+cat $vpn_config | sed "s/auth-user-pass.*/auth-user-pass \/etc\/openvpn\/client\/.secret/" > /tmp/nordvpn.conf
+sudo mv /tmp/nordvpn.conf /etc/openvpn/client/nordvpn.conf
+sudo /usr/bin/openvpn --suppress-timestamps --nobind --config /etc/openvpn/client/nordvpn.conf | sudo tee /var/log/openvpn.log > /dev/null & disown
