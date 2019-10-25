@@ -4,14 +4,13 @@
 
 #################### PRECONFIGURE ####################
 VISUAL_STUDIO_CODE_VERSION="1.29.1"
-NODE_MAJOR_VERSION="10"
+NODE_MAJOR_VERSION="12"
 
 localroot="$HOME"/local
 
 mkdir -p "$localroot"/bin
 ln -sf "$localroot"/bin "$HOME"/bin
 PATH="$PATH:$HOME/bin"
-update-profile-symlinks
 
 
 
@@ -95,7 +94,7 @@ function system_update {
   is_ubuntu && sudo apt update && sudo apt upgrade -y && return 0
   return 1
 }
-system_update || echo "System Update FAILED"
+#system_update || echo "System Update FAILED"
 
 
 
@@ -157,6 +156,7 @@ yadm gitconfig commit.gpgsign false
 update-profile-symlinks
 
 
+
 #################### DOTFILES ####################
 echo "Getting latest dotfiles"
 yadm pull origin master
@@ -201,78 +201,15 @@ echo "Getting latest VIM Plugins"
 
 
 
-#################### NEOVIM ####################
-arch_install "neovim"
-arch_install "aur/universal-ctags-git"
-
-
-
 #################### FZF ####################
 arch_install "fzf"
-if ! is_arch; then
+if is_ubuntu; then
   echo "Getting latest FZF"
   fzf_git_root="$HOME"/.fzf
-  [ -d "$fzf_git_root" ] || git clone --depth 1 "https://github.com/junegunn/fzf.git" "$FZF_PATH"
+  [ -d "$fzf_git_root" ] || git clone --depth 1 "https://github.com/junegunn/fzf.git" "$fzf_git_root"
   cd "$fzf_git_root" && git pull && ./install
   cp ./bin/fzf "$localroot"/bin/fzf
 fi
-
-
-
-#################### RUSTUP + CARGO ####################
-[ -d "$HOME"/.cargo/env ] || curl https://sh.rustup.rs -sSf | bash
-source ~/.cargo/env
-rustup update
-cargo install starship # crossshel prompt
-cargo install exa # ls with better hightlight
-cargo install bat # cat with syntax hightlight
-cargo install fd-find
-cargo install ripgrep
-#cargo install --git https://github.com/jwilm/alacritty
-
-
-
-#################### ALACRITTY ####################
-arch_install alacritty-git
-if is_ubuntu; then
-  echo "Building latest alacritty"
-  alacritty_git_root="$HOME"/.alacritty
-  if ! cmd_exists alacritty; then
-    sudo apt-get install -y pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev
-    git clone https://github.com/jwilm/alacritty.git $HOME/.alacritty
-    cargo build --release
-  fi
-  cd "$alacritty_git_root"
-  git pull
-  cargo install cargo-deb
-  cargo deb --install --manifest-path alacritty/Cargo.toml
-  # update-alternatives --config x-terminal-emulator
-fi
-
-mkdir -p "$localroot"/share/man/man1
-gzip -c extra/alacritty.man > "$localroot"/share/man/man1/alacritty.1.gz
-
-cp extra/completions/alacritty.fish "$HOME"/.config/fish/completions/alacritty.fish
-# sudo tic -e alacritty,alacritty-direct alacritty.info
-
-
-
-#################### VISUAL STUDIO CODE ####################
-arch_install "visual-studio-code-bin"
-if is_ubuntu && ! cmd_exists "code"; then
-  curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-  sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
-  sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-  sudo apt update
-  ubuntu_install "code"
-fi
-# Electron-based application use gvfs-trash. This is deprecated package, so let just emulate it..
-if ! cmd_exists "gvfs-trash"; then
-  echo -e "#!/bin/bash\ntrash $@" | sudo tee /usr/bin/gvfs-trash > /dev/null
-fi
-
-echo "Getting latest VSCode extensions"
-cat ~/.vscode/extensions.list | xargs -L 1 code --force --install-extension
 
 
 
@@ -282,32 +219,6 @@ is_ubuntu && sudo snap install node --classic --channel=$NODE_MAJOR_VERSION
 
 echo "Getting latest NPM packages"
 sudo npm update --unsafe-perm -g
-
-
-
-#################### GITHUB'S HUB  ####################
-echo "Building latest GitHub git-wrapper(hub)"
-go_path="$HOME"/go
-go_github_path="$go_path"/src/github.com/github
-hub_path="$go_github_path"/hub
-if ! test -e $hub_path; then
-  mkdir -p "$go_github_path"
-  git clone --config transfer.fsckobjects=false --config receive.fsckobjects=false --config fetch.fsckobjects=false https://github.com/github/hub.git "$hub_path"
-fi
-cd "$hub_path"
-git pull
-make install prefix="$localroot"
-
-
-
-#################### CHROME  ####################
-arch_install "google-chrome"
-if is_ubuntu && ! cmd_exists "google-chrome"; then
-  wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-  sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-  sudo apt update
-  ubuntu_install "google-chrome-stable"
-fi
 
 
 
