@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+declare -A URLS
+
+URLS=(
+  # Global Search
+  ["DuckDuckGo"]="https://www.duckduckgo.com/?q="
+  ["Google"]="https://www.google.com/search?q="
+  ["SearX"]="https://searx.me/?q="
+
+  # Movies Search
+  ["IMDB"]="https://www.imdb.com/find?s=tt&ref_=fn_al_tt_mr&q="
+  ["Rottentomatoes"]="https://www.rottentomatoes.com/search/?search="
+
+  # IT Search
+  ["Stackoverflow"]="http://stackoverflow.com/search?q="
+  ["Ask Ubuntu"]="http://askubuntu.com/search?q="
+  ["Superuser"]="http://superuser.com/search?q="
+  ["Searchcode"]="https://searchcode.com/?q="
+  ["Openhub"]="https://www.openhub.net/p?ref=homepage&query="
+  ["GitHub"]="https://github.com/search?q="
+  ["DevDocs"]="https://devdocs.io?q="
+
+  # IT Specifications
+  ["RFC"]="http://www.rfc-editor.org/info/rfc"
+  ["JEP"]="https://openjdk.java.net/jeps/"
+
+  # Stock
+  ["Yahoo Finance"]="https://finance.yahoo.com/quote/"
+  ["TradingView"]="https://www.tradingview.com/symbols/"
+
+  # Media
+  ["YouTube"]="https://www.youtube.com/results?search_query="
+  ["YouTube Music"]="https://music.youtube.com/search?q="
+
+  # Icons
+  ["FontAwesome"]="https://fontawesome.com/icons?d=gallery&q="
+
+  # Dictionaries
+  ["Dict"]="https://enru.dict.cc/?s="
+  ["Wiktionary"]="https://en.wiktionary.org/wiki/"
+
+  # Shopping
+  ["Amazon"]="https://www.amazon.com/s?k="
+  
+)
+
+gen_list() {
+    for i in "${!URLS[@]}"; do echo "$i";done
+}
+
+platform=$( (gen_list) | rofi -i -dmenu -matching fuzzy -no-custom -location 0 -p "Search > " )
+[ -n "$platform" ] || exit 0
+
+query=$( (echo ) | rofi -i -dmenu -matching fuzzy -location 0 -p "Query > " )
+[ -n "$query" ] || exit 0
+
+url=${URLS[$platform]}$query
+xdg-open "$url" &

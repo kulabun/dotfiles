@@ -11,12 +11,20 @@
 }
 #window {
     border:   0;
-    padding: 30% 37%;
     height:100%;
     width: 100%;
+    children: [filler,wrapperbox,filler];
+}
+#filler {
+}
+#wrapperbox {
+    orientation: horizontal;
+    padding: 10 10;
+    children: [filler,mainbox,filler];
 }
 #mainbox {
-    padding: 10;
+    padding: 10 10;
+    children: [inputbar,message,listview,sidebar];
 }
 #message {
     padding: 10 2% 10;

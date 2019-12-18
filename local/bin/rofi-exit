@@ -41,7 +41,7 @@ then
                 eval $1
                 ;;
             Lock)
-                i3lock -i ~/Wallpapers/224527.png  -e
+                i3lock -e -u -n -i ~/.i3/lockscreen.png
                 #loginctl lock-session
                 ;;
             Suspend)

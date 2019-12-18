@@ -21,13 +21,20 @@ bindsym $mod+Return exec alacritty
 # kill focused window
 bindsym $mod+Shift+q kill
 
-# start dmenu(rofi) (a program launcher)
+bindsym $mod+Escape exec $HOME/bin/rofi-exit
 bindsym $mod+Control+Return exec "rofi -modi drun,run -show drun"
-bindsym $mod+Control+p exec $HOME/bin/pass-dmenu
-bindsym $mod+Control+n exec $HOME/bin/networkmanager-dmenu
-bindsym $mod+Control+v exec $HOME/bin/vpn-dmenu
-bindsym $mod+Control+c exec --no-startup-id "rofi -show calc -modi calc -no-show-match -no-sort"
-bindsym $mod+Control+m exec $HOME/bin/monitor-dmenu
+bindsym $mod+Control+p exec $HOME/bin/rofi-pass
+bindsym $mod+Control+n exec $HOME/bin/rofi-networkmanager
+bindsym $mod+Shift+n exec $HOME/bin/rofi-vpn
+bindsym $mod+Control+m exec $HOME/bin/rofi-monitor
+bindsym $mod+Control+s exec $HOME/bin/rofi-search
+bindsym $mod+Control+o exec $HOME/bin/rofi-open
+bindsym $mod+Control+t exec $HOME/bin/rofi-todo
+bindsym $mod+Shift+t exec $HOME/bin/rofi-translate
+bindsym $mod+Control+b exec $HOME/bin/rofi-bluetooth
+bindsym $mod+Control+BackSpace exec $HOME/bin/rofi-kill
+bindsym $mod+Control+v exec $HOME/bin/rofi-clipboard
+bindsym $mod+Control+c exec "rofi -show calc -modi calc -no-show-match -no-sort"
 
 # change focus
 bindsym $mod+j focus left
@@ -139,8 +146,6 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 2
 bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 2
 bindsym XF86AudioMute exec --no-startup-id pamixer -t
 
-# screen lock / shutdown / reboot
-bindsym $mod+Control+l exec "$HOME/bin/boot-dmenu"
 
 # backlight
 bindsym XF86MonBrightnessUp exec --no-startup-id light -A 10

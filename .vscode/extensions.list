@@ -1,5 +1,6 @@
 abusaidm.html-snippets
 alefragnani.numbered-bookmarks
+BobbyBoyd.vs-org
 christian-kohler.path-intellisense
 chrmarti.regex
 coderfee.open-html-in-browser
@@ -9,6 +10,7 @@ dbaeumer.vscode-eslint
 dbankier.vscode-instant-markdown
 dbankier.vscode-quick-select
 deerawan.vscode-faker
+DotJoshJohnson.xml
 eamodio.gitlens
 eg2.tslint
 Equinusocio.vsc-material-theme
@@ -16,16 +18,21 @@ formulahendry.auto-close-tag
 formulahendry.auto-rename-tag
 GitHub.vscode-pull-request-github
 humao.rest-client
+jebbs.plantuml
 lunaryorn.fish-ide
 Mikael.Angular-BeastCode
+ms-azuretools.vscode-docker
+ms-python.python
 ms-vscode.Go
 ms-vscode.references-view
 msjsdiag.debugger-for-chrome
-PeterJausovec.vscode-docker
 PKief.material-icon-theme
 pnp.polacode
 pranaygp.vscode-css-peek
 rebornix.ruby
+redhat.fabric8-analytics
+redhat.vscode-xml
+redhat.vscode-yaml
 ritwickdey.LiveServer
 rubbersheep.gi
 ryu1kn.edit-with-shell
