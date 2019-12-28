@@ -1,0 +1,27 @@
+#!/bin/bash
+
+IFS=$'\r\n' GLOBIGNORE='*'
+cores_load=($(mpstat -P ALL 1 1 | awk '/Average:/ && $2 ~ /[0-9]/ {print $3}'))
+
+ramps=""
+for load in ${cores_load[@]}; do
+    if [[ $percentage -gt 90 ]]; then
+        icon="<span rise='10000' foreground='#FF3333'>█</span> "
+    elif [[ $percentage -gt 80 ]]; then
+        icon="<span rise='10000' foreground='#FF6E33'>▇</span> "
+    elif [[ $percentage -gt 65 ]]; then
+        icon="<span rise='10000' foreground='#FF6E33'>▆</span> "
+    elif [[ $percentage -gt 50 ]]; then
+        icon="<span rise='10000' foreground='#FF6E33'>▅</span> "
+    elif [[ $percentage -gt 35 ]]; then
+        icon="<span rise='10000' foreground='#FFAE33'>▃</span> "
+    elif [[ $percentage -gt 20 ]]; then
+        icon="<span rise='10000' foreground='#DEFF33'>▂</span> "
+    elif [[ $percentage -le 10 ]]; then
+        icon="<span rise='10000' foreground='#40FF33'>▁</span> "
+    fi
+
+    ramps="${ramps}${icon}"
+done
+
+echo "<span font='9' rise='6000'> <span size='smaller' weight='bold' foreground='#FFFFFF'>$ramps</span></span>"

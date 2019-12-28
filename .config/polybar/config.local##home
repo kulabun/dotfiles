@@ -1,6 +1,0 @@
-[bar/mybar]
-inherit = bar/master
-
-modules-left = i3workspaces
-modules-center = clock
-modules-right  = filesystem memory temperature coreuse volume vpn wireless-network battery

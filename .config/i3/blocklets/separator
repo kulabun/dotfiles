@@ -1,0 +1,3 @@
+#!/bin/sh
+
+echo "<span foreground='#999999'> | </span>"

@@ -2,17 +2,20 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:SFNS Display 10
+font pango:Hack 9
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
-client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
-client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-client.urgent           #2f343a #900000 #ffffff #900000   #900000
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+client.focused          #ff3b3b #ff3b3b #ffffff #ff3b3b #ff3b3b
+client.focused_inactive #1c1c1c #2a2a2a #ffffff #1c1c1c #1c1c1c
+client.unfocused        #1c1c1c #2a2a2a #ffffff #1c1c1c #1c1c1c
+client.urgent           #1c1c1c #2a2a2a #ffffff #1c1c1c #1c1c1c
+client.placeholder      #1c1c1c #2a2a2a #ffffff #1c1c1c #1c1c1c
+client.background       #1c1c1c
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
+hide_edge_borders both
 
 # start a terminal
 # bindsym $mod+Return exec i3-sensible-terminal
@@ -88,17 +91,29 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
-set $ws11 "11"
+set $ws1 
+set $ws2 
+set $ws3 
+set $ws4 
+set $ws5 
+set $ws6 
+set $ws7 
+set $ws8 
+set $ws9 
+set $ws10 
+set $ws11 
+
+set $ws21 
+set $ws22 
+set $ws23 
+set $ws24 
+set $ws25 
+set $ws26 
+set $ws27 
+set $ws28 
+set $ws29 
+set $ws210 
+set $ws211 
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -180,11 +195,11 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Monitors
-set $mon1 HDMI1
-set $mon2 HDMI2
+set $laptop "eDP-1"
+set $monitor "DP-1"
 
 # Autostart
-exec_always --no-startup-id $HOME/bin/polybar-launch
+#exec_always --no-startup-id $HOME/bin/polybar-launch
 #exec_always --no-startup-id nitrogen --random --set-scaled
 exec_always --no-startup-id nitrogen --set-scaled "$HOME/Wallpapers/224542.jpg"
 exec_always --no-startup-id xrdb -load ~/.Xresources
@@ -225,3 +240,31 @@ for_window [class="(?i)trayer"] border pixel 0
 
 # Fix for chrome applications (have role = popup)
 for_window [class="Google-chrome"] floating disable
+
+bar {
+     status_command i3blocks
+     position top
+     tray_padding 3
+     separator_symbol "|"
+     workspace_buttons yes
+     strip_workspace_numbers yes
+     bindsym button2 exec i3-msg kill
+     bindsym button4 nop
+     bindsym button5 nop
+     #tray_output eDP1
+     font xft:Hack 12
+     colors {
+         # <bar>
+         separator           #586e75
+         background          #1C1C1C
+         statusline          #c5c8c6
+
+         # <workclass>       <border> <bg>     <text>
+         focused_workspace   #2a2a2a  #2a2a2a  #ff3b3b
+         inactive_workspace  #1c1c1c  #1c1c1c  #c7c7c7
+         active_workspace    #1c1c1c  #1c1c1c  #3bffb9
+         urgent_workspace    #1c1c1c  #1c1c1c  #ffc33b
+         binding_mode        #1c1c1c  #1c1c1c  #ff3b88
+
+     }
+}

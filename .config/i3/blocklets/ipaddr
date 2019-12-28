@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# use provided interface, otherwise use default route.
+if [[ -n $BLOCK_INSTANCE ]]; then
+  IF=$BLOCK_INSTANCE
+else
+  IF=$(ip route | awk '/^default/ { print $5 ; exit }')
+fi
+
+# only show for instance specified in i3blocks.conf
+[[ ! -d /sys/class/net/${IF} ]] && exit
+
+INTERFACE="${BLOCK_INSTANCE}"
+IP=$(ip route get 1 | awk '{print $7;exit}')
+
+if [[ "$(cat /sys/class/net/$IF/operstate)" = 'down' ]]; then
+  echo "<span font='8' size='smaller' foreground='#969896'><span foreground='#FFFFFF'>X</span></span>"
+else
+  echo "<span font='8' size='smaller' foreground='#969896'><span foreground='#FFFFFF'>$IP</span></span>"
+fi
