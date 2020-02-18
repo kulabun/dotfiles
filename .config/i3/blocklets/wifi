@@ -1,0 +1,26 @@
+#!/bin/bash
+
+FOREGROUND=${FOREGROUND:-"#FFFFFF"}
+INTERFACE="${BLOCK_INSTANCE:-wlan0}"
+SSID=$(iwgetid $INTERFACE -r)
+
+[[ ! -d /sys/class/net/${INTERFACE}/wireless ]] ||
+    [[ "$(cat /sys/class/net/$INTERFACE/operstate)" = 'down' ]] && exit 0
+
+[[ ! -d /sys/class/net/${INTERFACE}/wireless ]] ||
+    [[ "$(cat /sys/class/net/$INTERFACE/operstate)" = 'down' ]] && echo "<span foreground='#969896'>/</span><span font='10' rise='-1500' foreground='#B294BB'>  </span><span foreground='#969896'>/</span><span foreground='#282A2E'>/</span>"
+
+
+if [[ $QUALITY -gt 80 ]]; then
+    ICON="<span size='larger' foreground='#40FF33'></span> "
+elif [[ $QUALITY -gt 60 ]]; then
+    ICON="<span size='larger' foreground='#DEFF33'></span> "
+elif [[ $QUALITY -gt 40 ]]; then
+    ICON="<span size='larger' foreground='#FFAE33'></span> "
+elif [[ $QUALITY -gt 20 ]]; then
+    ICON="<span size='larger' foreground='#FF6E33'></span> "
+elif [[ $QUALITY -le 20 ]]; then
+    ICON="<span size='larger' foreground='#FF3333'></span> "
+fi
+
+echo "<span font='9' rise='12000'>$ICON<span size='smaller' weight='bold' foreground='$FOREGROUND'>$SSID</span></span>"

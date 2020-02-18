@@ -1,7 +1,8 @@
 #!/bin/bash
 
-FILE_EXTENSION=".note"
-NOTES_DIR="$HOME/notes"
+NOTES_DIR="$HOME/.notes"
+
+[ -e "$NOTES_DIR" ] || mkdir -p "$NOTES_DIR"
 
 if [ "$#" -gt 0  ]; then 
   note_file=$(ls "$NOTES_DIR/" | fzf -q "$@" | sed 's!.*/!!')

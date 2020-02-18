@@ -1,0 +1,23 @@
+#!/bin/sh
+
+dir="${BLOCK_INSTANCE:-$HOME}"
+percentage=$(df -hPl $dir | sed -n '1!p' | awk '{print $5}' | sed "s/\([0-9]\+\)%/\1/g")
+if [[ $percentage -gt 90 ]]; then
+    icon="<span rise='8000' size='larger' foreground='#FF3333'></span> "
+elif [[ $percentage -gt 75 ]]; then
+    icon="<span rise='8000' size='larger' foreground='#FF6E33'></span> "
+elif [[ $percentage -gt 50 ]]; then
+    icon="<span rise='8000' size='larger' foreground='#FFAE33'></span> "
+elif [[ $percentage -gt 25 ]]; then
+    icon="<span rise='8000' size='larger' foreground='#DEFF33'></span> "
+elif [[ $percentage -le 25 ]]; then
+    icon="<span rise='8000' size='larger' foreground='#40FF33'></span> "
+fi
+
+echo "<span font='9' rise='10000'>$icon<span size='smaller' weight='bold' foreground='#FFFFFF'>${dir} : ${percentage}%</span></span>"
+
+case $BLOCK_BUTTON in
+ 1) i3-msg exec rofi-find ;; #left click, locate +xdg-open files with rofi
+ 2) i3-msg exec caja ;; #right click, open filemanager
+ 3) i3-msg exec 'caja --browser' #middle click, open filemanager
+esac

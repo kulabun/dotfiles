@@ -1,0 +1,24 @@
+#!/bin/sh
+
+INSTANCE="${1:-BAT0}"
+
+percentage=$(cat /sys/class/power_supply/$INSTANCE/capacity)
+state=$(cat /sys/class/power_supply/$INSTANCE/status)
+
+if [ "$state" == "Charging" ]; then
+    label="<span size='larger' foreground='#F6FE7C'></span>"
+elif [ "$state" == "Full" ]; then
+    label="<span size='larger' foreground='#F6FE7C'></span>"
+elif [ "$percentage" -ge 75 ]; then
+    label="<span size='larger' foreground='#40FF33'></span>"
+elif [ "$percentage" -ge 50 ]; then
+    label="<span size='larger' foreground='#DEFF33'></span>"
+elif [ "$percentage" -ge 25 ]; then
+    label="<span size='larger' foreground='#FFAE33'></span>"
+elif [ "$percentage" -ge 10 ]; then
+    label="<span size='larger' foreground='#FF6E33'></span>"
+else
+    label="<span size='larger' foreground='#FF3333'></span>"
+fi
+
+echo "<span font='9'><span size='smaller' weight='bold' >$label <span foreground='#FFFFFF'>$percentage%</span></span></span>"
