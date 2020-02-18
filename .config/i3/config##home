@@ -186,11 +186,12 @@ set $mon2 HDMI2
 # Autostart
 exec_always --no-startup-id $HOME/bin/polybar-launch
 #exec_always --no-startup-id nitrogen --random --set-scaled
-exec_always --no-startup-id nitrogen --set-scaled "$HOME/Wallpapers/224542.jpg"
+exec_always --no-startup-id nitrogen --set-scaled "$HOME/Wallpapers/0040a774da93bb71054c7f8ed3e8dd7f.jpg"
 exec_always --no-startup-id xrdb -load ~/.Xresources
 
 exec --no-startup-id xfsettingsd
 exec --no-startup-id compton
+#exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec google-chrome-stable
 exec google-chrome-stable --app="https://devdocs.io"
 exec google-chrome-stable --app="https://calendar.google.com"

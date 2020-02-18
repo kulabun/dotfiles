@@ -42,6 +42,7 @@ then
                 ;;
             Lock)
                 i3lock -e -u -n -i ~/.i3/lockscreen.png
+                #i3lock -i ~/Wallpapers/mountains.png  -e
                 #loginctl lock-session
                 ;;
             Suspend)
