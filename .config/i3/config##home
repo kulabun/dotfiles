@@ -6,12 +6,12 @@ font pango:Hack 9
 
 # class                 border  backgr. text    indicator child_border
 
-client.focused          #ff3b3b #ff3b3b #ffffff #ff3b3b #ff3b3b
-client.focused_inactive #1c1c1c #2a2a2a #ffffff #1c1c1c #1c1c1c
-client.unfocused        #1c1c1c #2a2a2a #ffffff #1c1c1c #1c1c1c
-client.urgent           #1c1c1c #2a2a2a #ffffff #1c1c1c #1c1c1c
-client.placeholder      #1c1c1c #2a2a2a #ffffff #1c1c1c #1c1c1c
-client.background       #1c1c1c
+client.focused          #c70039 #c70039 #ffffff #151515 #151515
+client.focused_inactive #151515 #151515 #ffffff #151515 #151515
+client.unfocused        #151515 #151515 #ffffff #151515 #151515
+client.urgent           #151515 #151515 #ffffff #151515 #151515
+client.placeholder      #151515 #151515 #ffffff #151515 #151515
+client.background       #151515
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -42,52 +42,34 @@ bindsym $mod+Control+c exec "rofi -show calc -modi calc -no-show-match -no-sort"
 # change focus
 bindsym $mod+j focus left
 bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
-
-# alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+bindsym $mod+i focus up
+bindsym $mod+l focus right
 
 # move focused window
 bindsym $mod+Shift+j move left
 bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+colon move right
-
-# alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
+bindsym $mod+Shift+i move up
+bindsym $mod+Shift+l move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
-
+bindsym $mod+s split h
 # split in vertical orientation
 bindsym $mod+v split v
 
-# enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
-
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+bindsym $mod+t layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
-
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
-
+bindsym $mod+p focus parent
 # focus the child container
-#bindsym $mod+d focus child
+bindsym $mod+c focus child
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -206,11 +188,11 @@ exec_always --no-startup-id xrdb -load ~/.Xresources
 
 exec --no-startup-id xfsettingsd
 exec --no-startup-id compton
-exec google-chrome-stable
-exec google-chrome-stable --app="https://devdocs.io"
-exec google-chrome-stable --app="https://calendar.google.com"
-exec google-chrome-stable --app="https://gmail.com"
-exec google-chrome-stable --app="https://todoist.com"
+exec firefox-developer-edition
+exec --no-startup-id firefox --no-remote --profile "$HOME/.firefox/calendar.google.com" --kiosk https://calendar.google.com --class "calendar.google.com"
+exec --no-startup-id firefox --no-remote --profile "$HOME/.firefox/gmail.com" --kiosk https://gmail.com --class "gmail.com"
+exec --no-startup-id firefox --no-remote --profile "$HOME/.firefox/todoist.com" --kiosk https://todoist.com --class "todoist.com"
+
 exec alacritty --class "system-term"
 #exec --no-startup-id
 
@@ -224,11 +206,10 @@ for_window [class="(?i)(?:thunar|ranger|code|jetbrains-idea|chrome|firefox)"] bo
 assign [class="Alacritty" instance="system-term"] $ws11
 assign [class="code"] $ws2
 assign [class="jetbrains-idea"] $ws2
-assign [instance="gmail.com"] $ws9
-assign [instance="calendar.google.com"] $ws10
-assign [instance="devdocs.io"] $ws3
-assign [instance="todoist.com"] $ws8
-assign [class="Google-chrome"] $ws1
+assign [class="gmail.com"] $ws9
+assign [class="calendar.google.com"] $ws10
+assign [class="todoist.com"] $ws8
+assign [class="firefoxdeveloperedition"] $ws1
 
 # focus, floating, & sticky
 for_window [title="(?i)(?:copying|deleting|moving)"] floating enable
@@ -239,7 +220,9 @@ for_window [class="(?i)(?:peek)"] floating enable
 for_window [class="(?i)trayer"] border pixel 0
 
 # Fix for chrome applications (have role = popup)
-for_window [class="Google-chrome"] floating disable
+for_window [class="firefoxdeveloperedition"] floating disable
+for_window [class="firefox"] floating disable
+for_window [class="jetbrains-idea"] fullscreen enable
 
 bar {
      status_command i3blocks
@@ -256,15 +239,15 @@ bar {
      colors {
          # <bar>
          separator           #586e75
-         background          #1C1C1C
+         background          #151515
          statusline          #c5c8c6
 
          # <workclass>       <border> <bg>     <text>
-         focused_workspace   #2a2a2a  #2a2a2a  #ff3b3b
-         inactive_workspace  #1c1c1c  #1c1c1c  #c7c7c7
-         active_workspace    #1c1c1c  #1c1c1c  #3bffb9
-         urgent_workspace    #1c1c1c  #1c1c1c  #ffc33b
-         binding_mode        #1c1c1c  #1c1c1c  #ff3b88
+         focused_workspace   #c70039  #C70039  #ffffff
+         inactive_workspace  #151515  #151515  #c7c7c7
+         active_workspace    #151515  #151515  #3bffb9
+         urgent_workspace    #151515  #151515  #ffc33b
+         binding_mode        #151515  #151515  #ff3b88
 
      }
 }

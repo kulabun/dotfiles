@@ -21,6 +21,7 @@ addr=$(\
         | cut -d" " -f3
 )
 
+sleep 1
 {
     echo "pair $addr"
     echo "trust $addr"
