@@ -73,29 +73,30 @@ bindsym $mod+c focus child
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 
-set $ws2 
-set $ws3 
-set $ws4 
-set $ws5 
-set $ws6 
-set $ws7 
+
+set $ws1 
+set $ws2 
+set $ws3 
+set $ws4 
+set $ws5 
+set $ws6 
+set $ws7 
 set $ws8 
 set $ws9 
 set $ws10 
-set $ws11 
+set $ws11 
 
-set $ws21 
-set $ws22 
-set $ws23 
-set $ws24 
-set $ws25 
-set $ws26 
-set $ws27 
+set $ws21 
+set $ws22 
+set $ws23 
+set $ws24 
+set $ws25 
+set $ws26 
+set $ws27 
 set $ws28 
 set $ws29 
 set $ws210 
-set $ws211 
+set $ws211 
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -192,6 +193,9 @@ exec firefox-developer-edition
 exec --no-startup-id firefox --no-remote --profile "$HOME/.firefox/calendar.google.com" --kiosk https://calendar.google.com --class "calendar.google.com"
 exec --no-startup-id firefox --no-remote --profile "$HOME/.firefox/gmail.com" --kiosk https://gmail.com --class "gmail.com"
 exec --no-startup-id firefox --no-remote --profile "$HOME/.firefox/todoist.com" --kiosk https://todoist.com --class "todoist.com"
+exec --no-startup-id firefox --no-remote --profile "$HOME/.firefox/github.com" --kiosk https://github.com --class "github.com"
+exec --no-startup-id firefox --no-remote --profile "$HOME/.firefox/amazon.com" --kiosk https://amazon.com --class "amazon.com"
+exec --no-startup-id firefox --no-remote --profile "$HOME/.firefox/docs.google.com" --kiosk https://docs.google.com --class "docs.google.com"
 
 exec alacritty --class "system-term"
 #exec --no-startup-id
@@ -203,13 +207,18 @@ for_window [class="(?i)(?:thunar|ranger|code|jetbrains-idea|chrome|firefox)"] bo
 
 # Assign Applications to specific workspace
 # get class with xprop
-assign [class="Alacritty" instance="system-term"] $ws11
+assign [class="firefox"] $ws1
 assign [class="code"] $ws2
 assign [class="jetbrains-idea"] $ws2
+assign [class="emacs"] $ws2
+assign [class="github.com"] $ws3
+assign [class="amazon.com"] $ws6
+assign [class="docs.google.com"] $ws7
+assign [class="todoist.com"] $ws8
 assign [class="gmail.com"] $ws9
 assign [class="calendar.google.com"] $ws10
-assign [class="todoist.com"] $ws8
-assign [class="firefoxdeveloperedition"] $ws1
+assign [class="Alacritty" instance="system-term"] $ws11
+
 
 # focus, floating, & sticky
 for_window [title="(?i)(?:copying|deleting|moving)"] floating enable
