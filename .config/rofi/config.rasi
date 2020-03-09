@@ -15,15 +15,10 @@ configuration {
   terminal: "alacritty";
   ssh-client: "ssh";
   ssh-command: "{terminal} -e \"{ssh-client} {host}\"";
-  window-command: "xkill -id {window}";
-  run-shell-command: "{terminal} -e /bin/bash -c \"{cmd}; read -n 1 -s\"";
+  run-shell-command: "{terminal} -e /bin/sh -c \"{cmd}; read -n 1 -s\"";
   disable-history: true;
   sort: true;
   cycle: true;
-  /* A hack to make rofi run cli commands in new terminal on Return instead of Shift+Return */
-  kb-accept-entry: "";
-  kb-accept-custom: "";
-  kb-accept-alt: "Return,KP_Enter";
 
 /*	modi: "window,run,ssh,test";*/
 /*	width: 50;*/

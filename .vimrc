@@ -28,7 +28,7 @@ silent! if plug#begin()
   Plug 'craigemery/vim-autotag'
   Plug 'easymotion/vim-easymotion'
   Plug 'editorconfig/editorconfig-vim'
-  Plug 'ekalinin/Dockerfile.vim'
+  " Plug 'ekalinin/Dockerfile.vim'
   Plug 'elzr/vim-json'
   Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
   Plug 'itchyny/lightline.vim'
@@ -46,9 +46,9 @@ silent! if plug#begin()
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-vinegar'
   Plug 'tyrannicaltoucan/vim-quantum'
-  Plug 'vim-ruby/vim-ruby'
-  Plug 'w0rp/ale'
-  Plug 'jceb/vim-orgmode'
+  " Plug 'vim-ruby/vim-ruby'
+  " Plug 'w0rp/ale'
+  " Plug 'jceb/vim-orgmode'
 "  Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 "  Plug 'SirVer/ultisnips'
 "  Plug 'honza/vim-snippets'
@@ -448,35 +448,39 @@ endfunction
 " ###########################################################
 " # Key Mappings
 " ###########################################################
-let mapleader = " "
-let maplocalleader = ";"
-" noremap ; l
-" noremap l k
-" noremap k j
-" noremap j h
-nnoremap <C-Left> <C-W><C-H>
-nnoremap <C-Down> <C-W><C-J>
-nnoremap <C-Up> <C-W><C-K>
-nnoremap <C-Right> <C-W><C-L>
-nnoremap <silent> gp :bp<CR>
-nnoremap <silent> gn :bn<CR>
-nnoremap <silent> gl :BLines<CR>
-nnoremap <silent> gL :Lines<CR>
-nnoremap <silent> gb :Buffers<CR>
-nnoremap <silent> gss :Rg<CR>
-nnoremap <silent> gst :Tags<CR><CR>
+" let mapleader = " "
+" let maplocalleader = ";"
+" noremap l l
+noremap f i
+noremap i k
+noremap k j
+noremap j h
+noremap h 0
+noremap ; $
+noremap L w
+noremap J b
+" nnoremap <C-Left> <C-W><C-H>
+" nnoremap <C-Down> <C-W><C-J>
+" nnoremap <C-Up> <C-W><C-K>
+" nnoremap <C-Right> <C-W><C-L>
+nnoremap <silent> bp :bj<CR>
+nnoremap <silent> bn :bl<CR>
+nnoremap <silent> bb :Buffers<CR>
+" nnoremap <silent> gl :BLines<CR>
+" nnoremap <silent> gL :Lines<CR>
+" nnoremap <silent> gss :Rg<CR>
+" nnoremap <silent> gst :Tags<CR><CR>
 nnoremap <silent> <Leader>hc :Commands<CR>
-nnoremap <silent> <Leader>hm :Mappings<CR>
-nnoremap <silent> <Leader>gca :Commits<CR>
-nnoremap <silent> <Leader>gcb :BCommits<CR>
-nnoremap <silent> <Leader>t :tabnew<CR>
+" nnoremap <silent> <Leader>hm :Mappings<CR>
+" nnoremap <silent> <Leader>gca :Commits<CR>
+" nnoremap <silent> <Leader>gcb :BCommits<CR>
+" nnoremap <silent> <Leader>t :tabnew<CR>
 "nnoremap <Leader>qq :q<CR>
 "nnoremap <Leader>qw :wq<CR>
-nnoremap <silent> <Leader><Esc> :noh<CR>
+" nnoremap <silent> <Leader><Esc> :noh<CR>
 nnoremap <silent> <F1> :call ToggleList("Quickfix List", 'c')<CR>
 nnoremap <silent> <F2> :call ToggleList("Location List", 'l')<CR>
 nnoremap <silent> <F3> :silent UndotreeToggle<CR>
-imap jj <Esc>
 vnoremap <silent> <Leader>= :EasyAlign<CR>
 vnoremap <silent> / :Commentary<CR>
 
@@ -493,13 +497,13 @@ cnoreabbrev QW wq
 cnoreabbrev Qw wq
 
 " Easy Motion
-map <Leader> <Plug>(easymotion-prefix)
-nmap f <Plug>(easymotion-overwin-f)
+" map <Leader> <Plug>(easymotion-prefix)
+" nmap f <Plug>(easymotion-overwin-f)
 
-map <Leader>k <Plug>(easymotion-j)
-map <Leader>l <Plug>(easymotion-k)
+" map <Leader>k <Plug>(easymotion-j)
+" map <Leader>l <Plug>(easymotion-k)
 
-map <Leader><space> :CreateLocalTags<CR>
+" map <Leader><space> :CreateLocalTags<CR>
 
 
 

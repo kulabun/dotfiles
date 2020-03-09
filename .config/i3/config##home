@@ -2,17 +2,20 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:SFNS Display 10
+font pango:Hack 9
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
-client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
-client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-client.urgent           #2f343a #900000 #ffffff #900000   #900000
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+client.focused          #c70039 #c70039 #ffffff #151515 #151515
+client.focused_inactive #151515 #151515 #ffffff #151515 #151515
+client.unfocused        #151515 #151515 #ffffff #151515 #151515
+client.urgent           #151515 #151515 #ffffff #151515 #151515
+client.placeholder      #151515 #151515 #ffffff #151515 #151515
+client.background       #151515
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
+hide_edge_borders both
 
 # start a terminal
 # bindsym $mod+Return exec i3-sensible-terminal
@@ -21,77 +24,79 @@ bindsym $mod+Return exec alacritty
 # kill focused window
 bindsym $mod+Shift+q kill
 
-# start dmenu(rofi) (a program launcher)
+bindsym $mod+Escape exec $HOME/bin/rofi-exit
 bindsym $mod+Control+Return exec "rofi -modi drun,run -show drun"
-bindsym $mod+Control+p exec $HOME/bin/pass-dmenu
-bindsym $mod+Control+n exec $HOME/bin/networkmanager-dmenu
-bindsym $mod+Control+v exec $HOME/bin/vpn-dmenu
-bindsym $mod+Control+c exec --no-startup-id "rofi -show calc -modi calc -no-show-match -no-sort"
-bindsym $mod+Control+m exec $HOME/bin/monitor-dmenu
+bindsym $mod+Control+p exec $HOME/bin/rofi-pass
+bindsym $mod+Control+n exec $HOME/bin/rofi-networkmanager
+bindsym $mod+Shift+n exec $HOME/bin/rofi-vpn
+bindsym $mod+Control+m exec $HOME/bin/rofi-monitor
+bindsym $mod+Control+s exec $HOME/bin/rofi-search
+bindsym $mod+Control+o exec $HOME/bin/rofi-open
+bindsym $mod+Control+t exec $HOME/bin/rofi-todo
+bindsym $mod+Shift+t exec $HOME/bin/rofi-translate
+bindsym $mod+Control+b exec $HOME/bin/rofi-bluetooth
+bindsym $mod+Control+BackSpace exec $HOME/bin/rofi-kill
+bindsym $mod+Control+v exec $HOME/bin/rofi-clipboard
+bindsym $mod+Control+c exec "rofi -show calc -modi calc -no-show-match -no-sort"
 
 # change focus
 bindsym $mod+j focus left
 bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
-
-# alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+bindsym $mod+i focus up
+bindsym $mod+l focus right
 
 # move focused window
 bindsym $mod+Shift+j move left
 bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+colon move right
-
-# alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
+bindsym $mod+Shift+i move up
+bindsym $mod+Shift+l move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
-
+bindsym $mod+s split h
 # split in vertical orientation
 bindsym $mod+v split v
 
-# enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
-
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+bindsym $mod+t layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
-
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
-
+bindsym $mod+p focus parent
 # focus the child container
-#bindsym $mod+d focus child
+bindsym $mod+c focus child
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
-set $ws11 "11"
+
+set $ws1 
+set $ws2 
+set $ws3 
+set $ws4 
+set $ws5 
+set $ws6 
+set $ws7 
+set $ws8 
+set $ws9 
+set $ws10 
+set $ws11 
+
+set $ws21 
+set $ws22 
+set $ws23 
+set $ws24 
+set $ws25 
+set $ws26 
+set $ws27 
+set $ws28 
+set $ws29 
+set $ws210 
+set $ws211 
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -139,8 +144,6 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 2
 bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 2
 bindsym XF86AudioMute exec --no-startup-id pamixer -t
 
-# screen lock / shutdown / reboot
-bindsym $mod+Control+l exec "$HOME/bin/boot-dmenu"
 
 # backlight
 bindsym XF86MonBrightnessUp exec --no-startup-id light -A 10
@@ -175,22 +178,25 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Monitors
-set $mon1 HDMI1
-set $mon2 HDMI2
+set $laptop "eDP-1"
+set $monitor "DP-1"
 
 # Autostart
-exec_always --no-startup-id $HOME/bin/polybar-launch
+#exec_always --no-startup-id $HOME/bin/polybar-launch
 #exec_always --no-startup-id nitrogen --random --set-scaled
-exec_always --no-startup-id nitrogen --set-scaled "$HOME/Wallpapers/224542.jpg"
+exec_always --no-startup-id nitrogen --set-scaled "$HOME/Wallpapers/0040a774da93bb71054c7f8ed3e8dd7f.jpg"
 exec_always --no-startup-id xrdb -load ~/.Xresources
 
 exec --no-startup-id xfsettingsd
 exec --no-startup-id compton
-exec google-chrome-stable
-exec google-chrome-stable --app="https://devdocs.io"
-exec google-chrome-stable --app="https://calendar.google.com"
-exec google-chrome-stable --app="https://gmail.com"
-exec google-chrome-stable --app="https://todoist.com"
+exec firefox-developer-edition
+exec --no-startup-id firefox --no-remote --profile "$HOME/.firefox/calendar.google.com" --kiosk https://calendar.google.com --class "calendar.google.com"
+exec --no-startup-id firefox --no-remote --profile "$HOME/.firefox/gmail.com" --kiosk https://gmail.com --class "gmail.com"
+exec --no-startup-id firefox --no-remote --profile "$HOME/.firefox/todoist.com" --kiosk https://todoist.com --class "todoist.com"
+exec --no-startup-id firefox --no-remote --profile "$HOME/.firefox/github.com" --kiosk https://github.com --class "github.com"
+exec --no-startup-id firefox --no-remote --profile "$HOME/.firefox/amazon.com" --kiosk https://amazon.com --class "amazon.com"
+exec --no-startup-id firefox --no-remote --profile "$HOME/.firefox/docs.google.com" --kiosk https://docs.google.com --class "docs.google.com"
+
 exec alacritty --class "system-term"
 #exec --no-startup-id
 
@@ -201,14 +207,18 @@ for_window [class="(?i)(?:thunar|ranger|code|jetbrains-idea|chrome|firefox)"] bo
 
 # Assign Applications to specific workspace
 # get class with xprop
-assign [class="Alacritty" instance="system-term"] $ws11
+assign [class="firefox"] $ws1
 assign [class="code"] $ws2
 assign [class="jetbrains-idea"] $ws2
-assign [instance="gmail.com"] $ws9
-assign [instance="calendar.google.com"] $ws10
-assign [instance="devdocs.io"] $ws3
-assign [instance="todoist.com"] $ws8
-assign [class="Google-chrome"] $ws1
+assign [class="emacs"] $ws2
+assign [class="github.com"] $ws3
+assign [class="amazon.com"] $ws6
+assign [class="docs.google.com"] $ws7
+assign [class="todoist.com"] $ws8
+assign [class="gmail.com"] $ws9
+assign [class="calendar.google.com"] $ws10
+assign [class="Alacritty" instance="system-term"] $ws11
+
 
 # focus, floating, & sticky
 for_window [title="(?i)(?:copying|deleting|moving)"] floating enable
@@ -219,4 +229,34 @@ for_window [class="(?i)(?:peek)"] floating enable
 for_window [class="(?i)trayer"] border pixel 0
 
 # Fix for chrome applications (have role = popup)
-for_window [class="Google-chrome"] floating disable
+for_window [class="firefoxdeveloperedition"] floating disable
+for_window [class="firefox"] floating disable
+for_window [class="jetbrains-idea"] fullscreen enable
+
+bar {
+     status_command i3blocks
+     position top
+     tray_padding 3
+     separator_symbol "|"
+     workspace_buttons yes
+     strip_workspace_numbers yes
+     bindsym button2 exec i3-msg kill
+     bindsym button4 nop
+     bindsym button5 nop
+     #tray_output eDP1
+     font xft:Hack 12
+     colors {
+         # <bar>
+         separator           #586e75
+         background          #151515
+         statusline          #c5c8c6
+
+         # <workclass>       <border> <bg>     <text>
+         focused_workspace   #c70039  #C70039  #ffffff
+         inactive_workspace  #151515  #151515  #c7c7c7
+         active_workspace    #151515  #151515  #3bffb9
+         urgent_workspace    #151515  #151515  #ffc33b
+         binding_mode        #151515  #151515  #ff3b88
+
+     }
+}

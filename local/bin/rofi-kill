@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -- $(ps -eo pid,pcpu,pmem,comm |\
+        sed 1d |\
+            sort -n -k2,3 -r |\
+                rofi -dmenu -i -p "Kill:")
+
+PID=$1
+CMD=$4
+
+# check no choice
+[[ ${PID} == '' ]] && exit 0
+
+# ask user to be sure
+CHOICE=$(echo -e "Yes\nNo" |\
+        rofi -dmenu\
+                -p "Kill It?"\
+                        -mesg "Do you wanna kill <b>${CMD}</b> (PID: <i>${PID}</i>)")
+
+[[ ${CHOICE} == 'Yes' ]] && kill -9 ${PID}

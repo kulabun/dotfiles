@@ -1,9 +1,0 @@
-#!/bin/bash
-yay -S rtl8822bu-dkms-git --noconfirm
-
-
-
-#################### Alexa Skills Kit ####################
-ask 1>&1 2>/dev/null || sudo npm install -g ask-cli
-[ -e "$HOME/.ask/cli_config" ] || ask init
-bst 1>&1 2>/dev/null || sudo npm install -g bespoken-tools

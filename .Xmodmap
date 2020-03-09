@@ -1,3 +1,6 @@
-keycode 66 = Control_L
+! keycode 66 = Control_L
+! clear lock
+! add control = Control_L
+!
+keycode 66 = Escape
 clear lock
-add control = Control_L
