@@ -57,7 +57,7 @@
     diff = diff-so-fancy | less --tabs=1,5 -RFX
     show = diff-so-fancy | less --tabs=1,5 -RFX
 [gpg]
-    program = gpg2
+    program = gpg
 [alias]
     a = add
     au = add -u
