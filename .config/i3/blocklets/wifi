@@ -1,7 +1,7 @@
 #!/bin/bash
 
 FOREGROUND=${FOREGROUND:-"#FFFFFF"}
-INTERFACE="${BLOCK_INSTANCE:-wlan0}"
+INTERFACE=$((ip link show | grep "state UP" | cut -f2 -d" " | sed "s/:$//g") || echo "wlan0")
 SSID=$(iwgetid $INTERFACE -r)
 
 [[ ! -d /sys/class/net/${INTERFACE}/wireless ]] ||

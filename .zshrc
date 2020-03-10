@@ -70,7 +70,7 @@ setopt    HIST_FIND_NO_DUPS
 ####################################################################################################
 # Other configurations
 ####################################################################################################
-PATH="/home/klabun/bin:/home/klabun/go/bin:/home/klabun/.cargo/bin:/home/klabun/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/sbin:/usr/sbin:/home/klabun/go/bin"
+PATH="$HOME/bin:$HOME/go/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/sbin:/usr/sbin:$HOME/go/bin"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=black"
 setopt auto_cd # do cd when path is typed without any command
 
