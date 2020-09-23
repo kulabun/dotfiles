@@ -1,0 +1,2 @@
+#!/bin/bash
+firefox --new-instance --profile $(mktemp -d) --no-remote --save-mode
