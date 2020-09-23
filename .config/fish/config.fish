@@ -39,10 +39,13 @@ set ASK_DEFAULT_DEVICE_LOCALE "en-US"
 #################### PERSONAL CONFIG ####################
 set fish_greeting ''
 #fish_default_key_bindings
-fish_vi_key_bindings
+# fish_vi_key_bindings
 set fish_prompt_pwd_dir_length 1 # Shrink path
 set -x PATH "$HOME/bin" "$HOME/go/bin" "$HOME/.cargo/bin" "$HOME/.local/bin" /usr/local/bin /usr/bin /bin /usr/local/sbin /usr/lib/jvm/default/bin /usr/bin/site_perl /usr/bin/vendor_perl /usr/bin/core_perl /sbin /usr/sbin
 set -x EDITOR "vim"
+set -x EDITOR 'vim'
+set -x SUDO_EDITOR 'vim'
+set -x VISUAL 'vim'
 set -x PAGER "less"
 set -x GOPATH "$HOME"/go
 set -g FISH_CUSTOM_FUNCTIONS_PATH "$HOME/.config/fish/my-functions"
@@ -50,6 +53,30 @@ set -x CTAGS_ROOT "/data/dev/ctags"
 set -x SOURCES_ROOT "/data/dev/sources-root"
 set -x TERM "xterm"
 
+
+#################### BINDINGS #######################
+
+function fish_user_key_bindings
+    fish_vi_key_bindings
+
+    bind -s --preset -M default j backward-char
+    bind -s --preset -M default l forward-char
+    bind -s --preset -M default J backward-word
+    bind -s --preset -M default L forward-word
+    bind -s --preset -m insert A repaint-mode
+
+    bind -s --preset i up-or-search
+    bind -s --preset k down-or-search
+
+
+    bind -s --preset -M default h 'nnn'
+    # FZF 
+    bind -s --preset -M default \; '__fzf_search_history'
+    # bind -s --preset -M default f '__fzf_find_file'
+    # bind -s --preset -M default / '__fzf_cd'
+    # bind -s --preset -M default F '__fzf_open --editor vim'
+
+end
 
 
 #################### ABBRIVIATIONS  ####################
@@ -66,11 +93,6 @@ abbr ka "killall -9"
 abbr md "mkdir -p"
 abbr s "sudo"
 abbr _ "sudo"
-abbr f. "fd -maxdepth 1"
-abbr fn "fd"
-abbr f.n "fd --maxdepth 1"
-abbr fdn "fd --type d"
-abbr ffn "fd --type f"
 abbr y "yadm"
 abbr q "exit"
 abbr jc "sudo journalctl -f"
@@ -81,7 +103,6 @@ abbr hi "history 1"
 abbr hig "history 1 | grep -i"
 abbr cb "xclip -selection clipboard"
 abbr da "du -sch"
-abbr l "ls"
 abbr mv "mv -vi"
 abbr cp "cp -vi"
 abbr cpd "cp -vir"
@@ -107,15 +128,37 @@ abbr psmem "ps auxf | sort -nr -k 4 | less -S"
 abbr server "python3 -m http.server"
 abbr urlencode "python -c \"import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);\""
 abbr urldecode "python -c \"import sys, urllib as ul; print ul.unquote(sys.argv[1]);\""
-abbr ts "tmux new-session -s"
-abbr ta "tmux attach -t"
-abbr tl "tmux list-sessions"
 abbr ssh-keygen "ssh-keygen -o -t rsa -b 4096 -f"
 abbr sshx "ssh -c arcfour,blowfish-cbc -XC"
 abbr func "$EDITOR ~/.config/fish/my-functions/"
 abbr r "ranger"
 abbr ag "rg"
+abbr tf terraform
 #abbr awsauth "set -e AWS_ACCESS_KEY_ID; set -e AWS_SECRET_ACCESS_KEY; set -e AWS_SESSION_TOKEN; export (read -P \"Enter you MFA code: \" token; aws-mfa-credentials \$token)"
+#
+
+if command -v yay > /dev/null
+    abbr -a p 'yay'
+    abbr -a up 'yay -Syu'
+else
+    abbr -a p 'sudo pacman'
+    abbr -a up 'sudo pacman -Syu'
+end
+
+
+if command -v exa > /dev/null
+    abbr -a l 'exa -ls newest'
+    abbr -a ls 'exa'
+    abbr -a ll 'exa -l'
+    abbr -a lll 'exa -la'
+else
+    abbr -a l 'ls'
+    abbr -a ll 'ls -l'
+    abbr -a lll 'ls -la'
+end
+
+
+
 
 if test -e "$HOME"/.config/fish/config.local.fish
     source "$HOME"/.config/fish/config.local.fish

@@ -184,7 +184,7 @@ set $monitor "DP-1"
 # Autostart
 #exec_always --no-startup-id $HOME/bin/polybar-launch
 #exec_always --no-startup-id nitrogen --random --set-scaled
-exec_always --no-startup-id nitrogen --set-scaled "$HOME/Wallpapers/0040a774da93bb71054c7f8ed3e8dd7f.jpg"
+exec_always --no-startup-id bash -c 'sleep 1 && nitrogen --set-scaled "$HOME/Wallpapers/0040a774da93bb71054c7f8ed3e8dd7f.jpg"'
 exec_always --no-startup-id xrdb -load ~/.Xresources
 
 exec --no-startup-id xfsettingsd

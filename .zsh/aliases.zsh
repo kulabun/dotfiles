@@ -25,6 +25,8 @@ ialias essh="$EDITOR ~/.ssh/config"
 ialias ehosts="sudo $EDITOR /etc/hosts"
 ialias mem="free -m -l -t"
 ialias tf="terraform"
+ialias penv="(ls venv/bin/activate 2> /dev/null || python3 -m venv venv) && source venv/bin/activate"
+ialias venv="(ls venv/bin/activate 2> /dev/null || python3 -m venv venv) && source venv/bin/activate"
 
 
 

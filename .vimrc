@@ -451,14 +451,31 @@ endfunction
 " let mapleader = " "
 " let maplocalleader = ";"
 " noremap l l
-noremap f i
-noremap i k
-noremap k j
-noremap j h
-noremap h 0
-noremap ; $
-noremap L w
-noremap J b
+nnoremap j h
+nnoremap k j
+nnoremap i k
+
+vnoremap j h
+vnoremap k j
+vnoremap i k
+
+nnoremap J b
+nnoremap K 5j
+nnoremap L w
+nnoremap I 5k
+
+vnoremap J b
+vnoremap K 5j
+vnoremap L w
+vnoremap I 5k
+
+vnoremap j h
+vnoremap k j
+vnoremap i k
+
+inoremap jj <esc>
+nnoremap A i
+
 " nnoremap <C-Left> <C-W><C-H>
 " nnoremap <C-Down> <C-W><C-J>
 " nnoremap <C-Up> <C-W><C-K>

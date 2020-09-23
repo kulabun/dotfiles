@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Create new key
+gpg --full-gen-key 
+
+# List all existing keys
+gpg --list-public-keys
+
+# Let me read keys info
+echo "Please remember last numbers of key you want to remove and add before moving forward"
+read
+
+# Ask me to remove
+gopass recipients remove
+gopass recipients add

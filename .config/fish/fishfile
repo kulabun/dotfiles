@@ -1,7 +1,8 @@
 matchai/spacefish
 fisherman/fishtape
 decors/fish-colored-man
-jethrokuan/fzf
 jethrokuan/z
 ~/.config/fish/my-functions
+kulabun/fzf.fish
 franciscolourenco/done
+jorgebucaran/nvm.fish
