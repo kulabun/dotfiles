@@ -10,3 +10,6 @@ tags
 *.class
 .gradle
 changes
+.settings
+.classpath
+.project
