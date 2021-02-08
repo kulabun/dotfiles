@@ -1,2 +1,0 @@
-#!/bin/sh
-google-chrome --app="https://ballard.amazon.com/owa/" --user-data-dir="$HOME/.config/google-chrome"

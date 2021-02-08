@@ -448,46 +448,52 @@ endfunction
 " ###########################################################
 " # Key Mappings
 " ###########################################################
-" let mapleader = " "
+let mapleader = " "
 " let maplocalleader = ";"
 " noremap l l
-nnoremap j h
-nnoremap k j
-nnoremap i k
+" nnoremap j h
+" nnoremap k j
+" nnoremap i k
 
-vnoremap j h
-vnoremap k j
-vnoremap i k
+" vnoremap j h
+" vnoremap k j
+" vnoremap i k
 
-nnoremap J b
-nnoremap K 5j
-nnoremap L w
-nnoremap I 5k
+" nnoremap J b
+" nnoremap K 5j
+" nnoremap L w
+" nnoremap I 5k
 
-vnoremap J b
-vnoremap K 5j
-vnoremap L w
-vnoremap I 5k
+" vnoremap J b
+" vnoremap K 5j
+" vnoremap L w
+" vnoremap I 5k
 
-vnoremap j h
-vnoremap k j
-vnoremap i k
+" vnoremap j h
+" vnoremap k j
+" vnoremap i k
 
-inoremap jj <esc>
-nnoremap A i
+" inoremap jj <esc>
+" nnoremap h i
+
+" nnoremap <C-j> ^
+" vnoremap <C-j> ^
+
+" nnoremap <C-l> $
+" vnoremap <C-l> $
 
 " nnoremap <C-Left> <C-W><C-H>
 " nnoremap <C-Down> <C-W><C-J>
 " nnoremap <C-Up> <C-W><C-K>
 " nnoremap <C-Right> <C-W><C-L>
-nnoremap <silent> bp :bj<CR>
-nnoremap <silent> bn :bl<CR>
-nnoremap <silent> bb :Buffers<CR>
-" nnoremap <silent> gl :BLines<CR>
+" nnoremap <silent> bp :bj<CR>
+" nnoremap <silent> bn :bl<CR>
+" nnoremap <silent> bb :Buffers<CR>
+" " nnoremap <silent> gl :BLines<CR>
 " nnoremap <silent> gL :Lines<CR>
 " nnoremap <silent> gss :Rg<CR>
 " nnoremap <silent> gst :Tags<CR><CR>
-nnoremap <silent> <Leader>hc :Commands<CR>
+" nnoremap <silent> <Leader>hc :Commands<CR>
 " nnoremap <silent> <Leader>hm :Mappings<CR>
 " nnoremap <silent> <Leader>gca :Commits<CR>
 " nnoremap <silent> <Leader>gcb :BCommits<CR>

@@ -13,66 +13,67 @@ set visualbell          "use visual bell instead of beeping
 set wrapscan            "searches wrap around the end of the file
 set surround            "enable surround plugin
 
-let mapleader = "h"
-nnoremap j h
-nnoremap k j
-nnoremap i k
+" let mapleader = " "
+" nnoremap j h
+" nnoremap k j
+" nnoremap i k
 
-vnoremap j h
-vnoremap k j
-vnoremap i k
+" vnoremap j h
+" vnoremap k j
+" vnoremap i k
 
-nnoremap J b
-nnoremap K 5j
-nnoremap L w
-nnoremap I 5k
+" nnoremap J b
+" nnoremap K 5j
+" nnoremap L w
+" nnoremap I 5k
 
-vnoremap J b
-vnoremap K 5j
-vnoremap L w
-vnoremap I 5k
+" vnoremap J b
+" vnoremap K 5j
+" vnoremap L w
+" vnoremap I 5k
 
-vnoremap j h
-vnoremap k j
-vnoremap i k
+" vnoremap j h
+" vnoremap k j
+" vnoremap i k
 
-inoremap jj <esc>
-nnoremap A i
-
-nnoremap ; :action AceAction<CR>
-
-nnoremap gf :action GotoFile<cr>
-nnoremap gu :action ShowUsages<cr>
-nnoremap gs :action FileStructurePopup<cr>
-nnoremap gR :action RecentChangedFiles<cr>
-nnoremap gr :action RecentFiles<cr>
-nnoremap gj ^
-nnoremap gl $
-nnoremap gi gg
-nnoremap gk G
-nnoremap g, :action Back<cr>
-nnoremap g. :action Forward<cr>
-nnoremap g[ :action GotoSuperMethod<cr>
-nnoremap g] :action GotoImplementation<cr>
-" nnoremap gbb :action GotoPreviousBookmark<cr>
-" nnoremap gbn :action GotoNextBookmark<cr>
-" nnoremap gep :action GotoPreviousError<cr>
-" nnoremap gen :action GotoNextError<cr>
+" inoremap jj <esc>
+" nnoremap h i
 
 
-nnoremap fe :action SearchEverywhere<cr>
-nnoremap ff :action FindInPath<cr>
-nnoremap fr :action ReplaceInPath<cr>
+" nnoremap ; :action AceAction<CR>
 
-nnoremap [[ :action MethodUp<cr>
-nnoremap ]] :action MethodDown<cr>
+" nnoremap gf :action GotoFile<cr>
+" nnoremap gu :action ShowUsages<cr>
+" nnoremap gs :action FileStructurePopup<cr>
+" nnoremap gR :action RecentChangedFiles<cr>
+" nnoremap gr :action RecentFiles<cr>
+" nnoremap gj ^
+" nnoremap gl $
+" nnoremap gi gg
+" nnoremap gk G
+" nnoremap g, :action Back<cr>
+" nnoremap g. :action Forward<cr>
+" nnoremap g[ :action GotoSuperMethod<cr>
+" nnoremap g] :action GotoImplementation<cr>
+" " nnoremap gbb :action GotoPreviousBookmark<cr>
+" " nnoremap gbn :action GotoNextBookmark<cr>
+" " nnoremap gep :action GotoPreviousError<cr>
+" " nnoremap gen :action GotoNextError<cr>
 
-nnoremap hh :action GotoAction<cr>
 
-nnoremap hr :action RenameElement<cr>
-nnoremap hg :action Generate<cr>
-nnoremap hp :action ParameterInfo<cr>
-nnoremap hs :action SurroundWith<cr>
+" nnoremap fe :action SearchEverywhere<cr>
+" nnoremap ff :action FindInPath<cr>
+" nnoremap fr :action ReplaceInPath<cr>
 
-nnoremap = :action ReformatCode<cr>
-nnoremap h! :source ~/.ideavimrc<cr>
+" nnoremap [[ :action MethodUp<cr>
+" nnoremap ]] :action MethodDown<cr>
+
+" nnoremap hh :action GotoAction<cr>
+
+" nnoremap hr :action RenameElement<cr>
+" nnoremap hg :action Generate<cr>
+" nnoremap hp :action ParameterInfo<cr>
+" nnoremap hs :action SurroundWith<cr>
+
+" nnoremap = :action ReformatCode<cr>
+" nnoremap h! :source ~/.ideavimrc<cr>

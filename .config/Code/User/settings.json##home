@@ -192,4 +192,11 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "python.languageServer": "Pylance",
+  "leetcode.workspaceFolder": "/home/klabun/projects/leetcode",
+  "leetcode.defaultLanguage": "python3",
+  "leetcode.enableSideMode": true,
+  "leetcode.hint.commandShortcut": false,
+  "leetcode.hint.configWebviewMarkdown": false,
+  "editor.columnSelection": false,
 }
