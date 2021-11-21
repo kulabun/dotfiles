@@ -1,7 +1,0 @@
-#!/bin/bash
-function get_target() {
-    echo "$($HOME/go/bin/gopass ls --flat)" | rofi -dmenu
-}
-target=$(get_target)
-[ -n "$target" ] && $HOME/go/bin/gopass --clip $target
-

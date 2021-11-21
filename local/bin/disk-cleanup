@@ -1,4 +1,0 @@
-#!/bin/bash
-yay -Sc --noconfirm
-sudo rm -rf /var/cache/pacman/*
-sudo rm -rf /var/lib/docker/overlay2/*

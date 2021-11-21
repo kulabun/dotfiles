@@ -1,3 +1,0 @@
-#!/bin/bash
-sudo ntpdate -u 0.arch.pool.ntp.org
-sudo hwclock --systohc

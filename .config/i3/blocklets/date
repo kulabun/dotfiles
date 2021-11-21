@@ -1,8 +1,0 @@
-#!/bin/sh
-
-DATE_FORMAT=${DATE_FORMAT:-"+%a %m/%d"}
-TIME_FORMAT=${TIME_FORMAT:-"+%I:%M %p"}
-date=$(date "$DATE_FORMAT")
-time=$(date "$TIME_FORMAT")
-
-echo "<span font='9'><span foreground='#FCFF00'>  </span><span size='smaller' weight='bold' foreground='#FFFFFF'>$date</span><span foreground='#91EAFF'> // </span><span size='smaller' weight='bold' foreground='#FFFFFF'>$time</span></span>"

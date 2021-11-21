@@ -1,7 +1,0 @@
-#!/bin/bash
-profile=$(yadm config --get local.class)
-local_root="$HOME/local"
-profile_root="$local_root/profile/$profile"
-for i in $(ls "$profile_root/bin"); do
-  ln -sf "$profile_root/bin/$i" "$local_root/bin/$i"
-done;

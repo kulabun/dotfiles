@@ -1,4 +1,7 @@
 # Install
 ```bash
-curl -L http://dotfiles.labun.me | sh
+# ChromeOS
+git clone --recurse-submodules git@github.com:kulabun/dotfiles.git
+cd dotfiles
+bash chromeos
 ```

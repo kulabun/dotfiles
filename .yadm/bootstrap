@@ -1,4 +1,0 @@
-#!/bin/bash
-
-
-source $HOME/.yadm/bootstrap.local

@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# take scrot of desktop, notify + open
-file='%Y-%m-%dT%T_$wx$h_scrot.png'
-directory=$(xdg-user-dir PICTURES)
-
-scrot $file -e "mv \$f $directory
-notify-send 'Screenshot taken'
-xdg-open $directory/$file"

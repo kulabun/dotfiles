@@ -1,3 +1,0 @@
-#!/bin/bash
-
-sudo su -c 'usbguard generate-policy > /etc/usbguard/rules.conf'

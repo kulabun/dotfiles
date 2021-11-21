@@ -1,0 +1,32 @@
+- defaults:
+    link:
+      relink: true
+      create: true
+
+- clean: ['~']
+
+- link:
+    # Fonts
+    ~/.local/share/fonts: fonts
+
+    # Applications
+    ~/.config/environment.d: apps/environment.d/config/environment.d
+
+    ~/.gitconfig: apps/git/gitconfig
+    ~/.gitignore: apps/git/gitignore
+    ~/.gitmessage: apps/git/gitmessage
+
+    ~/.zshrc: apps/zsh/zshrc
+    ~/.zsh: apps/zsh/zsh
+
+    ~/.config/Code/User/settings.json: apps/vscode/config/Code/User/settings.json
+
+    ~/.config/starship.toml: apps/starship/config/starship.toml
+
+    ~/.vimrc: apps/vim/vimrc
+
+- create:
+    - ~/projects
+
+# - shell:
+#   - [git submodule update --init --recursive, Installing submodules]

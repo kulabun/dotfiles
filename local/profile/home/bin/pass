@@ -1,9 +1,0 @@
-#!/bin/bash
-function pass(){
-    fzf_args=""
-    [ "$#" -gt 0 ] && test -n "$1" && fzf_args="-q $@"
-    target=$(gopass ls --flat | fzf $fzf_args)
-    [ -n "$target" ] && gopass --clip $target
-}
-
-pass $@

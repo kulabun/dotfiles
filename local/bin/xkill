@@ -1,2 +1,0 @@
-#!/bin/bash
-kill -9 $(xprop _NET_WM_PID | cut -d' ' -f3)

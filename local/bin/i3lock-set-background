@@ -1,8 +1,0 @@
-#!/bin/bash
-TARGET="$HOME/.i3/lockscreen.png"
-OVERLAY_IMAGE="$HOME/.i3/lock.png"
-
-image=$1
-[ "$image" == "" ] && exit 1
-convert $image -resize $(xrandr | grep '*' | column -t | cut -d" " -f1)! $TARGET
-convert $TARGET $OVERLAY_IMAGE  -gravity center -composite -matte $TARGET
