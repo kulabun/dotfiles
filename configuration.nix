@@ -13,12 +13,6 @@
       efi.canTouchEfiVariables = true;
     }
 
-    # Root is encrypted
-    initrd.luks.devices.root = {
-      device = "##device##2";
-      preLVM = true;
-    };
-
     kernelPackages = pkgs.linuxPackages_latest;
     
     # Show logo on startup
@@ -48,7 +42,7 @@
     };  
   };
 
-  networking.hostName = "##username##";
+  networking.hostName = "klabun-desktop";
   networking.networkmanager.enable = true;
   programs.nm-applet.enable = true;
 
