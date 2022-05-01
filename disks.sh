@@ -1,6 +1,7 @@
 #!/bin/bash
 OS_DISK=/dev/nvme0n1
 HOME_DISK=/dev/sda
+USERNAME=klabun
 
 read -p "Please enter your desired password:" PASSWORD
 
@@ -27,7 +28,7 @@ sudo mkdir /mnt/boot && sudo mount ${OS_DISK}p1 /mnt/boot
 
 sudo nixos-generate-config --root /mnt
 cd /mnt/etc/nixos
-sudo cp configuration.nix configuration.nix.old
+sudo mv configuration.nix configuration.nix.old
 sudo wget -q https://raw.githubusercontent.com/kulabun/dotfiles/nix/configuration.nix
 sudo sed -i "s~##username##~${USERNAME}~g" configuration.nix
 sudo sed -i "s~##rootpasswd##~${PASSWORD}~g" configuration.nix
